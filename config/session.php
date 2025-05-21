@@ -13,13 +13,8 @@ return [
     | incoming requests. Laravel supports a variety of storage options to
     | persist session data. Database storage is a great default choice.
     |
-<<<<<<< HEAD
     | Supported: "file", "cookie", "database", "memcached",
     |            "redis", "dynamodb", "array"
-=======
-    | Supported: "file", "cookie", "database", "apc",
-    |            "memcached", "redis", "dynamodb", "array"
->>>>>>> 4087c472f0dfb0ce89c282d5665377c5a352a50a
     |
     */
 
