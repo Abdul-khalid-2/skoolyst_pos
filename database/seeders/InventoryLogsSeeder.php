@@ -468,3 +468,17 @@ class InventoryLogsSeeder extends Seeder
 // VALUES 
 // (1, 'default', 'Created a new sale', 'App\\Models\\Sale', 1, 'App\\Models\\User', 1, '{"amount":1099.98}', NOW(), NOW()),
 // (1, 'default', 'Updated product', 'App\\Models\\Product', 1, 'App\\Models\\User', 1, '{"changes":{"price":999.99}}', NOW(), NOW());
+
+
+// -- Insert roles with timestamps
+// INSERT INTO `roles` (`name`, `guard_name`, `created_at`, `updated_at`) VALUES
+// ('superadmin', 'web', NOW(), NOW()),
+// ('admin', 'web', NOW(), NOW()),
+// ('manager', 'web', NOW(), NOW()),
+// ('staff', 'web', NOW(), NOW()),
+// ('customer', 'web', NOW(), NOW()),
+// ('supplier', 'web', NOW(), NOW()),
+// ('accountant', 'web', NOW(), NOW()),
+// ('salesperson', 'web', NOW(), NOW()),
+// ('inventory_manager', 'web', NOW(), NOW()),
+// ('report_viewer', 'web', NOW(), NOW());

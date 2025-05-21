@@ -14,71 +14,67 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Add New User</h4>
+                            <h4 class="card-title">Add New Supplier</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.store') }}" method="POST" data-toggle="validator">
+                        <form action="{{ route('suppliers.store') }}" method="POST" data-toggle="validator">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Full Name *</label>
-                                        <input type="text" name="name" class="form-control" placeholder="Enter Full Name" value="{{ old('name') }}" required>
+                                        <label>Name *</label>
+                                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ old('name') }}" required>
                                         <div class="help-block with-errors"></div>
                                         @error('name') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Email *</label>
-                                        <input type="email" name="email" class="form-control" placeholder="Enter Email" value="{{ old('email') }}" required>
-                                        <div class="help-block with-errors"></div>
+                                        <label>Contact Person</label>
+                                        <input type="text" name="contact_person" class="form-control" placeholder="Enter Contact Person" value="{{ old('contact_person') }}">
+                                        @error('contact_person') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" class="form-control" placeholder="Enter Email" value="{{ old('email') }}">
                                         @error('email') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Password *</label>
-                                        <input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+                                        <label>Phone *</label>
+                                        <input type="text" name="phone" class="form-control" placeholder="Enter Phone" value="{{ old('phone') }}" required>
                                         <div class="help-block with-errors"></div>
-                                        @error('password') <div class="text-danger">{{ $message }}</div> @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Confirm Password *</label>
-                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Phone Number</label>
-                                        <input type="text" name="phone" class="form-control" placeholder="Enter Phone Number" value="{{ old('phone') }}">
                                         @error('phone') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Role *</label>
-                                        <select name="role" class="selectpicker form-control" data-style="py-0" required>
-                                            <option value="">Select Role</option>
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->name }}" {{ old('role') == $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('role') <div class="text-danger">{{ $message }}</div> @enderror
+                                        <label>Alternate Phone</label>
+                                        <input type="text" name="alternate_phone" class="form-control" placeholder="Enter Alternate Phone" value="{{ old('alternate_phone') }}">
+                                        @error('alternate_phone') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tax Number</label>
+                                        <input type="text" name="tax_number" class="form-control" placeholder="Enter Tax Number" value="{{ old('tax_number') }}">
+                                        @error('tax_number') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Profile Image</label>
-                                        <input type="file" class="form-control image-file" name="profile_image" accept="image/*">
-                                        @error('profile_image') <div class="text-danger">{{ $message }}</div> @enderror
+                                        <label>Address *</label>
+                                        <textarea name="address" class="form-control" rows="3" required>{{ old('address') }}</textarea>
+                                        <div class="help-block with-errors"></div>
+                                        @error('address') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Add User</button>
+                            <button type="submit" class="btn btn-primary mr-2">Add Supplier</button>
                             <button type="reset" class="btn btn-danger">Reset</button>
                         </form>
                     </div>

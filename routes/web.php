@@ -7,10 +7,14 @@ use App\Http\Controllers\{
     ProductController,
     CategoryController,
     BackendController,
+    CustomerController,
     ReportController,
     SaleController,
     PurchaseOrderController,
+    SupplierController,
+    UserController,
 };
+use App\Models\Supplier;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,6 +38,21 @@ Route::get('add_reports', [ReportController::class, 'create'])->middleware(['aut
 Route::get('sales', [SaleController::class, 'index'])->middleware(['auth', 'verified'])->name('sales.index');
 Route::get('add_sales', [SaleController::class, 'create'])->middleware(['auth', 'verified'])->name('sales.create');
 
+
+// Route::get('customers', [CustomerController::class, 'index'])->middleware(['auth', 'verified'])->name('customers.index');
+// Route::get('add_customers', [CustomerController::class, 'create'])->middleware(['auth', 'verified'])->name('customers.create');
+// Route::get('users', [UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users.index');
+// Route::get('add_users', [UserController::class, 'create'])->middleware(['auth', 'verified'])->name('users.create');
+// Route::get('suppliers', [SupplierController::class, 'index'])->middleware(['auth', 'verified'])->name('suppliers.index');
+// Route::get('add_suppliers', [SupplierController::class, 'create'])->middleware(['auth', 'verified'])->name('suppliers.suppliers');
+// Users
+Route::resource('users', UserController::class)->middleware(['auth', 'verified']);
+
+// Customers
+Route::resource('customers', CustomerController::class)->middleware(['auth', 'verified']);
+
+// Suppliers
+Route::resource('suppliers', SupplierController::class)->middleware(['auth', 'verified']);
 
 
 Route::middleware('auth')->group(function () {

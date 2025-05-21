@@ -187,17 +187,17 @@
                     </a>
                     <ul id="people" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li class="">
-                            <a href="../backend/page-list-customers.html">
+                            <a href="{{ route('customers.index') }}">
                                 <i class="las la-minus"></i><span>Customers</span>
                             </a>
                         </li>
                         <li class="">
-                            <a href="../backend/page-list-users.html">
+                            <a href="{{ route('users.index') }}">
                                 <i class="las la-minus"></i><span>Users</span>
                             </a>
                         </li>
                         <li class="">
-                            <a href="../backend/page-list-suppliers.html">
+                            <a href="{{ route('suppliers.index') }}">
                                 <i class="las la-minus"></i><span>Suppliers</span>
                             </a>
                         </li>
