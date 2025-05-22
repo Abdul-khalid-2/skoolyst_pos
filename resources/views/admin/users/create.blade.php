@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.store') }}" method="POST" data-toggle="validator">
+                        <form action="{{ route('users.store') }}" method="POST" data-toggle="validator" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">

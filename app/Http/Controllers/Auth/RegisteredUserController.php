@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        
+
         return view('auth.register');
     }
 
@@ -36,10 +37,23 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $tenant = Tenant::first();
+        if (!$tenant) {
+            $tenant =  Tenant::create([
+
+                'name' => $request->name,
+                'slug' => 'tenant_' . $request->name,
+                'domain' => 'tenant_' . $request->name,
+                'database_name' => 'tenant_' . $request->name,
+                'is_active' => 1,
+
+            ]);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'tenant_id' => $tenant->id,
         ]);
 
         event(new Registered($user));

@@ -37,7 +37,7 @@ class UserController extends Controller
                 ->uncompromised()],
             'phone' => 'nullable|string|max:20',
             'role' => 'required|string|exists:roles,name',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'nullable|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = User::create([

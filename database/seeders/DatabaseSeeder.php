@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            InventoryLogsSeeder::class,
+            // InventoryLogsSeeder::class,
+            TenantDatabaseSeeder::class,
             // Other seeders...
         ]);
         // User::factory()->create([
