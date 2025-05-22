@@ -14,6 +14,8 @@ use App\Http\Controllers\{
     SupplierController,
     UserController,
 };
+use App\Http\Controllers\App\InventoryLogController;
+use App\Http\Controllers\App\ProductVariantController;
 use App\Models\Supplier;
 
 Route::get('/', function () {
@@ -38,13 +40,33 @@ Route::get('add_reports', [ReportController::class, 'create'])->middleware(['aut
 Route::get('sales', [SaleController::class, 'index'])->middleware(['auth', 'verified'])->name('sales.index');
 Route::get('add_sales', [SaleController::class, 'create'])->middleware(['auth', 'verified'])->name('sales.create');
 
+// category 
+Route::resource('categories', CategoryController::class);
 
-// Route::get('customers', [CustomerController::class, 'index'])->middleware(['auth', 'verified'])->name('customers.index');
-// Route::get('add_customers', [CustomerController::class, 'create'])->middleware(['auth', 'verified'])->name('customers.create');
-// Route::get('users', [UserController::class, 'index'])->middleware(['auth', 'verified'])->name('users.index');
-// Route::get('add_users', [UserController::class, 'create'])->middleware(['auth', 'verified'])->name('users.create');
-// Route::get('suppliers', [SupplierController::class, 'index'])->middleware(['auth', 'verified'])->name('suppliers.index');
-// Route::get('add_suppliers', [SupplierController::class, 'create'])->middleware(['auth', 'verified'])->name('suppliers.suppliers');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Products
+
+    Route::resource('products', ProductController::class);
+    Route::post('products/upload-image', [ProductController::class, 'uploadImage'])->name('products.upload-image');
+    Route::delete('products/remove-image', [ProductController::class, 'removeImage'])->name('products.remove-image');
+    Route::get('products/{product}/inventory', [ProductController::class, 'inventory'])->name('products.inventory');
+
+    // Product Variants
+    Route::get('products/{product}/variants', [ProductVariantController::class, 'index'])->name('product-variants.index');
+    Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product-variants.create');
+    Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product-variants.store');
+    Route::get('product-variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('product-variants.edit');
+    Route::put('product-variants/{variant}', [ProductVariantController::class, 'update'])->name('product-variants.update');
+    Route::delete('product-variants/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variants.destroy');
+
+    // Inventory Logs
+    Route::get('inventory-logs', [InventoryLogController::class, 'index'])->name('inventory-logs.index');
+    Route::post('inventory-logs', [InventoryLogController::class, 'store'])->name('inventory-logs.store');
+    Route::delete('inventory-logs/{id}', [InventoryLogController::class, 'destroy'])->name('inventory-logs.destroy');
+});
+
+
 // Users
 Route::resource('users', UserController::class)->middleware(['auth', 'verified']);
 
