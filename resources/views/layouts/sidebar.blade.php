@@ -53,8 +53,8 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="{{ route('products.create') }}">
-                                <i class="las la-minus"></i><span>Add Product</span>
+                            <a href="{{ route('inventory-logs.index') }}">
+                                <i class="las la-minus"></i><span>Inventory</span>
                             </a>
                         </li>
                     </ul>

@@ -109,8 +109,8 @@
                                                 <i class="ri-delete-bin-line mr-0"></i>
                                             </button>
                                         </form>
-                                        <a class="badge bg-secondary" data-toggle="tooltip" data-placement="top" title="Inventory" 
-                                           href="{{ route('products.inventory', $product->id) }}">
+                                        <a class="badge bg-secondary" data-toggle="tooltip" data-placement="top" title="variant" 
+                                           href="{{ route('product-variants.index', $product->id) }}">
                                             <i class="ri-store-2-line mr-0"></i>
                                         </a>
                                     </div>

@@ -8,70 +8,74 @@ use Illuminate\Http\Request;
 
 class ProductVariantController extends Controller
 {
-    public function index()
+    public function index(Product $product)
     {
-        $variants = ProductVariant::with('product')
+        $variants = $product->variants()
+            ->with('product')
             ->latest()
             ->paginate(10);
 
-        return view('product-variants.index', compact('variants'));
+        return view('admin.variant.index', compact('product', 'variants'));
     }
 
-    public function create()
+    public function create(Product $product)
     {
-        $products = Product::all();
-        return view('product-variants.create', compact('products'));
+        return view('admin.variant.form', compact('product'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
             'name' => 'required|string|max:100',
             'sku' => 'required|string|max:100|unique:product_variants,sku',
-            'price_sale' => 'required|numeric|min:0',
-            'price_cost' => 'required|numeric|min:0',
-            'status' => 'required|string|max:20',
-            'stock_quantity' => 'required|integer|min:0',
-            'weight' => 'required|numeric|min:0'
+            'barcode' => 'nullable|string|max:100|unique:product_variants,barcode',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:0',
+            'current_stock' => 'required|integer|min:0',
+            'unit_type' => 'required|string|max:50',
+            'weight' => 'nullable|numeric|min:0',
+            'status' => 'required|in:active,inactive',
         ]);
+
+        $validated['product_id'] = $product->id;
+        $validated['tenant_id'] = auth()->user()->tenant_id;
 
         ProductVariant::create($validated);
 
-        return redirect()->route('product-variants.index')
+        return redirect()->route('product-variants.index', $product->id)
             ->with('success', 'Product variant created successfully.');
     }
 
-    public function edit(ProductVariant $productVariant)
+    public function edit(Product $product, ProductVariant $variant)
     {
-        $products = Product::all();
-        return view('product-variants.edit', compact('productVariant', 'products'));
+        return view('admin.variant.form', compact('product', 'variant'));
     }
 
-    public function update(Request $request, ProductVariant $productVariant)
+    public function update(Request $request, Product $product, ProductVariant $variant)
     {
         $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
             'name' => 'required|string|max:100',
-            'sku' => 'required|string|max:100|unique:product_variants,sku,' . $productVariant->id,
-            'price_sale' => 'required|numeric|min:0',
-            'price_cost' => 'required|numeric|min:0',
-            'status' => 'required|string|max:20',
-            'stock_quantity' => 'required|integer|min:0',
-            'weight' => 'required|numeric|min:0'
+            'sku' => 'required|string|max:100|unique:product_variants,sku,' . $variant->id,
+            'barcode' => 'nullable|string|max:100|unique:product_variants,barcode,' . $variant->id,
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:0',
+            'current_stock' => 'required|integer|min:0',
+            'unit_type' => 'required|string|max:50',
+            'weight' => 'nullable|numeric|min:0',
+            'status' => 'required|in:active,inactive',
         ]);
 
-        $productVariant->update($validated);
+        $variant->update($validated);
 
-        return redirect()->route('product-variants.index')
+        return redirect()->route('product-variants.index', $product->id)
             ->with('success', 'Product variant updated successfully.');
     }
 
-    public function destroy(ProductVariant $productVariant)
+    public function destroy(Product $product, ProductVariant $variant)
     {
-        $productVariant->delete();
+        $variant->delete();
 
-        return redirect()->route('product-variants.index')
+        return redirect()->route('product-variants.index', $product->id)
             ->with('success', 'Product variant deleted successfully.');
     }
 }

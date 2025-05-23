@@ -14,8 +14,8 @@ use App\Http\Controllers\{
     SupplierController,
     UserController,
 };
-use App\Http\Controllers\App\InventoryLogController;
-use App\Http\Controllers\App\ProductVariantController;
+use App\Http\Controllers\InventoryLogController;
+use App\Http\Controllers\ProductVariantController;
 use App\Models\Supplier;
 
 Route::get('/', function () {
@@ -56,15 +56,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('products/{product}/variants', [ProductVariantController::class, 'index'])->name('product-variants.index');
     Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product-variants.create');
     Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product-variants.store');
-    Route::get('product-variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('product-variants.edit');
-    Route::put('product-variants/{variant}', [ProductVariantController::class, 'update'])->name('product-variants.update');
+    Route::get('products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])
+        ->name('product-variants.edit');
+
+    Route::put('products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'update'])->name('product-variants.update');
     Route::delete('product-variants/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variants.destroy');
 
     // Inventory Logs
     Route::get('inventory-logs', [InventoryLogController::class, 'index'])->name('inventory-logs.index');
     Route::post('inventory-logs', [InventoryLogController::class, 'store'])->name('inventory-logs.store');
+    Route::get('inventory-logs/create', [InventoryLogController::class, 'create'])->name('inventory-logs.create');
     Route::delete('inventory-logs/{id}', [InventoryLogController::class, 'destroy'])->name('inventory-logs.destroy');
 });
+// Inventory Logs
+Route::get('inventory-logs/variants/{product}', [InventoryLogController::class, 'getVariants'])
+    ->name('inventory-logs.variants')
+    ->middleware(['auth', 'verified']);
 
 
 // Users

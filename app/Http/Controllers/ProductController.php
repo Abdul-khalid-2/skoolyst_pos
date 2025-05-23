@@ -139,7 +139,8 @@ class ProductController extends Controller
 
     public function inventory(Product $product)
     {
+        dd('testing');
         $product->load(['variants', 'inventoryLogs']);
-        return view('products.inventory', compact('product'));
+        return view('admin.inventory.index', compact('product'));
     }
 }
