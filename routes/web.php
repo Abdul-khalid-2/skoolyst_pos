@@ -13,6 +13,12 @@ use App\Http\Controllers\{
     PurchaseOrderController,
     SupplierController,
     UserController,
+    InvoiceController,
+    BrandController,
+    StockTransferController,
+    StockAdjustmentController,
+    SettingController,
+    BackupController
 };
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
@@ -24,6 +30,57 @@ Route::get('/', function () {
 
 Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
 Route::get('home', [BackendController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+// Sales routes
+Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::get('/pos', [SaleController::class, 'pos'])->name('pos.index');
+});
+
+// Invoices routes
+Route::prefix('invoices')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [InvoiceController::class, 'index'])->name('invoices.index');
+});
+
+// Brands routes
+Route::resource('brands', BrandController::class)->middleware(['auth', 'verified']);
+
+// Stock Transfers routes
+Route::prefix('stock-transfers')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [StockTransferController::class, 'index'])->name('stock-transfers.index');
+});
+
+// Stock Adjustments routes
+Route::prefix('stock-adjustments')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [StockAdjustmentController::class, 'index'])->name('stock-adjustments.index');
+});
+
+// Low Stock Alerts route
+Route::get('low-stock-alerts', [InventoryLogController::class, 'lowStockAlerts'])->middleware(['auth', 'verified'])->name('low-stock-alerts');
+
+// Purchase Returns routes
+Route::prefix('purchase-returns')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [PurchaseOrderController::class, 'returns'])->name('purchase-returns.index');
+});
+
+// Reports routes
+Route::prefix('reports')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/sales', [ReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
+    Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('reports.profit-loss');
+    Route::get('/customer', [ReportController::class, 'customer'])->name('reports.customer');
+});
+
+// Settings routes
+Route::prefix('settings')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/general', [SettingController::class, 'general'])->name('settings.general');
+    Route::get('/pos', [SettingController::class, 'pos'])->name('settings.pos');
+    Route::get('/tax', [SettingController::class, 'tax'])->name('settings.tax');
+    Route::get('/business', [SettingController::class, 'business'])->name('settings.business');
+});
+
+// Existing routes below...
 
 Route::get('products', [ProductController::class, 'index'])->middleware(['auth', 'verified'])->name('products.index');
 Route::get('add_products', [ProductController::class, 'create'])->middleware(['auth', 'verified'])->name('products.create');
@@ -89,5 +146,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::get('/backup/store', [BackupController::class, 'store'])->name('backup.store');
+
 
 require __DIR__ . '/auth.php';
