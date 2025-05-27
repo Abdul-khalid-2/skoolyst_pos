@@ -85,9 +85,9 @@
                     <a href="{{ route('login') }}" class="ml-4 px-4 py-2 rounded-md bg-secondary-600 text-white font-medium hover:bg-secondary-700 transition-slow">
                         لاگ ان
                     </a>
-                    <a href="{{ route('register') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary-600 hover:bg-primary-700 transition-slow">
+                    <!-- <a href="{{ route('register') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-primary-600 hover:bg-primary-700 transition-slow">
                         register
-                    </a>
+                    </a> -->
                     <!-- Other nav items -->
                     <a href="#contact" class="px-4 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-100 transition-slow">
                         رابطہ
@@ -104,7 +104,7 @@
                 </div>
                  <!-- Logo on left -->
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="h-12 w-auto" src="https://via.placeholder.com/150x60?text=MD+Autos" alt="MD Autos Logo">
+                    <img class="h-12 w-auto" src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
@@ -214,7 +214,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Product 1 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow">
-                    <img src="{{ asset('Backend/assets/images/images.jpg') }}" 
+                    <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
                          alt="Engine Parts" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Engine Components</h3>
@@ -229,7 +229,7 @@
                 
                 <!-- Product 2 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow">
-                    <img src="{{ asset('Backend/assets/images/images.jpg') }}" 
+                    <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" 
                          alt="Brake System" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Brake System</h3>
@@ -244,7 +244,7 @@
                 
                 <!-- Product 3 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow">
-                    <img src="{{ asset('Backend/assets/images/images.jpg') }}" 
+                    <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" 
                          alt="Suspension Parts" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Suspension Parts</h3>
@@ -271,7 +271,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
-                    <img src="{{ asset('Backend/assets/images/images.jpg') }}" 
+                    <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
                          alt="About MD Autos" class="rounded-xl shadow-md w-full">
                 </div>
                 <div class="md:w-1/2">
@@ -373,7 +373,7 @@
             <div class="flex flex-col md:flex-row gap-12">
                 <!-- Contact Info -->
                 <div class="md:w-1/2 bg-primary-800 text-white p-8 rounded-xl">
-                    <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                    <h3 class="text-2xl font-bold mb-6">رابطہ کی معلومات</h3>
                     <p class="mb-8 urdu-text opacity-90">
                         ہم سے رابطہ کرنے کے لیے درج ذیل معلومات استعمال کریں یا فارم کو بھریں۔
                     </p>
@@ -382,15 +382,15 @@
                         <div class="flex items-start">
                             <i class="fas fa-map-marker-alt mt-1 mr-4 opacity-80"></i>
                             <div>
-                                <h4 class="font-bold mb-1">Address</h4>
-                                <p class="opacity-90 urdu-text">123 انڈسٹریل ایریا، کراچی، پاکستان</p>
+                                <h4 class="font-bold mb-1">پتہ</h4>
+                                <p class="opacity-90 urdu-text"> 123 انڈسٹریل ایریا، کراچی، پاکستان </p>
                             </div>
                         </div>
                         
                         <div class="flex items-start">
                             <i class="fas fa-phone-alt mt-1 mr-4 opacity-80"></i>
                             <div>
-                                <h4 class="font-bold mb-1">Phone</h4>
+                                <h4 class="font-bold mb-1"> فون </h4>
                                 <p class="opacity-90">+92 300 1234567</p>
                             </div>
                         </div>
@@ -398,7 +398,7 @@
                         <div class="flex items-start">
                             <i class="fas fa-envelope mt-1 mr-4 opacity-80"></i>
                             <div>
-                                <h4 class="font-bold mb-1">Email</h4>
+                                <h4 class="font-bold mb-1">  ای میل  </h4>
                                 <p class="opacity-90">info@mdautos.com</p>
                             </div>
                         </div>
@@ -406,14 +406,14 @@
                         <div class="flex items-start">
                             <i class="fas fa-clock mt-1 mr-4 opacity-80"></i>
                             <div>
-                                <h4 class="font-bold mb-1">Working Hours</h4>
-                                <p class="opacity-90">Monday - Saturday: 9AM - 6PM</p>
+                                <h4 class="font-bold mb-1"> کام کے اوقات </h4>
+                                <p class="opacity-90">پیر - ہفتہ: صبح 9 بجے سے شام 6 بجے تک</p>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-8">
-                        <h4 class="font-bold mb-4">Follow Us</h4>
+                        <h4 class="font-bold mb-4"> ہمیں فالو کریں۔ </h4>
                         <div class="flex space-x-4 space-x-reverse">
                             <a href="#" class="text-white hover:text-primary-200 transition-slow">
                                 <i class="fab fa-facebook-f text-xl"></i>
