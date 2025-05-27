@@ -110,7 +110,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('products/{product}/inventory', [ProductController::class, 'inventory'])->name('products.inventory');
 
     // Product Variants
-    Route::get('products/{product}/variants', [ProductVariantController::class, 'index'])->name('product-variants.index');
+    Route::get('products-variants/{product}', [ProductVariantController::class, 'index'])->name('product-variants.index');
     Route::get('products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('product-variants.create');
     Route::post('products/{product}/variants', [ProductVariantController::class, 'store'])->name('product-variants.store');
     Route::get('products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])
