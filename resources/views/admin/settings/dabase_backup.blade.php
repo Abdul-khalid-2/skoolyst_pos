@@ -34,7 +34,7 @@
                         <tbody class="ligth-body">
                             @foreach($files as $key => $file)
                                 <tr>
-                                    <td>{{ $key ?? '' }}</td>
+                                    <td>{{ $key+1 ?? '' }}</td>
                                     <td>{{ basename($file) ?? '' }}</td>
                                     <td>
                                         <div class="d-flex align-items-center list-action">
@@ -42,11 +42,10 @@
                                             href="{{ route('download.backup', basename($file)) }}">
                                             <i class="ri-download-line mr-0"></i>
                                             </a>
-                                        </div>
-                                        <div class="d-flex align-items-center list-action">
-                                            <a class="badge bg-success mr-2" 
+                                    
+                                            <a class="badge bg-danger mr-2" 
                                             href="{{ route('remove.backup', basename($file)) }}">
-                                            <i class="ri-download-line mr-0"></i>
+                                            <i class="ri-delete-bin-line mr-0"></i>
                                             </a>
                                         </div>
                                     </td>
