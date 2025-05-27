@@ -2,67 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-
+use Illuminate\Support\Facades\Schedule;
 
 class BackupController extends Controller
 {
 
-    public function store()
+    public function databaseBackup()
     {
-        ini_set('max_execution_time', 900);
-        ini_set('memory_limit', '512M');
-        set_time_limit(900); // 15 mins
+        $files = Storage::files('backup');
+        return view('admin.settings.dabase_backup', compact('files'));
+    }
 
-        $database = config('database.connections.mysql.database');
-        $username = config('database.connections.mysql.username');
-        $password = config('database.connections.mysql.password');
-        $host     = config('database.connections.mysql.host');
+    public function downloadBackup($filename)
+    {
+        // The file should be in storage/app/backup/
+        $filePath = 'backup/' . $filename;
 
-        $timestamp = now()->format('Y_m_d_H_i_s');
-        $fileName = "backup_{$timestamp}.sql";
-        $backupPath = storage_path('app/backups');
-        $filePath = "{$backupPath}/{$fileName}";
-
-        if (!File::exists($backupPath)) {
-            File::makeDirectory($backupPath, 0755, true);
+        if (!Storage::exists($filePath)) {
+            abort(404, "File not found: " . $filename);
         }
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $mysqldump = 'B:\\Xamp_php_8.2\\mysql\\bin\\mysqldump.exe';
-        } else {
-            $mysqldump = 'mysqldump';
-        }
+        return Storage::download($filePath);
+    }
 
-        $command = [
-            $mysqldump,
-            '-h',
-            $host,
-            '-u',
-            $username,
-            "-p{$password}",
-            $database
-        ];
-
-        $process = new Process($command);
-        $process->setTimeout(900); // 15 minutes
-
+    public function removeBackup($filename)
+    {
         try {
-            $process->run(function ($type, $buffer) use ($filePath) {
-                file_put_contents($filePath, $buffer, FILE_APPEND);
-            });
+            $filePath = 'backup/' . $filename; // Note: 'backups' not 'backup'
+
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
+                return redirect()->back()->with('success', 'Backup file deleted successfully');
+            }
+
+            return redirect()->back()->with('error', 'File not found');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Backup failed: ' . $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'Error deleting file: ' . $e->getMessage());
         }
-
-        if (!$process->isSuccessful()) {
-            return response()->json(['error' => 'Backup process failed.'], 500);
-        }
-
-        return response()->download($filePath)->deleteFileAfterSend(true);
     }
 }

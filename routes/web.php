@@ -148,7 +148,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/backup/store', [BackupController::class, 'store'])->name('backup.store');
+Route::get('/database/backup', [BackupController::class, 'databaseBackup'])->name('database.backup');
+Route::get('/remove/backup/{file}', [BackupController::class, 'removeBackup'])->name('remove.backup');
+Route::get('/download/backup/{file}', [BackupController::class, 'downloadBackup'])->name('download.backup');
 
 
 require __DIR__ . '/auth.php';
