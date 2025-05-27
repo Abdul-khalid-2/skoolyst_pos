@@ -10,7 +10,117 @@
             href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css') }}">
     @endpush
-        <div class="container-fluid add-form-list">
+
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Purchase Order</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('purchases.store') }}" method="POST" id="purchaseForm">
+                            @csrf
+                            <div class="row">
+                                <!-- Branch Selection -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Branch *</label>
+                                        <select name="branch_id" class="form-control selectpicker" required>
+                                            <option value="">Select Branch</option>
+                                            @foreach($branches as $branch)
+                                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Supplier Selection -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Supplier *</label>
+                                        <select name="supplier_id" class="form-control selectpicker" required>
+                                            <option value="">Select Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Invoice Number (auto-generated but editable) -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Invoice Number *</label>
+                                        <input type="text" name="invoice_number" class="form-control" 
+                                            value="{{ $invoiceNumber }}" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dates -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Purchase Date *</label>
+                                        <input type="date" name="purchase_date" class="form-control" 
+                                            value="{{ date('Y-m-d') }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Expected Delivery Date</label>
+                                        <input type="date" name="expected_delivery_date" class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <!-- Additional Costs -->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Shipping Amount</label>
+                                        <input type="number" step="0.01" name="shipping_amount" 
+                                            class="form-control" min="0" value="0">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Tax Amount</label>
+                                        <input type="number" step="0.01" name="tax_amount" 
+                                            class="form-control" min="0" value="0">
+                                    </div>
+                                </div>
+                                
+                                <!-- Purchase Items Section -->
+                                <div class="col-md-12">
+                                    <h5>Purchase Items</h5>
+                                    <div id="purchaseItems">
+                                        <div class="row item-row mb-3">
+                                            <!-- Product, Variant, Qty, Price fields as before -->
+                                        </div>
+                                    </div>
+                                    <button type="button" id="addItem" class="btn btn-primary">Add Item</button>
+                                </div>
+                                
+                                <!-- Notes -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Notes</label>
+                                        <textarea name="notes" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary mr-2">Submit Purchase</button>
+                                    <a href="{{ route('purchases.index') }}" class="btn btn-light">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- <div class="container-fluid add-form-list">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
@@ -101,7 +211,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     @push('js')
             <!-- Backend Bundle JavaScript -->
             <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
