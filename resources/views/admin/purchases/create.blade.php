@@ -175,14 +175,18 @@
                     const variantSelect = $(this).closest('.item-row').find('.variant-select');
                     
                     if (productId) {
-                        $.get(`/products/${productId}/variants`, function(data) {
+                        $.get(`/inventory-logs/variants/${productId}`, function(variants) {
                             variantSelect.empty().append('<option value="">Select Variant</option>');
-                            data.forEach(variant => {
-                                variantSelect.append(`<option value="${variant.id}">${variant.name}</option>`);
+                            
+                            variants.forEach(variant => {
+                                variantSelect.append(`<option value="${variant.id}">${variant.name} (${variant.sku}) - Stock: ${variant.current_stock}</option>`);
                             });
+                            
+                            variantSelect.prop('disabled', false).selectpicker('refresh');
                         });
                     } else {
-                        variantSelect.empty().append('<option value="">Select Variant</option>');
+                        variantSelect.empty().append('<option value="">Select Variant</option>')
+                            .prop('disabled', true).selectpicker('refresh');
                     }
                 });
             });
