@@ -527,7 +527,7 @@
             
             <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 mb-4 md:mb-0">
-                    &copy; 2023 MD Autos. All rights reserved.
+                    &copy; 2025 MD Autos. All rights reserved.
                 </p>
                 <p class="text-gray-400">
                     Designed with <i class="fas fa-heart text-red-500"></i> for heavy vehicles
