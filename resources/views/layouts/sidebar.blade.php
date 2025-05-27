@@ -1,9 +1,9 @@
 <div class="iq-sidebar sidebar-default">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ route('admin.dashboard') }}" class="header-logo">
-            <img src="{{ asset('/Backend/assets/images/logo.png') }}" 
+            <img src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" 
                  class="img-fluid rounded-normal light-logo" alt="logo">
-            <h5 class="logo-title light-logo ml-3">KHALIDpos</h5>
+            <h5 class="logo-title light-logo ml-3">MD-Autos</h5>
         </a>
         <div class="iq-menu-bt-sidebar ml-0">
             <i class="las la-bars wrapper-menu"></i>

@@ -6,9 +6,9 @@
             <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                 <i class="ri-menu-line wrapper-menu"></i>
                 <a href="../backend/index.html" class="header-logo">
-                    <img src=" {{ asset('/Backend/assets/images/logo.png') }}" class="img-fluid rounded-normal"
+                    <img src=" {{ asset('Backend/assets/images/MDLogo.jpg') }}" class="img-fluid rounded-normal"
                         alt="logo">
-                    <h5 class="logo-title ml-3">KHALIDpos</h5>
+                    <h5 class="logo-title ml-3">MD-Autos</h5>
 
                 </a>
             </div>
