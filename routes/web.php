@@ -140,6 +140,14 @@ Route::resource('customers', CustomerController::class)->middleware(['auth', 've
 // Suppliers
 Route::resource('suppliers', SupplierController::class)->middleware(['auth', 'verified']);
 
+// Brand
+Route::resource('brands', BrandController::class)->middleware(['auth', 'verified']);
+Route::post('/brands/upload-logo', [BrandController::class, 'uploadLogo'])->name('brands.upload-logo');
+Route::delete('/brands/remove-logo', [BrandController::class, 'removeLogo'])->name('brands.remove-logo');
+
+// PurchaseOrder
+Route::resource('purchases', PurchaseOrderController::class);
+Route::get('/products/{product}/variants', [PurchaseOrderController::class, 'getVariants']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

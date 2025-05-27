@@ -11,127 +11,97 @@
         <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css') }}">
     @endpush
         <div class="container-fluid add-form-list">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Add Product</h4>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <form action="page-list-product.html" data-toggle="validator">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Product Type *</label>
-                                            <select name="type" class="selectpicker form-control" data-style="py-0">
-                                                <option>Standard</option>
-                                                <option>Combo</option>
-                                                <option>Digital</option>
-                                                <option>Service</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Name *</label>
-                                            <input type="text" class="form-control" placeholder="Enter Name"
-                                                data-errors="Please Enter Name." required>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Code *</label>
-                                            <input type="text" class="form-control" placeholder="Enter Code"
-                                                data-errors="Please Enter Code." required>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Barcode Symbology *</label>
-                                            <select name="type" class="selectpicker form-control" data-style="py-0">
-                                                <option>CREM01</option>
-                                                <option>UM01</option>
-                                                <option>SEM01</option>
-                                                <option>COF01</option>
-                                                <option>FUN01</option>
-                                                <option>DIS01</option>
-                                                <option>NIS01</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Category *</label>
-                                            <select name="type" class="selectpicker form-control" data-style="py-0">
-                                                <option>Beauty</option>
-                                                <option>Grocery</option>
-                                                <option>Food</option>
-                                                <option>Furniture</option>
-                                                <option>Shoes</option>
-                                                <option>Frames</option>
-                                                <option>Jewellery</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Cost *</label>
-                                            <input type="text" class="form-control" placeholder="Enter Cost"
-                                                data-errors="Please Enter Cost." required>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Price *</label>
-                                            <input type="text" class="form-control" placeholder="Enter Price"
-                                                data-errors="Please Enter Price." required>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Tax Method *</label>
-                                            <select name="type" class="selectpicker form-control" data-style="py-0">
-                                                <option>Exclusive</option>
-                                                <option>Inclusive</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Quantity *</label>
-                                            <input type="text" class="form-control" placeholder="Enter Quantity"
-                                                required>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Image</label>
-                                            <input type="file" class="form-control image-file" name="pic"
-                                                accept="image/*">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Description / Product Details</label>
-                                            <textarea class="form-control" rows="4"></textarea>
-                                        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Purchase Order</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('purchases.store') }}" method="POST" id="purchaseForm">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Supplier *</label>
+                                        <select name="supplier_id" class="form-control selectpicker" required>
+                                            <option value="">Select Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">Add Product</button>
-                                <button type="reset" class="btn btn-danger">Reset</button>
-                            </form>
-                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Invoice Number *</label>
+                                        <input type="text" name="invoice_number" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Purchase Date *</label>
+                                        <input type="date" name="purchase_date" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Purchase Items Section -->
+                                <div class="col-md-12">
+                                    <h5>Purchase Items</h5>
+                                    <div id="purchaseItems">
+                                        <div class="row item-row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Product</label>
+                                                    <select name="items[0][product_id]" class="form-control product-select" required>
+                                                        <option value="">Select Product</option>
+                                                        @foreach($products as $product)
+                                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Variant</label>
+                                                    <select name="items[0][variant_id]" class="form-control variant-select">
+                                                        <option value="">Select Variant</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>Qty</label>
+                                                    <input type="number" name="items[0][quantity]" class="form-control" min="1" value="1" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>Unit Price</label>
+                                                    <input type="number" step="0.01" name="items[0][unit_price]" class="form-control" min="0" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger remove-item" style="margin-top: 30px;">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="addItem" class="btn btn-primary">Add Item</button>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary mr-2">Submit Purchase</button>
+                                    <a href="{{ route('purchases.index') }}" class="btn btn-light">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     @push('js')
             <!-- Backend Bundle JavaScript -->
             <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
@@ -144,4 +114,79 @@
             <!-- app JavaScript -->
             <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
     @endpush
+    @push('js')
+        <script>
+            $(document).ready(function() {
+                let itemCount = 1;
+                
+                // Add new item row
+                $('#addItem').click(function() {
+                    const newRow = `
+                        <div class="row item-row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select name="items[${itemCount}][product_id]" class="form-control product-select" required>
+                                        <option value="">Select Product</option>
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select name="items[${itemCount}][variant_id]" class="form-control variant-select">
+                                        <option value="">Select Variant</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="number" name="items[${itemCount}][quantity]" class="form-control" min="1" value="1" required>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="number" step="0.01" name="items[${itemCount}][unit_price]" class="form-control" min="0" required>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger remove-item" style="margin-top: 30px;">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                    
+                    $('#purchaseItems').append(newRow);
+                    itemCount++;
+                });
+                
+                // Remove item row
+                $(document).on('click', '.remove-item', function() {
+                    if ($('.item-row').length > 1) {
+                        $(this).closest('.item-row').remove();
+                        // Reindex items if needed
+                    }
+                });
+                
+                // Load variants when product changes
+                $(document).on('change', '.product-select', function() {
+                    const productId = $(this).val();
+                    const variantSelect = $(this).closest('.item-row').find('.variant-select');
+                    
+                    if (productId) {
+                        $.get(`/products/${productId}/variants`, function(data) {
+                            variantSelect.empty().append('<option value="">Select Variant</option>');
+                            data.forEach(variant => {
+                                variantSelect.append(`<option value="${variant.id}">${variant.name}</option>`);
+                            });
+                        });
+                    } else {
+                        variantSelect.empty().append('<option value="">Select Variant</option>');
+                    }
+                });
+            });
+        </script>
+    @endpush
+    
 </x-app-layout>
