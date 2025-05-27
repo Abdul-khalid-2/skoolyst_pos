@@ -181,8 +181,6 @@
                             variants.forEach(variant => {
                                 variantSelect.append(`<option value="${variant.id}">${variant.name} (${variant.sku}) - Stock: ${variant.current_stock}</option>`);
                             });
-                            
-                            variantSelect.prop('disabled', false).selectpicker('refresh');
                         });
                     } else {
                         variantSelect.empty().append('<option value="">Select Variant</option>')
