@@ -56,7 +56,7 @@
                                 <td>{{ $business->phone }}</td>
                                 <td>{{ $business->email }}</td>
                                 <td>
-                                    <span class="badge badge-primary">{{ $business->branches_count ?? 0 }}</span>
+                                    <span class="badge badge-primary">{{ $business->branches->count() ?? 0 }}</span>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
