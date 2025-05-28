@@ -20,7 +20,7 @@ class Business extends Model
         'address',
         'logo_path',
         'receipt_header',
-        'receipt_footer',
+        'receipt_footer'
     ];
 
     public function tenant()
@@ -31,5 +31,25 @@ class Business extends Model
     public function branches()
     {
         return $this->hasMany(Branch::class);
+    }
+
+    public function mainBranch()
+    {
+        return $this->hasOne(Branch::class)->where('is_main', true);
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return $this->logo_path ? asset('storage/' . $this->logo_path) : null;
+    }
+
+    public function getReceiptHeaderUrlAttribute()
+    {
+        return $this->receipt_header ? asset('storage/' . $this->receipt_header) : null;
+    }
+
+    public function getReceiptFooterUrlAttribute()
+    {
+        return $this->receipt_footer ? asset('storage/' . $this->receipt_footer) : null;
     }
 }

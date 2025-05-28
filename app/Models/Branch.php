@@ -18,11 +18,11 @@ class Branch extends Model
         'phone',
         'email',
         'address',
-        'is_main',
+        'is_main'
     ];
 
     protected $casts = [
-        'is_main' => 'boolean',
+        'is_main' => 'boolean'
     ];
 
     public function tenant()
@@ -50,13 +50,13 @@ class Branch extends Model
         return $this->hasMany(InventoryLog::class);
     }
 
-    public function dailySales()
+    public function users()
     {
-        return $this->hasMany(DailySale::class);
+        return $this->belongsToMany(User::class, 'branch_users');
     }
 
-    public function stockHistories()
+    public function isMainBranch(): bool
     {
-        return $this->hasMany(StockHistory::class);
+        return $this->is_main;
     }
 }

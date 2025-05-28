@@ -18,7 +18,9 @@ use App\Http\Controllers\{
     StockTransferController,
     StockAdjustmentController,
     SettingController,
-    BackupController
+    BackupController,
+    BranchController,
+    BusinessController
 };
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
@@ -155,6 +157,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// branches
+Route::resource('branches', BranchController::class)
+    ->middleware(['auth', 'verified']);
+
+// Business
+Route::resource('businesses', BusinessController::class)
+    ->middleware(['auth', 'verified']);
 
 Route::get('/database/backup', [BackupController::class, 'databaseBackup'])->name('database.backup');
 Route::get('/remove/backup/{file}', [BackupController::class, 'removeBackup'])->name('remove.backup');
