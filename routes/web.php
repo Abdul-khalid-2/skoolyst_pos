@@ -31,7 +31,7 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
-Route::get('home', [BackendController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Sales routes
 Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
