@@ -60,4 +60,21 @@ class Purchase extends Model
     {
         return $this->hasMany(PurchasePayment::class);
     }
+
+
+    // Add these to your Purchase model
+    public function getAmountPaidAttribute()
+    {
+        return $this->payments->sum('amount');
+    }
+
+    public function getRemainingBalanceAttribute()
+    {
+        return $this->total_amount - $this->amount_paid;
+    }
+
+    public function scopeForTenant($query)
+    {
+        return $query->where('tenant_id', auth()->user()->tenant_id);
+    }
 }

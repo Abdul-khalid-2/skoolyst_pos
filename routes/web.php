@@ -147,9 +147,22 @@ Route::resource('brands', BrandController::class)->middleware(['auth', 'verified
 Route::post('/brands/upload-logo', [BrandController::class, 'uploadLogo'])->name('brands.upload-logo');
 Route::delete('/brands/remove-logo', [BrandController::class, 'removeLogo'])->name('brands.remove-logo');
 
-// PurchaseOrder
-Route::resource('purchases', PurchaseOrderController::class);
-Route::get('/products/{product}/variants', [PurchaseOrderController::class, 'getVariants']);
+// // PurchaseOrder
+// Route::resource('purchases', PurchaseOrderController::class);
+// Route::get('/products/{product}/variants', [PurchaseOrderController::class, 'getVariants']);
+Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::resource('purchases', PurchaseOrderController::class)->except(['destroy']);
+    
+    // Additional purchase routes
+    Route::post('purchases/{purchase}/receive-items', [PurchaseOrderController::class, 'receiveItems'])
+        ->name('purchases.receive-items');
+        
+    Route::post('purchases/{purchase}/add-payment', [PurchaseOrderController::class, 'addPayment'])
+        ->name('purchases.add-payment');
+        
+    Route::get('purchases/{purchase}/print', [PurchaseOrderController::class, 'print'])
+        ->name('purchases.print');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
