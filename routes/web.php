@@ -35,10 +35,17 @@ Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['a
 
 // Sales routes
 Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [SaleController::class, 'index'])->name('sales.index');
-    Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+//     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+//     Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
     Route::get('/pos', [SaleController::class, 'pos'])->name('pos.index');
 });
+
+
+Route::resource('sales', SaleController::class);
+Route::post('sales/{sale}/add-payment', [SaleController::class, 'addPayment'])->name('sales.add-payment');
+Route::get('sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
+Route::get('sales/{sale}/invoice-pdf', [SaleController::class, 'invoicePdf'])->name('sales.invoice-pdf');
+
 
 // Invoices routes
 Route::prefix('invoices')->middleware(['auth', 'verified'])->group(function () {
@@ -96,8 +103,8 @@ Route::get('add_purchases', [PurchaseOrderController::class, 'create'])->middlew
 Route::get('reports', [ReportController::class, 'index'])->middleware(['auth', 'verified'])->name('reports.index');
 Route::get('add_reports', [ReportController::class, 'create'])->middleware(['auth', 'verified'])->name('reports.create');
 
-Route::get('sales', [SaleController::class, 'index'])->middleware(['auth', 'verified'])->name('sales.index');
-Route::get('add_sales', [SaleController::class, 'create'])->middleware(['auth', 'verified'])->name('sales.create');
+// Route::get('sales', [SaleController::class, 'index'])->middleware(['auth', 'verified'])->name('sales.index');
+// Route::get('add_sales', [SaleController::class, 'create'])->middleware(['auth', 'verified'])->name('sales.create');
 
 // category 
 Route::resource('categories', CategoryController::class);
