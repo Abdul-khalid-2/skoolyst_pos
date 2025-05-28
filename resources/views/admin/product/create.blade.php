@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Category</label>
-                                        <select name="category_id" class="selectpicker form-control" data-style="py-0">
+                                        <select name="category_id" class="selectpicker form-control select_two_functionality" data-style="py-0">
                                             <option value="">Select Category</option>
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}" {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
@@ -66,7 +66,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Brand</label>
-                                        <select name="brand_id" class="selectpicker form-control" data-style="py-0">
+                                        <select name="brand_id" class="selectpicker form-control select_two_functionality" data-style="py-0">
                                             <option value="">Select Brand</option>
                                             @foreach($brands as $brand)
                                                 <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id ?? '') == $brand->id ? 'selected' : '' }}>
@@ -80,7 +80,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Supplier</label>
-                                        <select name="supplier_id" class="selectpicker form-control" data-style="py-0">
+                                        <select name="supplier_id" class="selectpicker form-control select_two_functionality" data-style="py-0">
                                             <option value="">Select Supplier</option>
                                             @foreach($suppliers as $supplier)
                                                 <option value="{{ $supplier->id }}" {{ old('supplier_id', $product->supplier_id ?? '') == $supplier->id ? 'selected' : '' }}>

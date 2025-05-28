@@ -10,7 +10,39 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href=" {{ asset('/Backend/assets/images/favicon.ico') }}" />
-   
+   <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        /* Select2 Global Styling */
+        .select_two_functionality + .select2-container {
+            width: 100% !important;
+            /* margin-bottom: 15px; */
+        }
+
+        .select_two_functionality + .select2-container .select2-selection {
+            min-height: 45px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+
+        .select_two_functionality + .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+
+        /* Fix for modals */
+        .modal .select2-dropdown {
+            z-index: 1060 !important;
+        }
+
+        /* Dark mode support */
+        [data-bs-theme="dark"] .select_two_functionality + .select2-container .select2-selection {
+            background-color: #212529;
+            border-color: #495057;
+            color: #f8f9fa;
+        }
+    </style>
     @stack('css')
 </head>
 
@@ -97,6 +129,45 @@
    
 
     @stack('js')
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     <script>
+        /**
+         * Global Select2 Initialization
+         * Apply to any element with class 'select_two_functionality'
+         * Works in modals and all forms
+         */
+        (function($) {
+            // Fix for Bootstrap/Select2 conflict in modals
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+            
+            // Initialize Select2 on all elements with our class
+            function initSelect2() {
+                $('.select_two_functionality').each(function() {
+                    // Get the closest modal if this element is in one
+                    const dropdownParent = $(this).closest('.modal').length ? 
+                        $(this).closest('.modal') : document.body;
+                    
+                    $(this).select2({
+                        dropdownParent: dropdownParent,
+                        width: '100%',
+                        placeholder: $(this).data('placeholder') || 'Select an option',
+                        allowClear: Boolean($(this).data('allow-clear')),
+                        minimumResultsForSearch: $(this).data('minimum-results') || 0,
+                        theme: $(this).data('theme') || 'default'
+                    });
+                });
+            }
+            
+            // Initialize on page load
+            $(document).ready(initSelect2);
+            
+            // Reinitialize when content is loaded dynamically (e.g., AJAX, modals)
+            $(document).on('shown.bs.modal', '.modal', initSelect2);
+            $(document).ajaxComplete(initSelect2);
+            
+        })(jQuery);
+     </script>
 </body>
 
 </html>
