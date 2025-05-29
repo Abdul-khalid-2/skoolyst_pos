@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -44,7 +45,18 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-        return view('customers.show', compact('customer'));
+        // Get customer's recent sales
+        $sales = Sale::with(['items.product', 'items.variant'])
+            ->where('customer_id', $customer->id)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        // Calculate total spent
+        $totalSpent = Sale::where('customer_id', $customer->id)
+            ->sum('total_amount');
+
+        return view('admin.customer.show', compact('customer', 'sales', 'totalSpent'));
     }
 
     public function edit(Customer $customer)
