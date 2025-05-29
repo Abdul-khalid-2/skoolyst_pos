@@ -89,6 +89,7 @@
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <input type="number" step="0.01" name="items[0][unit_price]" class="form-control unit-price" min="0" required>
+                                                    <input type="hidden" step="0.01" name="items[0][cost_price]" class="form-control cost-price" min="0" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-1">
@@ -267,25 +268,7 @@
                 unitPriceInput.val('');
             }
         });
-        // $('#product-select').change(function() {
-        //         const productId = $(this).val();
-        //         const variantSelect = $('#variant-select');
-                
-        //         if (productId) {
-        //             $.get(`/inventory-logs/variants/${productId}`, function(variants) {
-        //                 variantSelect.empty().append('<option value="">Select Variant</option>');
-                        
-        //                 variants.forEach(variant => {
-        //                     variantSelect.append(`<option value="${variant.id}">${variant.name} (${variant.sku}) - Stock: ${variant.current_stock}</option>`);
-        //                 });
-                        
-        //                 variantSelect.prop('disabled', false).selectpicker('refresh');
-        //             });
-        //         } else {
-        //             variantSelect.empty().append('<option value="">Select Variant</option>')
-        //                 .prop('disabled', true).selectpicker('refresh');
-        //         }
-        //     });
+ 
 
         
         // Set unit price when variant changes

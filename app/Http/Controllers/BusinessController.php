@@ -41,17 +41,19 @@ class BusinessController extends Controller
 
         $validated['tenant_id'] = auth()->user()->tenant_id;
 
-        // Handle file uploads
         if ($request->hasFile('logo')) {
-            $validated['logo_path'] = $request->file('logo')->store('business/logos', 'public');
+            $logo_path = Storage::disk('website')->put('business', $request->logo);
+            $validated['logo_path'] = $logo_path;
         }
 
         if ($request->hasFile('receipt_header')) {
-            $validated['receipt_header'] = $request->file('receipt_header')->store('business/receipts/headers', 'public');
+            $receipt_header_path = Storage::disk('website')->put('business', $request->receipt_header);
+            $validated['receipt_header'] = $receipt_header_path;
         }
 
         if ($request->hasFile('receipt_footer')) {
-            $validated['receipt_footer'] = $request->file('receipt_footer')->store('business/receipts/footers', 'public');
+            $receipt_footer_path = Storage::disk('website')->put('business', $request->receipt_footer);
+            $validated['receipt_footer'] = $receipt_footer_path;
         }
 
         $business = Business::create($validated);
@@ -62,21 +64,21 @@ class BusinessController extends Controller
 
     public function show(Business $business)
     {
-        $this->authorize('view', $business);
+        // $this->authorize('view', $business);
 
         return view('businesses.show', compact('business'));
     }
 
     public function edit(Business $business)
     {
-        $this->authorize('update', $business);
+        // $this->authorize('update', $business);
 
-        return view('businesses.edit', compact('business'));
+        return view('admin.business.form', compact('business'));
     }
 
     public function update(Request $request, Business $business)
     {
-        $this->authorize('update', $business);
+        // $this->authorize('update', $business);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -90,27 +92,28 @@ class BusinessController extends Controller
             'receipt_footer' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Handle file uploads
         if ($request->hasFile('logo')) {
-            // Delete old logo if exists
             if ($business->logo_path) {
-                Storage::disk('public')->delete($business->logo_path);
+                Storage::disk('website')->delete($business->logo_path);
             }
-            $validated['logo_path'] = $request->file('logo')->store('business/logos', 'public');
+            $logo_path = Storage::disk('website')->put('business', $request->logo);
+            $validated['logo_path'] = $logo_path;
         }
 
         if ($request->hasFile('receipt_header')) {
             if ($business->receipt_header) {
-                Storage::disk('public')->delete($business->receipt_header);
+                Storage::disk('website')->delete($business->receipt_header);
             }
-            $validated['receipt_header'] = $request->file('receipt_header')->store('business/receipts/headers', 'public');
+            $receipt_header_path = Storage::disk('website')->put('business', $request->receipt_header);
+            $validated['receipt_header'] = $receipt_header_path;
         }
 
         if ($request->hasFile('receipt_footer')) {
             if ($business->receipt_footer) {
-                Storage::disk('public')->delete($business->receipt_footer);
+                Storage::disk('website')->delete($business->receipt_footer);
             }
-            $validated['receipt_footer'] = $request->file('receipt_footer')->store('business/receipts/footers', 'public');
+            $receipt_footer_path = Storage::disk('website')->put('business', $request->receipt_footer);
+            $validated['receipt_footer'] = $receipt_footer_path;
         }
 
         $business->update($validated);
@@ -121,23 +124,23 @@ class BusinessController extends Controller
 
     public function destroy(Business $business)
     {
-        $this->authorize('delete', $business);
+        // $this->authorize('delete', $business);
 
-        // Check if business has branches
         if ($business->branches()->exists()) {
             return redirect()->back()
                 ->with('error', 'Cannot delete business with associated branches.');
         }
 
-        // Delete associated files
         if ($business->logo_path) {
-            Storage::disk('public')->delete($business->logo_path);
+            Storage::disk('website')->delete($business->logo_path);
         }
+
         if ($business->receipt_header) {
-            Storage::disk('public')->delete($business->receipt_header);
+            Storage::disk('website')->delete($business->receipt_header);
         }
+
         if ($business->receipt_footer) {
-            Storage::disk('public')->delete($business->receipt_footer);
+            Storage::disk('website')->delete($business->receipt_footer);
         }
 
         $business->delete();
