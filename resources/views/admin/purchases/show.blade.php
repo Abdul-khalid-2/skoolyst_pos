@@ -248,3 +248,119 @@
     <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
     @endpush
 </x-app-layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- In show.blade.php -->
+
+<!-- <div class="card mt-4">
+    <div class="card-header">
+        <h5 class="card-title">Payment Summary</h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-4">
+            <p><strong>Subtotal:</strong> {{ number_format($sale->subtotal, 2) }}</p>
+            <p><strong>Tax:</strong> {{ number_format($sale->tax_amount, 2) }}</p>
+            <p><strong>Discount:</strong> -{{ number_format($sale->discount_amount, 2) }}</p>
+            <hr>
+            <p class="font-weight-bold"><strong>Total Amount:</strong> {{ number_format($sale->total_amount, 2) }}</p>
+            <p><strong>Amount Paid:</strong> {{ number_format($sale->amount_paid, 2) }}</p>
+            <p class="font-weight-bold text-{{ $sale->remaining_balance > 0 ? 'danger' : 'success' }}">
+                <strong>Balance Due:</strong> {{ number_format($sale->remaining_balance, 2) }}
+            </p>
+        </div>
+        
+        @if($sale->remaining_balance > 0)
+        <div class="mt-4">
+            <h6>Record Payment</h6>
+            <form action="{{ route('sales.add-payment', $sale->id) }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label>Payment Method *</label>
+                    <select name="payment_method_id" class="form-control" required>
+                        <option value="">Select Method</option>
+                        @foreach($paymentMethods as $method)
+                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount *</label>
+                    <input type="number" name="amount" class="form-control" 
+                        min="0.01" max="{{ $sale->remaining_balance }}" 
+                        step="0.01" value="{{ $sale->remaining_balance }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Reference</label>
+                    <input type="text" name="reference" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Record Payment</button>
+            </form>
+            
+            @if($sale->customer_id)
+            <div class="mt-3">
+                <form action="{{ route('sales.create-credit-note', $sale->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-secondary">
+                        Create Credit Note
+                    </button>
+                </form>
+            </div>
+            @endif
+        </div>
+        @endif
+    </div>
+</div>
+
+<!-- Payment History -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="card-title">Payment History</h5>
+    </div>
+    <div class="card-body">
+        @if($sale->payments->isEmpty())
+            <p>No payments recorded yet.</p>
+        @else
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Reference</th>
+                            <th>Recorded By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sale->payments as $payment)
+                        <tr>
+                            <td>{{ $payment->created_at->format('M d, Y') }}</td>
+                            <td>{{ $payment->paymentMethod->name }}</td>
+                            <td>{{ number_format($payment->amount, 2) }}</td>
+                            <td>{{ $payment->reference ?? '-' }}</td>
+                            <td>{{ $payment->user->name }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+</div> -->

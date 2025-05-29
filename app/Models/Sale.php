@@ -74,4 +74,33 @@ class Sale extends Model
     {
         return $this->hasMany(ReturnProduct::class);
     }
+
+
+    // In Sale model
+
+    public function getRemainingBalanceAttribute()
+    {
+        return $this->total_amount - $this->amount_paid;
+    }
+
+    public function getPaymentStatusAttribute()
+    {
+        if ($this->amount_paid >= $this->total_amount) {
+            return 'paid';
+        } elseif ($this->amount_paid > 0) {
+            return 'partial';
+        } else {
+            return 'unpaid';
+        }
+    }
+
+    public function scopeUnpaid($query)
+    {
+        return $query->whereRaw('amount_paid < total_amount');
+    }
+
+    public function scopePartiallyPaid($query)
+    {
+        return $query->whereRaw('amount_paid > 0 AND amount_paid < total_amount');
+    }
 }

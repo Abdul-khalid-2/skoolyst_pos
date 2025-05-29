@@ -305,4 +305,105 @@ class SaleController extends Controller
             'user_id' => auth()->id(),
         ]);
     }
+
+
+
+    public function invoice(Sale $sale)
+    {
+        // $this->authorize('view', $sale);
+        
+        $sale->load([
+            'customer', 
+            'branch', 
+            'user', 
+            'items.product', 
+            'items.variant', 
+            'payments.paymentMethod'
+        ]);
+        
+        return view('admin.sales.invoice', compact('sale'));
+    }
+
+    public function invoicePdf(Sale $sale)
+    {
+        // $this->authorize('view', $sale);
+        
+        $sale->load([
+            'customer', 
+            'branch', 
+            'user', 
+            'items.product', 
+            'items.variant', 
+            'payments.paymentMethod'
+        ]);
+        
+        $pdf = PDF::loadView('admin.sales.invoice-pdf', compact('sale'));
+        return $pdf->download('invoice-'.$sale->invoice_number.'.pdf');
+    }
+
+
+
+    // In SaleController
+
+        // public function addPayment(Request $request, Sale $sale)
+        // {
+        //     $this->authorize('update', $sale);
+            
+        //     $request->validate([
+        //         'payment_method_id' => 'required|exists:payment_methods,id',
+        //         'amount' => 'required|numeric|min:0.01|max:'.$sale->remaining_balance,
+        //         'reference' => 'nullable|string|max:255',
+        //         'date' => 'required|date',
+        //     ]);
+
+        //     // Record the payment
+        //     $payment = SalePayment::create([
+        //         'tenant_id' => auth()->user()->tenant_id,
+        //         'sale_id' => $sale->id,
+        //         'payment_method_id' => $request->payment_method_id,
+        //         'amount' => $request->amount,
+        //         'reference' => $request->reference,
+        //         'user_id' => auth()->id(),
+        //         'created_at' => $request->date,
+        //     ]);
+
+        //     // Update sale payment status
+        //     $sale->refresh();
+        //     $newAmountPaid = $sale->amount_paid + $request->amount;
+        //     $paymentStatus = $newAmountPaid >= $sale->total_amount ? 'paid' : 'partial';
+
+        //     $sale->update([
+        //         'amount_paid' => $newAmountPaid,
+        //         'payment_status' => $paymentStatus,
+        //     ]);
+
+        //     // Update customer balance if credit sale
+        //     if ($sale->customer_id) {
+        //         $customer = Customer::find($sale->customer_id);
+        //         $customer->balance = $customer->balance - $request->amount;
+        //         $customer->save();
+        //     }
+
+        //     return redirect()->back()->with('success', 'Payment recorded successfully.');
+        // }
+
+        public function createCreditNote(Sale $sale)
+        {
+            // $this->authorize('update', $sale);
+            
+            if ($sale->payment_status == 'paid') {
+                return redirect()->back()->with('error', 'Sale is already fully paid.');
+            }
+
+            // Create a credit note (simplified example)
+            $creditNote = CreditNote::create([
+                'tenant_id' => auth()->user()->tenant_id,
+                'sale_id' => $sale->id,
+                'amount' => $sale->remaining_balance,
+                'status' => 'pending',
+                'notes' => 'Created for unpaid balance of sale #'.$sale->invoice_number,
+            ]);
+
+            return redirect()->back()->with('success', 'Credit note created for unpaid balance.');
+        }
 }
