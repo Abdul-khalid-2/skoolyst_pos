@@ -130,44 +130,12 @@
 
     @stack('js')
     <!-- Select2 JS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-     <script>
-        /**
-         * Global Select2 Initialization
-         * Apply to any element with class 'select_two_functionality'
-         * Works in modals and all forms
-         */
-        (function($) {
-            // Fix for Bootstrap/Select2 conflict in modals
-            $.fn.modal.Constructor.prototype.enforceFocus = function() {};
-            
-            // Initialize Select2 on all elements with our class
-            function initSelect2() {
-                $('.select_two_functionality').each(function() {
-                    // Get the closest modal if this element is in one
-                    const dropdownParent = $(this).closest('.modal').length ? 
-                        $(this).closest('.modal') : document.body;
-                    
-                    $(this).select2({
-                        dropdownParent: dropdownParent,
-                        width: '100%',
-                        placeholder: $(this).data('placeholder') || 'Select an option',
-                        allowClear: Boolean($(this).data('allow-clear')),
-                        minimumResultsForSearch: $(this).data('minimum-results') || 0,
-                        theme: $(this).data('theme') || 'default'
-                    });
-                });
-            }
-            
-            // Initialize on page load
-            $(document).ready(initSelect2);
-            
-            // Reinitialize when content is loaded dynamically (e.g., AJAX, modals)
-            $(document).on('shown.bs.modal', '.modal', initSelect2);
-            $(document).ajaxComplete(initSelect2);
-            
-        })(jQuery);
-     </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select_two_functionality').select2();
+        });
+    </script>
 </body>
 
 </html>
