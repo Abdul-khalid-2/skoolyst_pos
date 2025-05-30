@@ -44,4 +44,9 @@ class Expense extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function branch()
+    {
+        return $this->hasMany(Branch::class);
+    }
 }
