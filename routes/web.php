@@ -128,6 +128,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'update'])->name('product-variants.update');
     Route::delete('product-variants/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variants.destroy');
 
+    Route::get('products/{product}/inventory-history', [ProductController::class, 'inventoryHistory'])
+    ->name('products.inventory-history');
+
     // Inventory Logs
     Route::get('inventory-logs', [InventoryLogController::class, 'index'])->name('inventory-logs.index');
     Route::post('inventory-logs', [InventoryLogController::class, 'store'])->name('inventory-logs.store');

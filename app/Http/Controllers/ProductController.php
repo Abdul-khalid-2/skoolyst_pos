@@ -59,8 +59,17 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['category', 'brand', 'supplier', 'variants']);
-        return view('app.product.show', compact('product'));
+        $product->load([
+            'category', 
+            'brand', 
+            'supplier', 
+            'variants', 
+            'inventoryLogs' => function($query) {
+                $query->latest()->with(['variant', 'user']);
+            }
+        ]);
+        
+        return view('admin.product.show', compact('product'));
     }
 
     public function edit(Product $product)
@@ -69,7 +78,7 @@ class ProductController extends Controller
         $brands = Brand::orderBy('name')->get();
         $suppliers = Supplier::orderBy('name')->get();
 
-        return view('app.product.create', compact('product', 'categories', 'brands', 'suppliers'));
+        return view('admin.product.edit', compact('product', 'categories', 'brands', 'suppliers'));
     }
 
     public function update(Request $request, Product $product)
@@ -139,8 +148,18 @@ class ProductController extends Controller
 
     public function inventory(Product $product)
     {
-        dd('testing');
+
         $product->load(['variants', 'inventoryLogs']);
         return view('admin.inventory.index', compact('product'));
+    }
+
+    public function inventoryHistory(Product $product)
+    {
+        $inventoryLogs = $product->inventoryLogs()
+            ->with(['variant', 'user', 'branch'])
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.product.inventory-history', compact('product', 'inventoryLogs'));
     }
 }
