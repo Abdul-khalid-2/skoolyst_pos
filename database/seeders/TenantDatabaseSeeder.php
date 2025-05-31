@@ -43,18 +43,6 @@ class TenantDatabaseSeeder extends Seeder
             'trial_ends_at' => null
         ]);
 
-        Business::create([
-            'tenant_id' => 1,
-            'name' => 'Business A',
-            'tax_number' => 'TAX123',
-            'registration_number' => 'REG123',
-            'phone' => '1234567890',
-            'email' => 'business@a.com',
-            'address' => '123 Main St',
-            'logo_path' => null,
-            'receipt_header' => null,
-            'receipt_footer' => null,
-        ]);
 
         PaymentMethod::create([
             'tenant_id' => 1,

@@ -31,12 +31,18 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
+Route::get('/dashboard/financial-data', [BackendController::class, 'getFinancialData']);
+Route::get('/dashboard/recent-sales', [BackendController::class, 'getRecentSales']);
+Route::get('/dashboard/top-products', [BackendController::class, 'getTopProducts']);
+
+Route::get('/dashboard/sales-overview', [BackendController::class, 'getSalesOverview']);
+Route::get('/dashboard/revenue-cost', [BackendController::class, 'getRevenueCost']);
 // Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Sales routes
 Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
-//     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
-//     Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+    //     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+    //     Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
     Route::get('/pos', [SaleController::class, 'pos'])->name('pos.index');
 });
 
@@ -129,7 +135,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('product-variants/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variants.destroy');
 
     Route::get('products/{product}/inventory-history', [ProductController::class, 'inventoryHistory'])
-    ->name('products.inventory-history');
+        ->name('products.inventory-history');
 
     // Inventory Logs
     Route::get('inventory-logs', [InventoryLogController::class, 'index'])->name('inventory-logs.index');
@@ -160,16 +166,16 @@ Route::delete('/brands/remove-logo', [BrandController::class, 'removeLogo'])->na
 // // PurchaseOrder
 // Route::resource('purchases', PurchaseOrderController::class);
 // Route::get('/products/{product}/variants', [PurchaseOrderController::class, 'getVariants']);
-Route::group(['middleware' => ['auth', 'verified']], function() {
+Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('purchases', PurchaseOrderController::class)->except(['destroy']);
-    
+
     // Additional purchase routes
     Route::post('purchases/{purchase}/receive-items', [PurchaseOrderController::class, 'receiveItems'])
         ->name('purchases.receive-items');
-        
+
     Route::post('purchases/{purchase}/add-payment', [PurchaseOrderController::class, 'addPayment'])
         ->name('purchases.add-payment');
-        
+
     Route::get('purchases/{purchase}/print', [PurchaseOrderController::class, 'print'])
         ->name('purchases.print');
 });
