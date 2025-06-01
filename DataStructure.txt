@@ -209,7 +209,6 @@ public function up(): void
         });
     }
 
-
 public function up(): void
     {
         Schema::create('businesses', function (Blueprint $table) {
@@ -230,7 +229,6 @@ public function up(): void
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
     }
-
 
 public function up(): void
     {
@@ -338,7 +336,6 @@ Schema::create('products', function (Blueprint $table) {
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
 
-
         Schema::create('inventory_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tenant_id');
@@ -374,7 +371,6 @@ Schema::create('products', function (Blueprint $table) {
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
 
-
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tenant_id');
@@ -387,7 +383,6 @@ Schema::create('products', function (Blueprint $table) {
             
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
-
 
         Schema::create('sales', function (Blueprint $table) {
             $table->id();

@@ -18,22 +18,24 @@ if (!function_exists('getTimeOfDay')) {
 
 
 if (!function_exists('format_currency')) {
-    function format_currency($amount, $currency = null) {
+    function format_currency($amount, $currency = null)
+    {
         if (!$currency) {
-            $currency = config('app.currency', 'USD');
+            $currency = config('app.currency', 'Rs');
         }
-        
+
         // Default symbol map
         $symbols = [
+            'Rs' => 'Rs',
             'USD' => '$',
             'EUR' => '€',
             'GBP' => '£',
             'JPY' => '¥',
         ];
-        
+
         $symbol = $symbols[$currency] ?? $currency;
         $decimal_places = in_array($currency, ['JPY']) ? 0 : 2;
-        
+
         return $symbol . number_format($amount, $decimal_places);
     }
 }

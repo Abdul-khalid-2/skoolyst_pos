@@ -127,36 +127,7 @@
                         
                     </ul>
                 </li>
-                <!-- branches -->
-                {{-- <li class="{{ request()->is('branches*') ? 'active' : '' }}">
-                    <a href="#branche" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                        <svg class="svg-icon" id="p-dash2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        <span class="ml-4">Businesses</span>
-                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="10 15 15 20 20 15"></polyline>
-                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                        </svg>
-                    </a>
-                    <ul id="businesses" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ request()->routeIs('businesses.index') ? 'active' : '' }}">
-                            <a href="{{ route('businesses.index') }}">
-                                <i class="las la-minus"></i><span>Businesses List</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul id="branche" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ request()->routeIs('branches.index') ? 'active' : '' }}">
-                            <a href="{{ route('branches.index') }}">
-                                <i class="las la-minus"></i><span>Branches List</span>
-                            </a>
-                        </li>
-                    </ul>
-                    
-                </li> --}}
+              
 
                 <!-- Inventory -->
                 <li class="{{ request()->is('inventory*') ? 'active' : '' }}">
@@ -297,6 +268,50 @@
                         <li class="{{ request()->routeIs('reports.customer') ? 'active' : '' }}">
                             <a href="{{ route('reports.customer') }}">
                                 <i class="las la-minus"></i><span>Customer Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <!-- Accounting -->
+                <li class="{{ request()->is('accounting*') || request()->is('transactions*') || request()->is('expenses*') ? 'active' : '' }}">
+                    <a href="#accounting" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                        <svg class="svg-icon" id="p-dash-accounting" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="ml-4">Accounting</span>
+                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="10 15 15 20 20 15"></polyline>
+                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                        </svg>
+                    </a>
+                    <ul id="accounting" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ request()->routeIs('transactions.index') ? 'active' : '' }}">
+                            <a href="{{ route('transactions.index') }}">
+                                <i class="las la-minus"></i><span>Transactions</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('expenses.index') ? 'active' : '' }}">
+                            <a href="{{ route('expenses.index') }}">
+                                <i class="las la-minus"></i><span>Expenses</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('income.index') ? 'active' : '' }}">
+                            <a href="{{ route('income.index') }}">
+                                <i class="las la-minus"></i><span>Income</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('accounts.index') ? 'active' : '' }}">
+                            <a href="{{ route('accounts.index') }}">
+                                <i class="las la-minus"></i><span>Accounts</span>
                             </a>
                         </li>
                     </ul>

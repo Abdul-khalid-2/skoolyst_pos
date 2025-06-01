@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
+    AccountController,
     ProfileController,
     ProductController,
     CategoryController,
@@ -20,7 +21,10 @@ use App\Http\Controllers\{
     SettingController,
     BackupController,
     BranchController,
-    BusinessController
+    BusinessController,
+    ExpenseController,
+    IncomeController,
+    TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
@@ -86,6 +90,28 @@ Route::prefix('reports')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('reports.profit-loss');
     Route::get('/customer', [ReportController::class, 'customer'])->name('reports.customer');
 });
+
+// Accounts 
+Route::resource('transactions', TransactionController::class);
+
+// Expenses
+Route::resource('expenses', ExpenseController::class);
+Route::get('expense/categories', [ExpenseController::class, 'categories'])->name('expenses.categories');
+Route::post('expense/categories', [ExpenseController::class, 'categoriesStore'])->name('expense-categories.store');
+Route::delete('expense/categories', [ExpenseController::class, 'categoriesDestroy'])->name('expense-categories.destroy');
+// Expense Category Routes
+Route::prefix('accounting/expense-categories')->name('expense-categories.')->group(function () {
+    Route::post('/', [ExpenseController::class, 'expenseCategoryStore'])->name('store');
+    Route::put('/{expenseCategory}', [ExpenseController::class, 'expenseCategoryUpdate'])->name('update');
+});
+
+
+// Income
+Route::resource('income', IncomeController::class);
+
+// Accounts
+Route::resource('accounts', AccountController::class);
+
 
 // Settings routes
 Route::prefix('settings')->middleware(['auth', 'verified'])->group(function () {

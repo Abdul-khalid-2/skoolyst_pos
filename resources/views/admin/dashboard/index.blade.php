@@ -206,10 +206,10 @@
                                 <span class="dropdown-toggle dropdown-bg btn" id="dropdownMenuButton002" data-toggle="dropdown">
                                     <span class="current-period-revenue">This Month</span><i class="ri-arrow-down-s-line ml-1"></i>
                                 </span>
-                                <div class="dropdown-menu dropdown-menu-right shadow-none" aria-labelledby="dropdownMenuButton002">
-                                    <a class="dropdown-item revenue-period-selector" href="#" data-period="year">Year</a>
-                                    <a class="dropdown-item revenue-period-selector" href="#" data-period="month">Month</a>
-                                    <a class="dropdown-item revenue-period-selector" href="#" data-period="week">Week</a>
+                                <div class="dropdown-menu  shadow-none" aria-labelledby="dropdownMenuButton002">
+                                    <a class="dropdown-item period-selector-revenue-cost" href="#" data-period="year">Year</a>
+                                    <a class="dropdown-item period-selector-revenue-cost" href="#" data-period="month">Month</a>
+                                    <a class="dropdown-item period-selector-revenue-cost" href="#" data-period="week">Week</a>
                                 </div>
                             </div>
                         </div>
@@ -750,6 +750,106 @@
                             initRevenueCostChart(data.data);
                         })
                         .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let revenueCostChart;
+            
+            // Initialize the chart
+            function initRevenueCostChart(data) {
+                const dates = data.map(item => new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                const revenue = data.map(item => parseFloat(item.revenue));
+                const cost = data.map(item => parseFloat(item.cost));
+                
+                const options = {
+                    chart: {
+                        height: 300,
+                        type: 'bar',
+                        stacked: false,
+                        toolbar: { show: false },
+                        animations: { enabled: false }
+                    },
+                    dataLabels: { enabled: false },
+                    series: [
+                        { name: 'Revenue', data: revenue },
+                        { name: 'Cost', data: cost }
+                    ],
+                    colors: ['#6571ff', '#ff7c5f'],
+                    xaxis: { 
+                        categories: dates,
+                        labels: {
+                            rotate: -45,
+                            style: {
+                                fontSize: '12px'
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function(val) { 
+                                return "$" + val.toFixed(2); 
+                            }
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) { 
+                                return "$" + val.toFixed(2); 
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top'
+                    }
+                };
+                
+                if (revenueCostChart) {
+                    revenueCostChart.destroy();
+                }
+                
+                revenueCostChart = new ApexCharts(document.querySelector("#revenue-cost-chart"), options);
+                revenueCostChart.render();
+            }
+            
+            // Initialize with default data
+            initRevenueCostChart(@json($revenueVsCost));
+            
+            // Handle period change
+            document.querySelectorAll('.period-selector-revenue-cost').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const period = this.getAttribute('data-period');
+                    
+                    // Update dropdown text
+                    const periodText = period === 'year' ? 'This Year' : 
+                                    period === 'month' ? 'This Month' : 'This Week';
+                    document.querySelector('.current-period-revenue').textContent = periodText;
+                    
+                    // Update chart title
+                    const titleText = period === 'year' ? 'Revenue vs Cost (Last Year)' :
+                                    period === 'month' ? 'Revenue vs Cost (Last 30 Days)' :
+                                    'Revenue vs Cost (Last 7 Days)';
+                    document.querySelector('.revenue-cost-title').textContent = titleText;
+                    
+                    // Show loading state
+                    const chartElement = document.querySelector('#revenue-cost-chart');
+                    chartElement.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>';
+                    
+                    // Fetch new data
+                    fetch(`/dashboard/revenue-cost?period=${period}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            initRevenueCostChart(data.data);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching revenue vs cost data:', error);
+                            chartElement.innerHTML = '<div class="text-center py-5 text-danger">Error loading data</div>';
+                        });
                 });
             });
         });
