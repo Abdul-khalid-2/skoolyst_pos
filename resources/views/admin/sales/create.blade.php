@@ -20,13 +20,14 @@
                             @csrf
                             <div class="row">
                                 <!-- Basic Information -->
-                                <div class="col-md-4">
+                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Invoice Number *</label>
-                                        <input type="text" name="invoice_number" class="form-control" 
-                                            value="{{ $invoiceNumber }}" required readonly>
+                                        <input type="text" name="invoice_number" class="form-control"
+                                            value="INV-{{ \Carbon\Carbon::now()->format('Ymd') }}" required readonly>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Date *</label>
