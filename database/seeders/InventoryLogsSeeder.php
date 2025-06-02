@@ -46,8 +46,8 @@ class InventoryLogsSeeder extends Seeder
                 'domain' => $tenantDomain,
                 'database_name' => 'tenant_' . Str::random(8) . '_db',
                 'timezone' => 'UTC',
-                'currency' => 'USD',
-                'locale' => 'en_US',
+                'currency' => 'Rs',
+                'locale' => 'ur_Pak',
                 'is_active' => true,
                 'settings' => null,
                 'trial_ends_at' => null,
@@ -298,8 +298,8 @@ class InventoryLogsSeeder extends Seeder
 // -- Insert into tenants
 // INSERT INTO tenants (NAME, slug, domain, database_name, timezone, currency, locale, is_active, settings, trial_ends_at, created_at, updated_at) 
 // VALUES 
-// ('Tenant A', 'tenant-a', 'tenant-a.example.com', 'tenant_a_db', 'UTC', 'USD', 'en_US', TRUE, NULL, NULL, NOW(), NOW()),
-// ('Tenant B', 'tenant-b', 'tenant-b.example.com', 'tenant_b_db', 'UTC', 'USD', 'en_US', TRUE, NULL, NULL, NOW(), NOW());
+// ('Tenant A', 'tenant-a', 'tenant-a.example.com', 'tenant_a_db', 'UTC', 'Rs', 'en_US', TRUE, NULL, NULL, NOW(), NOW()),
+// ('Tenant B', 'tenant-b', 'tenant-b.example.com', 'tenant_b_db', 'UTC', 'Rs', 'en_US', TRUE, NULL, NULL, NOW(), NOW());
 
 // -- Insert into businesses (assuming tenant_id 1 and 2 exist)
 // INSERT INTO businesses (tenant_id, NAME, tax_number, registration_number, phone, email, address, logo_path, receipt_header, receipt_footer, created_at, updated_at) 
@@ -412,8 +412,8 @@ class InventoryLogsSeeder extends Seeder
 // -- Insert into accounts
 // INSERT INTO accounts (tenant_id, NAME, TYPE, account_number, opening_balance, current_balance, currency, is_default, is_active, description, created_at, updated_at) 
 // VALUES 
-// (1, 'Cash Account', 'cash', NULL, 10000.00, 10000.00, 'USD', TRUE, TRUE, 'Main cash account', NOW(), NOW()),
-// (1, 'Bank Account', 'bank', '123456789', 50000.00, 50000.00, 'USD', FALSE, TRUE, 'Main bank account', NOW(), NOW());
+// (1, 'Cash Account', 'cash', NULL, 10000.00, 10000.00, 'Rs', TRUE, TRUE, 'Main cash account', NOW(), NOW()),
+// (1, 'Bank Account', 'bank', '123456789', 50000.00, 50000.00, 'Rs', FALSE, TRUE, 'Main bank account', NOW(), NOW());
 
 // -- Insert into transactions
 // INSERT INTO transactions (tenant_id, account_id, TYPE, amount, reference, description, category, user_id, DATE, created_at, updated_at) 

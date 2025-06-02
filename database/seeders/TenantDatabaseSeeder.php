@@ -36,8 +36,8 @@ class TenantDatabaseSeeder extends Seeder
             'domain' => 'tenant-a.example.com',
             'database_name' => 'tenant_a_db',
             'timezone' => 'UTC',
-            'currency' => 'USD',
-            'locale' => 'en_US',
+            'currency' => 'Rs',
+            'locale' => 'ur_Pak',
             'is_active' => true,
             'settings' => null,
             'trial_ends_at' => null

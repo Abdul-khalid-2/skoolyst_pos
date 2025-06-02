@@ -76,7 +76,7 @@ class TransactionController extends Controller
     {
         abort_if($transaction->tenant_id !== auth()->user()->tenant_id, 403);
 
-        return view('accounting.transactions.show', compact('transaction'));
+        return view('transactions.show', compact('transaction'));
     }
 
     public function edit(Transaction $transaction)

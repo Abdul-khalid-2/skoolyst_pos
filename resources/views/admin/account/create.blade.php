@@ -61,7 +61,7 @@
                                         <label>Currency *</label>
                                         <select name="currency" class="form-control" required>
                                             <option value="Rs" {{ (isset($account) && $account->currency == 'Rs') ? 'selected' : (old('currency') == 'Rs' ? 'selected' : '') }}>Rs - Rupees</option>                                     <!-- Add more currencies as needed -->
-                                            <option value="USD" {{ (isset($account) && $account->currency == 'USD') ? 'selected' : (old('currency') == 'USD' ? 'selected' : '') }}>USD - US Dollar</option>                                     <!-- Add more currencies as needed -->
+                                            <option value="USD" {{ (isset($account) && $account->currency == 'Rs') ? 'selected' : (old('currency') == 'Rs' ? 'selected' : '') }}>USD - US Dollar</option>                                     <!-- Add more currencies as needed -->
                                         </select>
                                         <div class="help-block with-errors"></div>
                                     </div>

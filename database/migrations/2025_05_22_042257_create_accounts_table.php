@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('account_number')->nullable();
             $table->decimal('opening_balance', 12)->default(0);
             $table->decimal('current_balance', 12)->default(0);
-            $table->string('currency', 3)->default('USD');
+            $table->string('currency', 3)->default('Rs');
             $table->boolean('is_default')->default(false);
             $table->boolean('is_active')->default(true);
             $table->text('description')->nullable();

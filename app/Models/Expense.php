@@ -13,6 +13,7 @@ class Expense extends Model
         'tenant_id',
         'expense_category_id',
         'account_id',
+        'branch_id',
         'amount',
         'reference',
         'description',
@@ -47,6 +48,6 @@ class Expense extends Model
 
     public function branch()
     {
-        return $this->hasMany(Branch::class);
+        return $this->belongsTo(Branch::class);
     }
 }

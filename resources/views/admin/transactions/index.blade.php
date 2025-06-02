@@ -114,15 +114,15 @@
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip"
                                             data-placement="top" title="View" 
-                                            href="{{ route('accounting.transactions.show', $transaction->id) }}">
+                                            href="{{ route('transactions.show', $transaction->id) }}">
                                             <i class="ri-eye-line mr-0"></i>
                                         </a>
                                         <a class="badge bg-success mr-2" data-toggle="tooltip"
                                             data-placement="top" title="Edit" 
-                                            href="{{ route('accounting.transactions.edit', $transaction->id) }}">
+                                            href="{{ route('transactions.edit', $transaction->id) }}">
                                             <i class="ri-pencil-line mr-0"></i>
                                         </a>
-                                        <form action="{{ route('accounting.transactions.destroy', $transaction->id) }}" method="POST">
+                                        <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="badge bg-warning mr-2 border-0" data-toggle="tooltip"

@@ -81,7 +81,7 @@ Schema::create('tenants', function (Blueprint $table) {
     $table->string('domain')->unique();
     $table->string('database_name')->unique();
     $table->string('timezone')->default('UTC');
-    $table->string('currency', 3)->default('USD');
+    $table->string('currency', 3)->default('Rs');
     $table->string('locale', 10)->default('en_US');
     $table->boolean('is_active')->default(true);
     $table->json('settings')->nullable();
@@ -451,7 +451,7 @@ Schema::create('accounts', function (Blueprint $table) {
     $table->string('account_number')->nullable();
     $table->decimal('opening_balance', 12, 2)->default(0);
     $table->decimal('current_balance', 12, 2)->default(0);
-    $table->string('currency', 3)->default('USD');
+    $table->string('currency', 3)->default('Rs');
     $table->boolean('is_default')->default(false);
     $table->boolean('is_active')->default(true);
     $table->text('description')->nullable();

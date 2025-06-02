@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('domain')->unique();
             $table->string('database_name')->unique();
             $table->string('timezone')->default('UTC');
-            $table->string('currency', 3)->default('USD');
-            $table->string('locale', 10)->default('en_US');
+            $table->string('currency', 3)->default('Rs');
+            $table->string('locale', 10)->default('ur_Pak');
             $table->boolean('is_active')->default(true);
             $table->json('settings')->nullable();
             $table->timestamp('trial_ends_at')->nullable();

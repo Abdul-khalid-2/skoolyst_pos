@@ -27,10 +27,6 @@ if (!function_exists('format_currency')) {
         // Default symbol map
         $symbols = [
             'Rs' => 'Rs',
-            'USD' => '$',
-            'EUR' => '€',
-            'GBP' => '£',
-            'JPY' => '¥',
         ];
 
         $symbol = $symbols[$currency] ?? $currency;
