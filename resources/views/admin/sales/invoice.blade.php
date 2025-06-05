@@ -132,26 +132,35 @@
 
 
         <!-- Invoice Header -->
-        <div class="invoice-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 15px;">
-            <div style="display: flex; align-items: center;">
-                @if($business->logo_path)
-                    <img src="{{ asset('backend/'.$business->logo_path) }}" alt="Logo" style="width: 100px; height: auto; margin-right: 20px;">
-                @endif
-                <div style="font-family: Georgia, serif;">
-                    <h1 style="margin: 0; font-size: 28px; color: #2e3e5c;">{{ $business->name }}<sup>®</sup></h1>
-                    <p style="margin: 5px 0; font-style: italic; font-weight: bold; color: #9a5700;">Spare Parts Dealer</p>
-                    <p style="margin: 0; font-size: 12px; color: #444;">{{ $business->address }}</p>
-                    <p style="margin: 0; font-size: 12px; color: #444;">Email: {{ $business->email }}</p>
+
+        @if ($business->receipt_header)
+            <div style="font-family: Georgia, serif;"> 
+                <img src="{{ asset('backend/'.$business->receipt_header) }}" alt="Logo" style="width: 100%; height: auto; margin-right: 20px;">
+            </div>
+        @else
+            
+            <div class="invoice-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 15px;">
+                <div style="display: flex; align-items: center;">
+                    @if($business->logo_path)
+                        <img src="{{ asset('backend/'.$business->logo_path) }}" alt="Logo" style="width: 100px; height: auto; margin-right: 20px;">
+                    @endif
+                    <div style="font-family: Georgia, serif;">
+                        <h1 style="margin: 0; font-size: 28px; color: #2e3e5c;">{{ $business->name }}<sup>®</sup></h1>
+                        <p style="margin: 5px 0; font-style: italic; font-weight: bold; color: #9a5700;">Spare Parts Dealer</p>
+                        <p style="margin: 0; font-size: 12px; color: #444;">{{ $business->address }}</p>
+                        <p style="margin: 0; font-size: 12px; color: #444;">Email: {{ $business->email }}</p>
+                    </div>
+                </div>
+                <div class="invoice-address" style="text-align: left; color: #444;">
+                
+                    <p><strong style="margin: 0; font-size: 15px; color: #2e3e5c;">Proprietor:</strong> <br><span style="margin: 0; font-size: 13px; color: #ff8717;">Muhammad Iqbal</span></p>
+                    <p style="margin: 0; font-size: 12px; color: #2e3e5c;">0333-2460463 <br> 0343-0211701</p>
+                    <p><strong style="margin: 0; font-size: 15px; color: #2e3e5c;">Manager:</strong> <br> <span style="margin: 0; font-size: 13px; color: #ff8717;">Muhammad Dawood Khan</span> </p>
+                    <p style="margin: 0; font-size: 12px; color: #2e3e5c;">{{ $business->phone }}</p>
                 </div>
             </div>
-            <div class="invoice-address" style="text-align: left; color: #444;">
-               
-                <p><strong style="margin: 0; font-size: 15px; color: #2e3e5c;">Proprietor:</strong> <br><span style="margin: 0; font-size: 13px; color: #ff8717;">Muhammad Iqbal</span></p>
-                <p style="margin: 0; font-size: 12px; color: #2e3e5c;">0333-2460463 <br> 0343-0211701</p>
-                <p><strong style="margin: 0; font-size: 15px; color: #2e3e5c;">Manager:</strong> <br> <span style="margin: 0; font-size: 13px; color: #ff8717;">Muhammad Dawood Khan</span> </p>
-                <p style="margin: 0; font-size: 12px; color: #2e3e5c;">{{ $business->phone }}</p>
-            </div>
-        </div>
+        @endif
+        
 
         <div class="invoice-address">
                 <h2 class="invoice-title">INVOICE</h2>
@@ -315,21 +324,31 @@
             @endif
         </div> --}}
 
-        <!-- Invoice Footer -->
         <div class="invoice-footer" style="border-top: 1px solid #ccc; padding-top: 15px; margin-top: 20px; font-size: 13px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <!-- Urdu Note -->
-                <p style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif; direction: rtl; margin: 0; font-size: 16px; color: #1e2b5a;">
-                    نوٹ: خریدا ہوا مال واپس اور تبدیل ہوتا ہے، بشرطیکہ خراب نہ ہو۔
-                </p>
-
-                <!-- Signature -->
-                <div style="text-align: right;display: flex; justify-content: space-between; align-items: flex-end;">
-                    <p style="margin: 0; color: #d2691e;"><strong>On Behalf of</strong><br><span style="font-size: 16px;">M.D. Autos</span></p><br>
-                    <div style="border-top: 1px solid #1e2b5a; width: 150px; margin-top: 10px;"></div>
-                </div>
+        @if ($business->receipt_footer)
+            <div style="font-family: Georgia, serif;"> 
+                <img src="{{ asset('backend/'.$business->receipt_footer) }}" alt="Logo" style="width: 100%; height: auto; margin-right: 20px;">
             </div>
+        @else
+            
+            {{-- <div class="invoice-footer" style="border-top: 1px solid #ccc; padding-top: 15px; margin-top: 20px; font-size: 13px;"> --}}
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <!-- Urdu Note -->
+                    <p style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif; direction: rtl; margin: 0; font-size: 16px; color: #1e2b5a;">
+                        نوٹ: خریدا ہوا مال واپس اور تبدیل ہوتا ہے، بشرطیکہ خراب نہ ہو۔
+                    </p>
+
+                    <!-- Signature -->
+                    <div style="text-align: right;display: flex; justify-content: space-between; align-items: flex-end;">
+                        <p style="margin: 0; color: #d2691e;"><strong>On Behalf of</strong><br><span style="font-size: 16px;">M.D. Autos</span></p><br>
+                        <div style="border-top: 1px solid #1e2b5a; width: 150px; margin-top: 10px;"></div>
+                    </div>
+                </div>
+            {{-- </div> --}}
+            @endif
         </div>
+        <!-- Invoice Footer -->
+        
 
     </div>
 
