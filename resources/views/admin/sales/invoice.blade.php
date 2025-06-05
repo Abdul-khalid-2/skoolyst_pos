@@ -135,7 +135,7 @@
         <div class="invoice-header" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 15px;">
             <div style="display: flex; align-items: center;">
                 @if($business->logo_path)
-                    <img src="{{ asset('Backend/'.$business->logo_path) }}" alt="Logo" style="width: 100px; height: auto; margin-right: 20px;">
+                    <img src="{{ asset('backend/'.$business->logo_path) }}" alt="Logo" style="width: 100px; height: auto; margin-right: 20px;">
                 @endif
                 <div style="font-family: Georgia, serif;">
                     <h1 style="margin: 0; font-size: 28px; color: #2e3e5c;">{{ $business->name }}<sup>®</sup></h1>
