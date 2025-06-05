@@ -22,15 +22,7 @@ class TenantDatabaseSeeder extends Seeder
         Role::create(['name' => "seller"]);
         Role::create(['name' => "user"]);
 
-        User::create([
-            'name' => 'mdautos',
-            'email' => 'mdautos@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'),
-            'remember_token' => null
-        ]);
-
-        Tenant::create([
+        $tenant = Tenant::create([
             'name' => 'Tenant A',
             'slug' => 'tenant-a',
             'domain' => 'tenant-a.example.com',
@@ -42,6 +34,19 @@ class TenantDatabaseSeeder extends Seeder
             'settings' => null,
             'trial_ends_at' => null
         ]);
+
+        $user = User::create([
+            'name' => 'mdautos',
+            'email' => 'mdautos@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'),
+            'remember_token' => null,
+            'tenant_id' => $tenant->id,
+        ]);
+
+        $user->assignRole('admin');
+
+
 
 
         PaymentMethod::create([
