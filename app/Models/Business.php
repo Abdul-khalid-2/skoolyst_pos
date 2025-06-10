@@ -40,16 +40,16 @@ class Business extends Model
 
     public function getLogoUrlAttribute()
     {
-        return $this->logo_path ? asset('storage/' . $this->logo_path) : null;
+        return $this->logo_path ? asset('backend/' . $this->logo_path) : null;
     }
 
     public function getReceiptHeaderUrlAttribute()
     {
-        return $this->receipt_header ? asset('storage/' . $this->receipt_header) : null;
+        return $this->receipt_header ? asset('backend/' . $this->receipt_header) : null;
     }
 
     public function getReceiptFooterUrlAttribute()
     {
-        return $this->receipt_footer ? asset('storage/' . $this->receipt_footer) : null;
+        return $this->receipt_footer ? asset('backend/' . $this->receipt_footer) : null;
     }
 }
