@@ -54,8 +54,8 @@
                         <thead class="bg-white text-uppercase">
                             <tr class="ligth ligth-data">
                                 <th>Date</th>
-                                <th>Category</th>
                                 <th>Account</th>
+                                <th>Category</th>
                                 <th>Branch</th>
                                 <th>Amount</th>
                                 <th>Description</th>
@@ -68,8 +68,8 @@
                             @foreach($expenses as $expense)
                             <tr>
                                 <td>{{ $expense->date->format('d M Y') }}</td>
-                                <td>{{ $expense->category->name }}</td>
                                 <td>{{ $expense->account->name }}</td>
+                                <td>{{ $expense->category->name }}</td>
                                 <td>{{ $expense->branch->name }}</td>
                                 <td>{{ format_currency($expense->amount) }}</td>
                                 <td>{{ Str::limit($expense->description, 20) ?? 'N/A' }}</td>

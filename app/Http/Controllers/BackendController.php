@@ -17,16 +17,52 @@ class BackendController extends Controller
         $tenantId = auth()->user()->tenant_id ?? 1;
 
         // 1. Core metrics
-        $totalSales = Sale::where('tenant_id', $tenantId)->sum('total_amount');
-        $totalCost = Sale::with('items')->get()->sum(function ($sale) {
-            return $sale->items->sum(function ($item) {
-                return $item->quantity * $item->cost_price;
-            });
-        });
-        $productsSold = SaleItem::where('tenant_id', $tenantId)->sum('quantity');
-        $profit = $totalSales - $totalCost;
+        //$totalSales = Sale::where('tenant_id', $tenantId)->sum('total_amount');
+        //$totalCost = Sale::with('items')->get()->sum(function ($sale) {
+       //     return $sale->items->sum(function ($item) {
+       //         return $item->quantity * $item->cost_price;
+       //     });
+        //});
+        //$productsSold = SaleItem::where('tenant_id', $tenantId)->sum('quantity');
+        //$profit = $totalSales - $totalCost;
 
+        //$profitMargin = $totalSales > 0 ? ($profit / $totalSales) * 100 : 0;
+
+        $tenantId = auth()->user()->tenant_id;
+        $today = now()->format('Y-m-d'); // Gets current date in YYYY-MM-DD format
+
+        $totalSales = Sale::where('tenant_id', $tenantId)
+                            ->whereDate('sale_date', $today)
+                            ->sum('total_amount');
+
+
+        // Today's total cost (more efficient query)
+        $totalCost = SaleItem::whereHas('sale', function($query) use ($tenantId, $today) {
+                            $query->where('tenant_id', $tenantId)
+                                ->whereDate('sale_date', $today);
+                        })
+                        ->sum(\DB::raw('quantity * cost_price'));
+
+        // Today's products sold
+        $productsSold = SaleItem::whereHas('sale', function($query) use ($tenantId, $today) {
+                                $query->where('tenant_id', $tenantId)
+                                    ->whereDate('sale_date', $today);
+                            })
+                            ->sum('quantity');
+
+        // Today's profit and margin
+        $profit = $totalSales - $totalCost;
         $profitMargin = $totalSales > 0 ? ($profit / $totalSales) * 100 : 0;
+
+        // $totalCost = Sale::with('items')->get()->sum(function ($sale) {
+        //     return $sale->items->sum(function ($item) {
+        //         return $item->quantity * $item->cost_price;
+        //     });
+        // });
+        // $productsSold = SaleItem::where('tenant_id', $tenantId)->sum('quantity');
+        // $profit = $totalSales - $totalCost;
+
+        // $profitMargin = $totalSales > 0 ? ($profit / $totalSales) * 100 : 0;
 
         // 2. Recent sales
         $recentSales = Sale::with(['customer:id,name'])
