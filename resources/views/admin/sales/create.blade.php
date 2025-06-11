@@ -104,6 +104,13 @@
                                         <i class="las la-plus mr-2"></i>Add Item
                                     </button>
                                 </div>
+                                <!-- Discount Field -->
+                                <div class="col-md-12 mt-3">
+                                    <div class="form-group">
+                                        <label>Discount Amount</label>
+                                        <input type="number" step="0.01" name="discount_amount" class="form-control" id="discountInput" min="0" value="0">
+                                    </div>
+                                </div>
                                 
                                 <!-- Payment Information -->
                                 <div class="col-md-12 mt-4">
@@ -289,8 +296,8 @@
             calculateTotals();
         });
         
-        // Calculate totals when quantity or price changes
-        $(document).on('input', 'input[name*="quantity"], input[name*="unit_price"]', function() {
+        // Calculate totals when quantity, price or discount changes
+        $(document).on('input', 'input[name*="quantity"], input[name*="unit_price"], #discountInput', function() {
             calculateTotals();
         });
         
@@ -308,23 +315,15 @@
         function calculateTotals() {
             let subtotal = 0;
             let taxAmount = 0;
-            let discountAmount = 0;
             
             $('.item-row').each(function() {
                 const quantity = parseFloat($(this).find('input[name*="quantity"]').val()) || 0;
                 const unitPrice = parseFloat($(this).find('input[name*="unit_price"]').val()) || 0;
-                const taxRate = 0; // You can add tax rate fields if needed
-                const discountRate = 0; // You can add discount rate fields if needed
-                
                 const itemTotal = quantity * unitPrice;
-                const itemDiscount = itemTotal * (discountRate / 100);
-                const itemTax = (itemTotal - itemDiscount) * (taxRate / 100);
-                
                 subtotal += itemTotal;
-                taxAmount += itemTax;
-                discountAmount += itemDiscount;
             });
             
+            const discountAmount = parseFloat($('#discountInput').val()) || 0;
             const totalAmount = subtotal + taxAmount - discountAmount;
             const amountPaid = parseFloat($('input[name="amount_paid"]').val()) || 0;
             const changeDue = Math.max(0, amountPaid - totalAmount);

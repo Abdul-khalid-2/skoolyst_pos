@@ -83,7 +83,7 @@ class SaleController extends Controller
             $discountAmount += $itemDiscount;
         }
 
-        $totalAmount = $subtotal + $taxAmount - $discountAmount;
+        $totalAmount = $subtotal + $taxAmount - $discountAmount - $request->discount_amount;
         $changeAmount = max(0, $request->amount_paid - $totalAmount);
         $paymentStatus = $request->amount_paid >= $totalAmount ? 'paid' : 'partial';
 
@@ -97,7 +97,7 @@ class SaleController extends Controller
             'sale_date' => $request->sale_date,
             'subtotal' => $subtotal,
             'tax_amount' => $taxAmount,
-            'discount_amount' => $discountAmount,
+            'discount_amount' => $discountAmount + $request->discount_amount,
             'total_amount' => $totalAmount,
             'amount_paid' => min($request->amount_paid, $totalAmount),
             'change_amount' => $changeAmount,
@@ -123,7 +123,7 @@ class SaleController extends Controller
                 'tax_rate' => $item['tax_rate'] ?? 0,
                 'tax_amount' => $itemTax,
                 'discount_rate' => $item['discount_rate'] ?? 0,
-                'discount_amount' => $itemDiscount,
+                'discount_amount' => $itemDiscount + $request->discount_amount,
                 'total_price' => $itemTotal - $itemDiscount + $itemTax,
             ]);
 
