@@ -21,12 +21,12 @@ if (!function_exists('format_currency')) {
     function format_currency($amount, $currency = null)
     {
         if (!$currency) {
-            $currency = config('app.currency', 'Rs');
+            $currency = config('app.currency', 'Rs ');
         }
 
         // Default symbol map
         $symbols = [
-            'Rs' => 'Rs',
+            'Rs' => 'Rs ',
         ];
 
         $symbol = $symbols[$currency] ?? $currency;
