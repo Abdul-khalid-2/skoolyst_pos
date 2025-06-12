@@ -206,16 +206,101 @@ class SaleController extends Controller
             'branch_id' => 'required|exists:branches,id',
             'invoice_number' => 'required|string|max:255|unique:sales,invoice_number,' . $sale->id,
             'sale_date' => 'required|date',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.variant_id' => 'nullable|exists:product_variants,id',
+            'items.*.quantity' => 'required|numeric|min:1',
+            'items.*.unit_price' => 'required|numeric|min:0',
+            'payment_method_id' => 'required|exists:payment_methods,id',
+            'amount_paid' => 'required|numeric|min:0',
+            'discount_amount' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
         ]);
 
+        // First, restore inventory for all original items
+        foreach ($sale->items as $item) {
+            $this->updateInventory(
+                $item->product_id,
+                $item->variant_id,
+                $sale->branch_id,
+                $item->quantity, // Positive to add back
+                $sale->id,
+                'sale_updated'
+            );
+        }
+
+        // Calculate new totals
+        $subtotal = 0;
+        $taxAmount = 0;
+
+        foreach ($request->items as $item) {
+            $itemTotal = $item['quantity'] * $item['unit_price'];
+            $subtotal += $itemTotal;
+        }
+
+        $discountAmount = $request->discount_amount ?? 0;
+        $totalAmount = $subtotal + $taxAmount - $discountAmount;
+        $changeAmount = max(0, $request->amount_paid - $totalAmount);
+        $paymentStatus = $request->amount_paid >= $totalAmount ? 'paid' : 'partial';
+
+        // Update sale
         $sale->update([
             'customer_id' => $request->customer_id,
             'branch_id' => $request->branch_id,
             'invoice_number' => $request->invoice_number,
             'sale_date' => $request->sale_date,
+            'subtotal' => $subtotal,
+            'tax_amount' => $taxAmount,
+            'discount_amount' => $discountAmount,
+            'total_amount' => $totalAmount,
+            'amount_paid' => min($request->amount_paid, $totalAmount),
+            'change_amount' => $changeAmount,
+            'payment_status' => $paymentStatus,
             'notes' => $request->notes,
         ]);
+
+        // Delete old items
+        $sale->items()->delete();
+
+        // Add new items and update inventory
+        foreach ($request->items as $item) {
+            $itemTotal = $item['quantity'] * $item['unit_price'];
+
+            $saleItem = SaleItem::create([
+                'tenant_id' => auth()->user()->tenant_id,
+                'sale_id' => $sale->id,
+                'product_id' => $item['product_id'],
+                'variant_id' => $item['variant_id'],
+                'quantity' => $item['quantity'],
+                'unit_price' => $item['unit_price'],
+                'cost_price' => $item['cost_price'],
+                'tax_rate' => 0, // Update if you have tax rates
+                'tax_amount' => 0,
+                'discount_rate' => 0,
+                'discount_amount' => 0,
+                'total_price' => $itemTotal,
+            ]);
+
+            // Update inventory (negative for sales)
+            $this->updateInventory(
+                $item['product_id'],
+                $item['variant_id'],
+                $request->branch_id,
+                -$item['quantity'],
+                $sale->id,
+                'sale_updated'
+            );
+        }
+
+        // Update payment if changed
+        if ($sale->payments->count() > 0) {
+            $payment = $sale->payments->first();
+            $payment->update([
+                'payment_method_id' => $request->payment_method_id,
+                'amount' => min($request->amount_paid, $totalAmount),
+                'reference' => $request->payment_reference,
+            ]);
+        }
 
         return redirect()->route('sales.show', $sale->id)
             ->with('success', 'Sale updated successfully.');
@@ -343,51 +428,6 @@ class SaleController extends Controller
         return $pdf->download('invoice-' . $sale->invoice_number . '.pdf');
     }
 
-
-
-    // In SaleController
-
-    // public function addPayment(Request $request, Sale $sale)
-    // {
-    //     $this->authorize('update', $sale);
-
-    //     $request->validate([
-    //         'payment_method_id' => 'required|exists:payment_methods,id',
-    //         'amount' => 'required|numeric|min:0.01|max:'.$sale->remaining_balance,
-    //         'reference' => 'nullable|string|max:255',
-    //         'date' => 'required|date',
-    //     ]);
-
-    //     // Record the payment
-    //     $payment = SalePayment::create([
-    //         'tenant_id' => auth()->user()->tenant_id,
-    //         'sale_id' => $sale->id,
-    //         'payment_method_id' => $request->payment_method_id,
-    //         'amount' => $request->amount,
-    //         'reference' => $request->reference,
-    //         'user_id' => auth()->id(),
-    //         'created_at' => $request->date,
-    //     ]);
-
-    //     // Update sale payment status
-    //     $sale->refresh();
-    //     $newAmountPaid = $sale->amount_paid + $request->amount;
-    //     $paymentStatus = $newAmountPaid >= $sale->total_amount ? 'paid' : 'partial';
-
-    //     $sale->update([
-    //         'amount_paid' => $newAmountPaid,
-    //         'payment_status' => $paymentStatus,
-    //     ]);
-
-    //     // Update customer balance if credit sale
-    //     if ($sale->customer_id) {
-    //         $customer = Customer::find($sale->customer_id);
-    //         $customer->balance = $customer->balance - $request->amount;
-    //         $customer->save();
-    //     }
-
-    //     return redirect()->back()->with('success', 'Payment recorded successfully.');
-    // }
 
     public function createCreditNote(Sale $sale)
     {
