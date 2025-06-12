@@ -68,7 +68,7 @@ class TransactionController extends Controller
         }
         $account->save();
 
-        return redirect()->route('accounting.transactions.index')
+        return redirect()->route('transactions.index')
             ->with('success', 'Transaction created successfully');
     }
 
@@ -87,7 +87,7 @@ class TransactionController extends Controller
             ->where('is_active', true)
             ->get();
 
-        return view('accounting.transactions.edit', compact('transaction', 'accounts'));
+        return view('admin.transactions.edit', compact('transaction', 'accounts'));
     }
 
     public function update(Request $request, Transaction $transaction)
@@ -144,7 +144,7 @@ class TransactionController extends Controller
 
         $transaction->delete();
 
-        return redirect()->route('accounting.transactions.index')
+        return redirect()->route('transactions.index')
             ->with('success', 'Transaction deleted successfully');
     }
 }
