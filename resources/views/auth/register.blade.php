@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Khalid pos</title>
+      <title>MD-Autos</title>
       
       <!-- Favicon -->
       <link rel="shortcut icon" href="{{ asset('Backend/assets/images/favicon.ico') }}" />
