@@ -15,7 +15,7 @@
                         <h4 class="mb-3">Expense Details</h4>
                         <p class="mb-0">View detailed information about this expense</p>
                     </div>
-                    <a href="{{ route('accounting.expenses.index') }}" class="btn btn-primary add-list">
+                    <a href="{{ route('expenses.index') }}" class="btn btn-primary add-list">
                         <i class="las la-arrow-left mr-3"></i>Back to Expenses
                     </a>
                 </div>
@@ -123,10 +123,10 @@
                 
                 <div class="card">
                     <div class="card-body text-center">
-                        <a href="{{ route('accounting.expenses.edit', $expense->id) }}" class="btn btn-primary btn-block mb-3">
+                        <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-primary btn-block mb-3">
                             <i class="ri-pencil-line mr-2"></i> Edit Expense
                         </a>
-                        <form action="{{ route('accounting.expenses.destroy', $expense->id) }}" method="POST">
+                        <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this expense?')">
