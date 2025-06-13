@@ -76,7 +76,7 @@ class BranchController extends Controller
         $businesses = Business::where('tenant_id', auth()->user()->tenant_id)
             ->pluck('name', 'id');
 
-        return view('branches.edit', compact('branch', 'businesses'));
+        return view('admin.branch.form', compact('branch', 'businesses'));
     }
 
     public function update(Request $request, Branch $branch)
