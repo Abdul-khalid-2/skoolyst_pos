@@ -9,13 +9,11 @@ public function up(): void
             $table->rememberToken();
             $table->timestamps();
         });
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
-
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -25,9 +23,6 @@ public function up(): void
             $table->integer('last_activity')->index();
         });
     }
-
-
-
     public function up(): void
     {
         Schema::create('cache', function (Blueprint $table) {
@@ -54,7 +49,6 @@ public function up(): void
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
         });
-
         Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');
@@ -142,7 +136,6 @@ public function up(): void
                 $table->primary([$pivotPermission, $columnNames['model_morph_key'], 'model_type'],
                     'model_has_permissions_permission_model_type_primary');
             }
-
         });
 
         Schema::create($tableNames['model_has_roles'], static function (Blueprint $table) use ($tableNames, $columnNames, $pivotRole, $teams) {
@@ -181,7 +174,6 @@ public function up(): void
                 ->references('id') // role id
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
-
             $table->primary([$pivotPermission, $pivotRole], 'role_has_permissions_permission_id_role_id_primary');
         });
 
@@ -189,7 +181,6 @@ public function up(): void
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
     }
-
  public function up(): void
     {
         Schema::create('tenants', function (Blueprint $table) {
@@ -208,7 +199,7 @@ public function up(): void
             $table->softDeletes();
         });
     }
-
+    
 public function up(): void
     {
         Schema::create('businesses', function (Blueprint $table) {
