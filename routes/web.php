@@ -22,8 +22,10 @@ use App\Http\Controllers\{
     BackupController,
     BranchController,
     BusinessController,
+    CustomerReportController,
     ExpenseController,
     IncomeController,
+    InventoryReportController,
     TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
@@ -86,11 +88,15 @@ Route::prefix('purchase-returns')->middleware(['auth', 'verified'])->group(funct
 // Reports routes
 Route::prefix('reports')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/sales', [ReportController::class, 'sales'])->name('reports.sales');
-    Route::get('/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
+    Route::get('sales/export', [ReportController::class, 'exportSalesReport'])->name('reports.sales.export');
     Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('reports.profit-loss');
-    Route::get('/customer', [ReportController::class, 'customer'])->name('reports.customer');
+    Route::get('/inventory', [InventoryReportController::class, 'inventory'])->name('reports.inventory');
+    Route::get('/customer', [CustomerReportController::class, 'customer'])->name('reports.customer');
+    Route::get('/customers/export', [CustomerReportController::class, 'export'])
+        ->name('reports.customer.export');
+    Route::get('/inventory/export', [InventoryReportController::class, 'export'])
+        ->name('reports.inventory.export');
 });
-
 // Accounts 
 Route::resource('transactions', TransactionController::class);
 
