@@ -61,7 +61,7 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        return view('customers.edit', compact('customer'));
+        return view('admin.customer.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -74,11 +74,32 @@ class CustomerController extends Controller
             'tax_number' => 'nullable|string|max:50',
             'customer_group' => 'required|string|in:retail,wholesale,vip',
             'credit_limit' => 'nullable|numeric|min:0',
+            'balance_adjustment' => 'nullable|numeric|min:0',
+            'balance_operation' => 'nullable|string|in:add,subtract,set',
         ]);
 
+        // Handle balance adjustment if provided
+        if ($request->filled('balance_adjustment') && $request->filled('balance_operation')) {
+            $amount = (float) $request->balance_adjustment;
+            $operation = $request->balance_operation;
+
+            switch ($operation) {
+                case 'add':
+                    $customer->balance += $amount;
+                    break;
+                case 'subtract':
+                    $customer->balance -= $amount;
+                    break;
+                case 'set':
+                    $customer->balance = $amount;
+                    break;
+            }
+        }
+
+        // Update all other fields
         $customer->update($validated);
 
-        return redirect()->route('customers.index')
+        return redirect()->route('customers.show', $customer->id)
             ->with('success', 'Customer updated successfully.');
     }
 

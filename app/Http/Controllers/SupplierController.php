@@ -42,14 +42,39 @@ class SupplierController extends Controller
     }
 
     public function show(Supplier $supplier)
-    {
-        $products = $supplier->products()->with('category')->paginate(10);
-        return view('suppliers.show', compact('supplier', 'products'));
-    }
-
+{
+    // Get products supplied by this supplier
+    $products = $supplier->products()->with('category')->paginate(10);
+    
+    // Get purchase history data
+    $purchases = $supplier->purchases()
+        ->with(['items', 'branch', 'payments']) // Include payments
+        ->latest()
+        ->take(10)
+        ->get();
+    
+    // Calculate purchase statistics
+    $totalPurchases = $supplier->purchases()->sum('total_amount');
+    
+    // Calculate outstanding balance correctly
+    $outstandingBalance = $supplier->purchases()
+        ->withSum('payments as total_payments', 'amount')
+        ->get()
+        ->sum(function ($purchase) {
+            return $purchase->total_amount - $purchase->total_payments;
+        });
+    
+    return view('admin.supplier.show', compact(
+        'supplier',
+        'products',
+        'purchases',
+        'totalPurchases',
+        'outstandingBalance'
+    ));
+}
     public function edit(Supplier $supplier)
     {
-        return view('suppliers.edit', compact('supplier'));
+        return view('admin.supplier.edit', compact('supplier'));
     }
 
     public function update(Request $request, Supplier $supplier)
