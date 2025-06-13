@@ -15,12 +15,12 @@
                         <h4 class="mb-3">Transaction Details</h4>
                         <p class="mb-0">View detailed information about this transaction</p>
                     </div>
-                    <a href="{{ route('accounting.transactions.index') }}" class="btn btn-primary add-list">
+                    <a href="{{ route('transactions.index') }}" class="btn btn-primary add-list">
                         <i class="las la-arrow-left mr-3"></i>Back to Transactions
                     </a>
                 </div>
             </div>
-
+ 
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
@@ -130,10 +130,10 @@
 
                 <div class="card">
                     <div class="card-body text-center">
-                        <a href="{{ route('accounting.transactions.edit', $transaction->id) }}" class="btn btn-primary btn-block mb-3">
+                        <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-primary btn-block mb-3">
                             <i class="ri-pencil-line mr-2"></i> Edit Transaction
                         </a>
-                        <form action="{{ route('accounting.transactions.destroy', $transaction->id) }}" method="POST">
+                        <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this transaction?')">

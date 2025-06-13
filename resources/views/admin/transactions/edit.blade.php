@@ -14,15 +14,21 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">{{ isset($transaction) ? 'Edit' : 'Add' }} Transaction</h4>
+                            <h4 class="card-title">Edit Transaction #{{ $transaction->id }}</h4>
+                        </div>
+                        <div>
+                            <a href="{{ route('transactions.show', $transaction->id) }}" class="btn btn-sm btn-primary mr-1">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            <a href="{{ route('transactions.index') }}" class="btn btn-sm btn-light">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ isset($transaction) ? route('transactions.update', $transaction->id) : route('transactions.store') }}" method="POST" data-toggle="validator">
+                        <form action="{{ route('transactions.update', $transaction->id) }}" method="POST" data-toggle="validator">
                             @csrf
-                            @if(isset($transaction))
-                                @method('PUT')
-                            @endif
+                            @method('PUT')
 
                             <div class="row">
                                 <!-- Account -->
@@ -33,12 +39,13 @@
                                             <option value="">Select Account</option>
                                             @foreach($accounts as $account)
                                                 <option value="{{ $account->id }}" 
-                                                    {{ old('account_id', $transaction->account_id ?? '') == $account->id ? 'selected' : '' }}>
+                                                    {{ old('account_id', $transaction->account_id) == $account->id ? 'selected' : '' }}>
                                                     {{ $account->name }} ({{ $account->type }})
                                                 </option>
                                             @endforeach
                                         </select>
                                         <div class="help-block with-errors"></div>
+                                        @error('account_id') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -49,12 +56,13 @@
                                         <select name="type" class="form-control" required>
                                             <option value="">Select Type</option>
                                             @foreach(['income', 'expense', 'transfer'] as $type)
-                                                <option value="{{ $type }}" {{ old('type', $transaction->type ?? '') == $type ? 'selected' : '' }}>
+                                                <option value="{{ $type }}" {{ old('type', $transaction->type) == $type ? 'selected' : '' }}>
                                                     {{ ucfirst($type) }}
                                                 </option>
                                             @endforeach
                                         </select>
                                         <div class="help-block with-errors"></div>
+                                        @error('type') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -64,8 +72,9 @@
                                         <label>Amount *</label>
                                         <input type="number" step="0.01" name="amount" class="form-control" 
                                             placeholder="Enter Amount" 
-                                            value="{{ old('amount', $transaction->amount ?? '') }}" required>
+                                            value="{{ old('amount', $transaction->amount) }}" required>
                                         <div class="help-block with-errors"></div>
+                                        @error('amount') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -74,8 +83,9 @@
                                     <div class="form-group">
                                         <label>Date *</label>
                                         <input type="date" name="date" class="form-control" 
-                                            value="{{ old('date', isset($transaction) ? $transaction->date->format('Y-m-d') : now()->format('Y-m-d')) }}" required>
+                                            value="{{ old('date', $transaction->date->format('Y-m-d')) }}" required>
                                         <div class="help-block with-errors"></div>
+                                        @error('date') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -85,7 +95,8 @@
                                         <label>Category</label>
                                         <input type="text" name="category" class="form-control" 
                                             placeholder="Enter Category (optional)" 
-                                            value="{{ old('category', $transaction->category ?? '') }}">
+                                            value="{{ old('category', $transaction->category) }}">
+                                        @error('category') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -95,7 +106,8 @@
                                         <label>Reference</label>
                                         <input type="text" name="reference" class="form-control" 
                                             placeholder="Enter Reference (optional)" 
-                                            value="{{ old('reference', $transaction->reference ?? '') }}">
+                                            value="{{ old('reference', $transaction->reference) }}">
+                                        @error('reference') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -104,33 +116,51 @@
                                     <div class="form-group">
                                         <label>Description</label>
                                         <textarea name="description" class="form-control" rows="3" 
-                                            placeholder="Enter Description (optional)">{{ old('description', $transaction->description ?? '') }}</textarea>
+                                            placeholder="Enter Description (optional)">{{ old('description', $transaction->description) }}</textarea>
+                                        @error('description') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-3">
-                                {{ isset($transaction) ? 'Update' : 'Save' }} Transaction
-                            </button>
-                            <a href="{{ route('transactions.index') }}" class="btn btn-secondary mt-3">Cancel</a>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-1"></i> Update Transaction
+                                </button>
+                                
+                                <div>
+                                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary mr-2">
+                                        <i class="fas fa-times mr-1"></i> Cancel
+                                    </a>
+                                    <button type="reset" class="btn btn-danger">
+                                        <i class="fas fa-undo mr-1"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-      @push('js')
-    <!-- Backend Bundle JavaScript -->
-    <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
 
-    <!-- Table Treeview JavaScript -->
-    <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
+    @push('js')
+        <!-- Backend Bundle JavaScript -->
+        <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
+        <!-- Table Treeview JavaScript -->
+        <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
+        <!-- Chart Custom JavaScript -->
+        <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
+        <!-- app JavaScript -->
+        <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
 
-    <!-- Chart Custom JavaScript -->
-    <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
-
-
-    <!-- app JavaScript -->
-    <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                // Type change handler to show/hide additional fields if needed
+                $('select[name="type"]').change(function() {
+                    // You can add dynamic behavior here if needed
+                    // For example, show different fields based on transaction type
+                });
+            });
+        </script>
     @endpush
 </x-app-layout>

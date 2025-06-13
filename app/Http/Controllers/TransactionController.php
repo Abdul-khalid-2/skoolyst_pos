@@ -76,7 +76,7 @@ class TransactionController extends Controller
     {
         abort_if($transaction->tenant_id !== auth()->user()->tenant_id, 403);
 
-        return view('transactions.show', compact('transaction'));
+        return view('admin.transactions.show', compact('transaction'));
     }
 
     public function edit(Transaction $transaction)
@@ -125,7 +125,7 @@ class TransactionController extends Controller
         }
         $newAccount->save();
 
-        return redirect()->route('accounting.transactions.index')
+        return redirect()->route('admin.transactions.index')
             ->with('success', 'Transaction updated successfully');
     }
 
