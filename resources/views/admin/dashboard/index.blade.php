@@ -116,7 +116,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2">Total Sales</p>
-                                        <h4>${{ number_format($totalSales, 2) }}</h4>
+                                        <h4>Rs {{ number_format($totalSales, 2) }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -135,7 +135,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2">Total Cost</p>
-                                        <h4>${{ number_format($totalCost, 2) }}</h4>
+                                        <h4>Rs {{ number_format($totalCost, 2) }}</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -262,7 +262,7 @@
                                             </div>
                                         </td>
                                         <td>{{ number_format($product->total_sold) }}</td>
-                                        <td>${{ number_format($product->total_revenue, 2) }}</td>
+                                        <td>Rs {{ number_format($product->total_revenue, 2) }}</td>
                                         <td>
                                             <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-primary">View</a>
                                         </td>
@@ -299,7 +299,7 @@
                             <div class="style-text text-left">
                                 <h5 class="mb-2">{{ $product->name }}</h5>
                                 <p class="mb-2">Total Sold: {{ number_format($product->total_sold) }}</p>
-                                <p class="mb-0">Total Revenue: ${{ number_format($product->total_revenue, 2) }}</p>
+                                <p class="mb-0">Total Revenue: Rs {{ number_format($product->total_revenue, 2) }}</p>
                             </div>
                         </div>
                     </div>
@@ -332,27 +332,27 @@
                             <div class="bar-container">
                                 <div class="bar-label">Income</div>
                                 <div class="bar income" style="width: 100%">
-                                    <span>Rs{{ number_format($income, 2) }}</span>
+                                    <span>Rs {{ number_format($income, 2) }}</span>
                                 </div>
                             </div>
                             <div class="bar-container">
                                 <div class="bar-label">Expenses</div>
                                 <div class="bar expense" style="width: {{ $income > 0 ? ($expenses/$income)*100 : 0 }}%">
-                                    <span>Rs{{ number_format($expenses, 2) }}</span>
+                                    <span>Rs {{ number_format($expenses, 2) }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="chart-summary">
                             <div class="summary-item">
                                 <span class="dot income-dot"></span>
-                                <span>Income: Rs{{ number_format($income, 2) }}</span>
+                                <span>Income: Rs {{ number_format($income, 2) }}</span>
                             </div>
                             <div class="summary-item">
                                 <span class="dot expense-dot"></span>
-                                <span>Expenses: Rs{{ number_format($expenses, 2) }}</span>
+                                <span>Expenses: Rs {{ number_format($expenses, 2) }}</span>
                             </div>
                             <div class="summary-item net">
-                                <span>Net: Rs{{ number_format(($income - $expenses), 2) }}</span>
+                                <span>Net: Rs {{ number_format(($income - $expenses), 2) }}</span>
                             </div>
                         </div>
                     </div>
@@ -403,7 +403,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $sale->created_at->format('M d, Y') }}</td>
-                                        <td>${{ number_format($sale->total_amount, 2) }}</td>
+                                        <td>Rs {{ number_format($sale->total_amount, 2) }}</td>
                                         <td>
                                             <span class="badge badge-{{ $sale->status === 'completed' ? 'success' : 'warning' }}">
                                                 {{ ucfirst($sale->status) }}
@@ -470,14 +470,14 @@
         
         function updateChart(income, expenses) {
             // Update bars
-            $('.bar.income').css('width', '100%').find('span').text('Rs' + income.toLocaleString('en-IN'));
+            $('.bar.income').css('width', '100%').find('span').text('Rs ' + income.toLocaleString('en-IN'));
             const expenseWidth = income > 0 ? (expenses/income)*100 : 0;
-            $('.bar.expense').css('width', expenseWidth + '%').find('span').text('Rs' + expenses.toLocaleString('en-IN'));
+            $('.bar.expense').css('width', expenseWidth + '%').find('span').text('Rs ' + expenses.toLocaleString('en-IN'));
             
             // Update summary
-            $('.summary-item:nth-child(1) span:last').text('Income: Rs' + income.toLocaleString('en-IN'));
-            $('.summary-item:nth-child(2) span:last').text('Expenses: Rs' + expenses.toLocaleString('en-IN'));
-            $('.summary-item.net span').text('Net: Rs' + (income - expenses).toLocaleString('en-IN'));
+            $('.summary-item:nth-child(1) span:last').text('Income: Rs ' + income.toLocaleString('en-IN'));
+            $('.summary-item:nth-child(2) span:last').text('Expenses: Rs ' + expenses.toLocaleString('en-IN'));
+            $('.summary-item.net span').text('Net: Rs ' + (income - expenses).toLocaleString('en-IN'));
         }
     });
     </script>

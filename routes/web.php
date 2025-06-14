@@ -26,6 +26,7 @@ use App\Http\Controllers\{
     ExpenseController,
     IncomeController,
     InventoryReportController,
+    SalesReportController,
     TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
@@ -87,8 +88,8 @@ Route::prefix('purchase-returns')->middleware(['auth', 'verified'])->group(funct
 
 // Reports routes
 Route::prefix('reports')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/sales', [ReportController::class, 'sales'])->name('reports.sales');
-    Route::get('sales/export', [ReportController::class, 'exportSalesReport'])->name('reports.sales.export');
+    Route::get('/sales', [SalesReportController::class, 'sales'])->name('reports.sales');
+    Route::get('sales/export', [SalesReportController::class, 'exportSalesReport'])->name('reports.sales.export');
     Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('reports.profit-loss');
     Route::get('/inventory', [InventoryReportController::class, 'inventory'])->name('reports.inventory');
     Route::get('/customer', [CustomerReportController::class, 'customer'])->name('reports.customer');
