@@ -74,8 +74,10 @@
                                         <th>Variant</th>
                                         <th>Qty</th>
                                         <th>Unit Price</th>
+                                        {{-- 
                                         <th>Tax</th>
-                                        <th>Discount</th>
+                                        <th>Discount</th> 
+                                        --}}
                                         <th>Total</th>
                                     </tr>
                                 </thead>
@@ -86,8 +88,10 @@
                                         <td>{{ $item->variant ? $item->variant->name : 'Default' }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>{{ number_format($item->unit_price, 2) }}</td>
-                                        <td>{{ number_format($item->tax_amount, 2) }}</td>
-                                        <td>{{ number_format($item->discount_amount, 2) }}</td>
+                                        {{-- 
+                                            <td>{{ number_format($item->tax_amount, 2) }}</td>
+                                            <td>{{ number_format($item->discount_amount, 2) }}</td> 
+                                        --}}
                                         <td>{{ number_format($item->total_price, 2) }}</td>
                                     </tr>
                                     @endforeach
