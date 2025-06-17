@@ -219,6 +219,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Website Routes 
+Route::view('/product_details', 'product_details')->name('product_details');
 // branches
 Route::resource('branches', BranchController::class)
     ->middleware(['auth', 'verified']);

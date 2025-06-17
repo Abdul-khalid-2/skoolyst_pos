@@ -213,7 +213,7 @@
                         <p class="text-gray-600 mb-4">
                             All critical engine parts to keep your vehicle running at peak performance
                         </p>
-                        <a href="#" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
+                        <a href="{{ route('product_details') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
                             View Details <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
