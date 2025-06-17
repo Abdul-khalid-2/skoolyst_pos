@@ -1,6 +1,6 @@
 Points
 
-1) Business View
+1) Business Show
 2) POS Terminal
 3) Invoices
 4) Sales Return
