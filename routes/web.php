@@ -221,6 +221,7 @@ Route::middleware('auth')->group(function () {
 
 // Website Routes 
 Route::view('/product_details', 'product_details')->name('product_details');
+Route::view('/our_products', 'our_products')->name('our_products');
 // branches
 Route::resource('branches', BranchController::class)
     ->middleware(['auth', 'verified']);

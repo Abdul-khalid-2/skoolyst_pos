@@ -142,7 +142,7 @@
                     Your trusted supplier of genuine heavy vehicle parts and components
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#products" class="px-8 py-3 bg-secondary-600 hover:bg-secondary-700 rounded-md text-white font-medium transition-slow">
+                    <a href="{{ route('our_products') }}" class="px-8 py-3 bg-secondary-600 hover:bg-secondary-700 rounded-md text-white font-medium transition-slow">
                         Our Products
                     </a>
                     <a href="#contact" class="px-8 py-3 border-2 border-white hover:bg-white hover:text-gray-900 rounded-md text-white font-medium transition-slow">
@@ -228,7 +228,7 @@
                         <p class="text-gray-600 mb-4">
                             High-quality brake components that ensure your safety on the road
                         </p>
-                        <a href="#" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
+                        <a href="{{ route('product_details') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
                             View Details <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
@@ -243,7 +243,7 @@
                         <p class="text-gray-600 mb-4">
                             Premium suspension components for a smoother ride and better handling
                         </p>
-                        <a href="#" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
+                        <a href="{{ route('product_details') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow">
                             View Details <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
@@ -251,7 +251,7 @@
             </div>
             
             <div class="text-center mt-12">
-                <a href="#" class="inline-flex items-center px-8 py-3 border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white rounded-md font-medium transition-slow">
+                <a href="{{ route('our_products') }}" class="inline-flex items-center px-8 py-3 border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white rounded-md font-medium transition-slow">
                     View All Products <i class="fas fa-chevron-right ml-2"></i>
                 </a>
             </div>
