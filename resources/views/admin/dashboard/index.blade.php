@@ -634,8 +634,8 @@
                         height: 300,
                         type: 'line',
                         zoom: { enabled: false },
-                        toolbar: { show: false },
-                        animations: { enabled: false }
+                        toolbar: { show: true },
+                        animations: { enabled: true }
                     },
                     series: [{ name: "Sales", data: totals }],
                     dataLabels: { enabled: false },
@@ -644,12 +644,12 @@
                     xaxis: { categories: dates },
                     yaxis: {
                         labels: {
-                            formatter: function(val) { return "$" + val.toFixed(2); }
+                            formatter: function(val) { return "Rs " + val.toFixed(2); }
                         }
                     },
                     tooltip: {
                         y: {
-                            formatter: function(val) { return "$" + val.toFixed(2); }
+                            formatter: function(val) { return "Rs " + val.toFixed(2); }
                         }
                     }
                 };
@@ -687,74 +687,6 @@
     </script>
 
 
-    <script>
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     let revenueCostChart;
-            
-        //     function initRevenueCostChart(data) {
-        //         const dates = data.map(item => new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-        //         const revenue = data.map(item => parseFloat(item.revenue));
-        //         const cost = data.map(item => parseFloat(item.cost));
-                
-        //         const options = {
-        //             chart: {
-        //                 height: 300,
-        //                 type: 'bar',
-        //                 stacked: false,
-        //                 toolbar: { show: false },
-        //                 animations: { enabled: false }
-        //             },
-        //             dataLabels: { enabled: false },
-        //             series: [
-        //                 { name: 'Revenue', data: revenue },
-        //                 { name: 'Cost', data: cost }
-        //             ],
-        //             colors: ['#6571ff', '#ff7c5f'],
-        //             xaxis: { categories: dates },
-        //             yaxis: {
-        //                 labels: {
-        //                     formatter: function(val) { return "$" + val.toFixed(2); }
-        //                 }
-        //             },
-        //             tooltip: {
-        //                 y: {
-        //                     formatter: function(val) { return "$" + val.toFixed(2); }
-        //                 }
-        //             }
-        //         };
-                
-        //         if (revenueCostChart) {
-        //             revenueCostChart.destroy();
-        //         }
-                
-        //         revenueCostChart = new ApexCharts(document.querySelector("#revenue-cost-chart"), options);
-        //         revenueCostChart.render();
-        //     }
-            
-        //     // Initialize with default data
-        //     initRevenueCostChart(@json($revenueVsCost));
-            
-        //     // Handle period change
-        //     document.querySelectorAll('.revenue-period-selector').forEach(item => {
-        //         item.addEventListener('click', function(e) {
-        //             e.preventDefault();
-        //             const period = this.getAttribute('data-period');
-        //             document.querySelector('.current-period-revenue').textContent = 
-        //                 period === 'year' ? 'This Year' : period === 'month' ? 'This Month' : 'This Week';
-                    
-        //             fetch('/dashboard/revenue-cost?period=' + period)
-        //                 .then(response => response.json())
-        //                 .then(data => {
-        //                     document.querySelector('.revenue-cost-title').textContent = 
-        //                         `Revenue vs Cost (Last ${period === 'year' ? 'Year' : period === 'month' ? '30 Days' : '7 Days'})`;
-        //                     initRevenueCostChart(data.data);
-        //                 })
-        //                 .catch(error => console.error('Error:', error));
-        //         });
-        //     });
-        // });
-    </script>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -771,8 +703,8 @@
                         height: 300,
                         type: 'bar',
                         stacked: false,
-                        toolbar: { show: false },
-                        animations: { enabled: false }
+                        toolbar: { show: true },
+                        animations: { enabled: true }
                     },
                     dataLabels: { enabled: false },
                     series: [
@@ -792,14 +724,14 @@
                     yaxis: {
                         labels: {
                             formatter: function(val) { 
-                                return "$" + val.toFixed(2); 
+                                return "Rs " + val.toFixed(2); 
                             }
                         }
                     },
                     tooltip: {
                         y: {
                             formatter: function(val) { 
-                                return "$" + val.toFixed(2); 
+                                return "Rs " + val.toFixed(2); 
                             }
                         }
                     },
