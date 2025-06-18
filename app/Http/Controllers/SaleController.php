@@ -52,7 +52,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id' => 'nullable|exists:customers,id',
+            'customer_id' => 'nullable',
             'branch_id' => 'required|exists:branches,id',
             'invoice_number' => 'required|string|max:255|unique:sales',
             'sale_date' => 'required|date',
@@ -66,7 +66,21 @@ class SaleController extends Controller
             'payment_method_id' => 'required|exists:payment_methods,id',
             'amount_paid' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
+            'custom_customer_name' => 'nullable|string|max:255',
+            'custom_customer_phone' => 'nullable|string|max:20',
         ]);
+
+        // Handle custom customer
+        $customerId = $request->customer_id;
+        if ($request->customer_id === 'Walk-in-Customer' && $request->filled('custom_customer_name')) {
+            $customer = Customer::create([
+                'name' => $request->custom_customer_name,
+                'phone' => $request->custom_customer_phone,
+                'tenant_id' => auth()->user()->tenant_id,
+                // Add any other default customer fields here
+            ]);
+            $customerId = $customer->id;
+        }
 
         // Calculate totals
         $subtotal = 0;
@@ -91,7 +105,7 @@ class SaleController extends Controller
         $sale = Sale::create([
             'tenant_id' => auth()->user()->tenant_id,
             'branch_id' => $request->branch_id,
-            'customer_id' => $request->customer_id,
+            'customer_id' => $customerId, // Use the processed customer ID
             'user_id' => auth()->id(),
             'invoice_number' => $request->invoice_number,
             'sale_date' => $request->sale_date,

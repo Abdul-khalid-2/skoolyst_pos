@@ -5,6 +5,24 @@
     <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: calc(2.25rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: calc(2.25rem + 2px);
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 1.5;
+        }
+    </style>
     @endpush
 
     <div class="container-fluid">
@@ -13,7 +31,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4 class="card-title">New Sale</h4>
-                        <a href="{{ route('sales.index') }}" class="btn btn-light">Cancel</a>
+                        <a href="{{ route('sales.index') }}" class="btn btn-light">Back</a>
                     </div>
                     <div class="card-body">
                         <form id="saleForm" action="{{ route('sales.store') }}" method="POST">
@@ -51,12 +69,31 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Customer</label>
-                                        <select name="customer_id" class="form-control">
-                                            <option value="">Walk-in Customer</option>
-                                            @foreach($customers as $customer)
-                                                <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group">
+                                            <select name="customer_id" id="customerSelect" class="form-control select2-customer">
+                                                <option value="Walk-in-Customer" selected>Walk-in Customer</option>
+                                                @foreach($customers as $customer)
+                                                    <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-secondary" id="addCustomCustomer">
+                                                    <i class="las la-user-plus"></i> New Customer
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="customCustomerContainer" class="mt-2" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="text" name="custom_customer_name" id="customCustomerName" 
+                                                        class="form-control" placeholder="Customer Name">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" name="custom_customer_phone" id="customCustomerPhone" 
+                                                        class="form-control" placeholder="Phone Number">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -67,7 +104,7 @@
                                         <div class="row item-row mb-3">
                                             <div class="col-md-5">
                                                 <div class="form-group">
-                                                    <select name="items[0][product_id]" class="form-control product-select" required>
+                                                    <select name="items[0][product_id]" class="form-control product-select select2-product" required>
                                                         <option value="">Select Product</option>
                                                         @foreach($products as $product)
                                                             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -194,20 +231,58 @@
 
     <!-- app JavaScript -->
     <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @endpush
     @push('js')
     <script>
     $(document).ready(function() {
         let itemCount = 1;
         
+        // Initialize Select2 for customer dropdown
+        $('.select2-customer').select2({
+            placeholder: "Search customer...",
+            allowClear: false
+        });
+        
+        // Initialize Select2 for product dropdowns
+        $('.select2-product').select2({
+            placeholder: "Search product...",
+            allowClear: true
+        });
+        
+        // Toggle custom customer fields
+        $('#addCustomCustomer').click(function() {
+            $('#customCustomerContainer').toggle();
+            if ($('#customCustomerContainer').is(':visible')) {
+                $(this).html('<i class="las la-user-minus"></i> Cancel');
+                // Set to Walk-in Customer when showing custom fields
+                $('#customerSelect').val('Walk-in-Customer').trigger('change');
+            } else {
+                $(this).html('<i class="las la-user-plus"></i> New Customer');
+                $('#customCustomerName').val('');
+                $('#customCustomerPhone').val('');
+            }
+        });
+        
+        // When customer is selected, hide custom fields
+        $('#customerSelect').on('change', function() {
+            if ($(this).val() !== 'Walk-in-Customer') {
+                $('#customCustomerContainer').hide();
+                $('#addCustomCustomer').html('<i class="las la-user-plus"></i> New Customer');
+                $('#customCustomerName').val('');
+                $('#customCustomerPhone').val('');
+            }
+        });
+        
         // Add new item row
         $('#addItem').click(function() {
-            // In the addItem click handler
             const newRow = `
                 <div class="row item-row mb-3">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <select name="items[${itemCount}][product_id]" class="form-control product-select" required>
+                            <select name="items[${itemCount}][product_id]" class="form-control product-select select2-product" required>
                                 <option value="">Select Product</option>
                                 @foreach($products as $product)
                                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -241,6 +316,13 @@
                 </div>`;
             
             $('#saleItems').append(newRow);
+            
+            // Initialize Select2 for the new product dropdown
+            $('#saleItems .item-row:last .product-select').select2({
+                placeholder: "Search product...",
+                allowClear: true
+            });
+            
             itemCount++;
         });
         
@@ -276,11 +358,9 @@
                 unitPriceInput.val('');
             }
         });
- 
-
         
         // Set unit price when variant changes
-         $(document).on('change', '.variant-select', function() {
+        $(document).on('change', '.variant-select', function() {
             const selectedOption = $(this).find('option:selected');
             const unitPriceInput = $(this).closest('.item-row').find('input[name*="unit_price"]');
             const costPriceInput = $(this).closest('.item-row').find('input[name*="cost_price"]');
@@ -334,6 +414,15 @@
             $('#totalAmount').text(totalAmount.toFixed(2));
             $('#changeAmount').text(changeDue.toFixed(2));
         }
+        
+        // Form submission handling
+        $('#saleForm').on('submit', function(e) {
+            // If custom customer is being used and has a name
+            if ($('#customCustomerContainer').is(':visible') && $('#customCustomerName').val()) {
+                // Ensure customer_id is set to Walk-in-Customer
+                $('#customerSelect').val('Walk-in-Customer').prop('disabled', false);
+            }
+        });
     });
     </script>
     @endpush
