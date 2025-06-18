@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Business;
 use App\Models\Customer;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomerController extends Controller
 {
@@ -109,5 +111,46 @@ class CustomerController extends Controller
 
         return redirect()->route('customers.index')
             ->with('success', 'Customer deleted successfully.');
+    }
+
+
+    public function invoice(Customer $customer)
+    {
+        // Get all sales for this customer
+        $sales = Sale::where('customer_id', $customer->id)
+                    ->with(['items', 'payments'])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        // Calculate total spent
+        $totalSpent = $sales->sum('total_amount');
+        
+        // Calculate total paid
+        $totalPaid = $sales->sum('amount_paid');
+        
+        // Calculate total dues
+        $totalDues = $totalSpent - $totalPaid;
+
+        $business = Business::first();
+
+        return view('admin.customer.invoice', compact('customer', 'sales', 'totalSpent', 'totalPaid', 'totalDues','business'));
+    }
+
+    public function downloadInvoice(Customer $customer)
+    {
+        // Get all sales for this customer
+        $sales = Sale::where('customer_id', $customer->id)
+                    ->with(['items', 'payments'])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        // Calculate totals
+        $totalSpent = $sales->sum('total_amount');
+        $totalPaid = $sales->sum('amount_paid');
+        $totalDues = $totalSpent - $totalPaid;
+
+        $pdf = PDF::loadView('admin.customer.invoice-pdf', compact('customer', 'sales', 'totalSpent', 'totalPaid', 'totalDues'));
+        
+        return $pdf->download('invoice-'.$customer->id.'-'.now()->format('Ymd').'.pdf');
     }
 }

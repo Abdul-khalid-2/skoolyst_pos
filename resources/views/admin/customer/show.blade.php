@@ -20,6 +20,9 @@
                             <a href="{{ route('customers.index') }}" class="btn btn-primary">
                                 <i class="fas fa-arrow-left"></i> Back to Customers
                             </a>
+                            <a href="{{ route('customers.invoice', $customer->id) }}" class="btn btn-info ms-2">
+                                <i class="fas fa-file-invoice"></i> Generate Invoice
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">

@@ -187,6 +187,8 @@ Route::resource('users', UserController::class)->middleware(['auth', 'verified']
 
 // Customers
 Route::resource('customers', CustomerController::class)->middleware(['auth', 'verified']);
+Route::get('/customers/{customer}/invoice', [CustomerController::class, 'invoice'])->name('customers.invoice');
+Route::get('/customers/{customer}/invoice/download', [CustomerController::class, 'downloadInvoice'])->name('customers.invoice.download');
 
 // Suppliers
 Route::resource('suppliers', SupplierController::class)->middleware(['auth', 'verified']);
