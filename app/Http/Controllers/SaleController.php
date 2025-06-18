@@ -14,6 +14,7 @@ use App\Models\InventoryLog;
 use App\Models\Business;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SaleController extends Controller
 {
@@ -433,7 +434,6 @@ class SaleController extends Controller
 
     public function invoicePdf(Sale $sale)
     {
-        // $this->authorize('view', $sale);
 
         $sale->load([
             'customer',
@@ -443,9 +443,19 @@ class SaleController extends Controller
             'items.variant',
             'payments.paymentMethod'
         ]);
-
-        $pdf = PDF::loadView('admin.sales.invoice-pdf', compact('sale'));
-        return $pdf->download('invoice-' . $sale->invoice_number . '.pdf');
+        
+        $business = Business::first();
+        
+        // Use 'Pdf' instead of 'PDF'
+        $pdf = Pdf::loadView('admin.sales.invoice-pdf', [
+            'sale' => $sale,
+            'business' => $business
+        ]);
+        
+        $pdf->setPaper('Latter', 'portrait');
+        $filename = 'invoice-' . $sale->invoice_number . '.pdf';
+        
+        return $pdf->download($filename);
     }
 
 
