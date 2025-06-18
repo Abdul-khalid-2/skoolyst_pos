@@ -70,9 +70,14 @@ class SaleController extends Controller
             'custom_customer_phone' => 'nullable|string|max:20',
         ]);
 
-        // Handle custom customer
-        $customerId = $request->customer_id;
-        if ($request->customer_id === 'Walk-in-Customer' && $request->filled('custom_customer_name')) {
+        // Handle customer
+        $customerId = null; // Default to null for walk-in customers
+
+        if ($request->customer_id !== 'Walk-in-Customer' && $request->customer_id) {
+            // Existing customer selected
+            $customerId = $request->customer_id;
+        } elseif ($request->filled('custom_customer_name')) {
+            // Create new customer for named walk-in
             $customer = Customer::create([
                 'name' => $request->custom_customer_name,
                 'phone' => $request->custom_customer_phone,
@@ -81,6 +86,7 @@ class SaleController extends Controller
             ]);
             $customerId = $customer->id;
         }
+        // Else remains null for anonymous walk-in customers
 
         // Calculate totals
         $subtotal = 0;
@@ -105,7 +111,7 @@ class SaleController extends Controller
         $sale = Sale::create([
             'tenant_id' => auth()->user()->tenant_id,
             'branch_id' => $request->branch_id,
-            'customer_id' => $customerId, // Use the processed customer ID
+            'customer_id' => $customerId, // Will be null for walk-in customers
             'user_id' => auth()->id(),
             'invoice_number' => $request->invoice_number,
             'sale_date' => $request->sale_date,
@@ -120,7 +126,7 @@ class SaleController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // Add items and update inventory
+        // Rest of your method remains the same...
         foreach ($request->items as $item) {
             $itemTotal = $item['quantity'] * $item['unit_price'];
             $itemDiscount = $itemTotal * ($item['discount_rate'] ?? 0) / 100;
