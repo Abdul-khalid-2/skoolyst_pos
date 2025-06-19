@@ -47,8 +47,8 @@
                                 <td>{{ $variant->name }}</td>
                                 <td>{{ $variant->sku }}</td>
                                 <td>{{ $variant->barcode ?? 'N/A' }}</td>
-                                <td>${{ number_format($variant->purchase_price, 2) }}</td>
-                                <td>${{ number_format($variant->selling_price, 2) }}</td>
+                                <td>Rs {{ number_format($variant->purchase_price, 2) }}</td>
+                                <td>Rs {{ number_format($variant->selling_price, 2) }}</td>
                                 <td>{{ $variant->current_stock }}</td>
                                 <td>{{ $variant->unit_type }}</td>
                                 <td>
