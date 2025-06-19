@@ -166,7 +166,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <input type="number" step="0.01" name="items[${itemCount}][unit_price]" class="form-control" min="0" required>
+                                    <input type="number" step="0.01" name="items[${itemCount}][unit_price]" class="form-control" min="0" required placeholder="Unit price">
                                 </div>
                             </div>
                             <div class="col-md-1">

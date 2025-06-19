@@ -58,6 +58,8 @@ class CustomerReportController extends Controller
             ];
         });
 
+        $sale = Sale::get();
+
         // Top customers by sales
         $topCustomers = $customers->sortByDesc('total_sales')->take(5);
 
@@ -80,7 +82,8 @@ class CustomerReportController extends Controller
             'branchId' => $branchId,
             'customerGroup' => $customerGroup,
             'branches' => Branch::all(),
-            'availableGroups' => ['retail', 'wholesale', 'vip']
+            'availableGroups' => ['retail', 'wholesale', 'vip'],
+            'sale' => $sale
         ]);
     }
     

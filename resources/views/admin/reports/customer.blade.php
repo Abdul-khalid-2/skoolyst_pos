@@ -140,6 +140,21 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
+                                    <h4>Total Due Balance</h4>
+                                </div>
+                                <div class="card-body">
+                                    {{ number_format($sale->sum('total_amount') - $sale->sum('amount_paid'), 2) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="col-md-3">
+                        <div class="card card-statistic-1">
+                            <div class="card-icon bg-warning">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="card-wrap">
+                                <div class="card-header">
                                     <h4>Outstanding Balance</h4>
                                 </div>
                                 <div class="card-body">
@@ -147,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             
