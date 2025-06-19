@@ -13,7 +13,7 @@ class ProductVariantController extends Controller
         $variants = $product->variants()
             ->with('product')
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('admin.variant.index', compact('product', 'variants'));
     }
