@@ -77,7 +77,7 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'sku' => 'required|string|max:50', // Reduced max length
+            'sku' => 'required|string|max:100|unique:product_variants,sku,' . $variant->id,
             'barcode' => 'nullable|string|max:100|unique:product_variants,barcode,' . $variant->id,
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
@@ -87,17 +87,6 @@ class ProductVariantController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $finalSku = $this->generateSku($product, $validated['sku']);
-        
-        $exists = ProductVariant::where('sku', $finalSku)
-            ->where('id', '!=', $variant->id)->exists();
-        if ($exists) {
-            return back()->withInput()->withErrors([
-                'sku' => 'The generated SKU already exists. Please try a different variant SKU.'
-            ]);
-        }
-
-        $validated['sku'] = $finalSku;
         $variant->update($validated);
 
         return redirect()->route('product-variants.index', $product->id)
