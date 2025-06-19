@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductVariantController extends Controller
 {
@@ -27,7 +28,14 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'sku' => 'required|string|max:100|unique:product_variants,sku',
+            'sku' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('product_variants')->where(function ($query) use ($request) {
+                    return $query->where('name', $request->name);
+                }),
+            ],
             'barcode' => 'nullable|string|max:100|unique:product_variants,barcode',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
@@ -55,7 +63,16 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'sku' => 'required|string|max:100|unique:product_variants,sku,' . $variant->id,
+            'sku' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('product_variants')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('name', $request->name);
+                    })
+                    ->ignore($variant->id),
+            ],
             'barcode' => 'nullable|string|max:100|unique:product_variants,barcode,' . $variant->id,
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
