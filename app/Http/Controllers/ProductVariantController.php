@@ -24,18 +24,20 @@ class ProductVariantController extends Controller
         return view('admin.variant.form', compact('product'));
     }
 
+
+    // Helper function to generate clean SKU
+    protected function generateSku($product, $variantSku)
+    {
+        $productNamePart = strtok($product->name, ' ');
+        $productNamePart = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $productNamePart));
+        return $productNamePart . '-' . $variantSku;
+    }
+
     public function store(Request $request, Product $product)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'sku' => [
-                'required',
-                'string',
-                'max:100',
-                Rule::unique('product_variants')->where(function ($query) use ($request) {
-                    return $query->where('name', $request->name);
-                }),
-            ],
+            'sku' => 'required|string|max:50', // Reduced max length since we'll be combining it
             'barcode' => 'nullable|string|max:100|unique:product_variants,barcode',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
@@ -45,6 +47,18 @@ class ProductVariantController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
+        // Generate final SKU
+        $finalSku = $this->generateSku($product, $validated['sku']);
+        
+        // Check uniqueness of the final SKU
+        $exists = ProductVariant::where('sku', $finalSku)->exists();
+        if ($exists) {
+            return back()->withInput()->withErrors([
+                'sku' => 'The generated SKU already exists. Please try a different variant SKU.'
+            ]);
+        }
+
+        $validated['sku'] = $finalSku;
         $validated['product_id'] = $product->id;
         $validated['tenant_id'] = auth()->user()->tenant_id;
 
@@ -63,16 +77,7 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'sku' => [
-                'required',
-                'string',
-                'max:100',
-                Rule::unique('product_variants')
-                    ->where(function ($query) use ($request) {
-                        return $query->where('name', $request->name);
-                    })
-                    ->ignore($variant->id),
-            ],
+            'sku' => 'required|string|max:50', // Reduced max length
             'barcode' => 'nullable|string|max:100|unique:product_variants,barcode,' . $variant->id,
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
@@ -82,6 +87,17 @@ class ProductVariantController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
+        $finalSku = $this->generateSku($product, $validated['sku']);
+        
+        $exists = ProductVariant::where('sku', $finalSku)
+            ->where('id', '!=', $variant->id)->exists();
+        if ($exists) {
+            return back()->withInput()->withErrors([
+                'sku' => 'The generated SKU already exists. Please try a different variant SKU.'
+            ]);
+        }
+
+        $validated['sku'] = $finalSku;
         $variant->update($validated);
 
         return redirect()->route('product-variants.index', $product->id)
