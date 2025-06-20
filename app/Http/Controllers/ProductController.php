@@ -130,7 +130,7 @@ class ProductController extends Controller
             return response()->json(['error' => $validator->errors()->first()], 400);
         }
 
-        $path = $request->file('image')->store('product_images', 'public');
+        $path = Storage::disk('website')->put('product_images', $request->image);
 
         return response()->json(['path' => $path]);
     }
@@ -141,7 +141,7 @@ class ProductController extends Controller
             'path' => 'required|string'
         ]);
 
-        Storage::delete('public/' . $request->path);
+        Storage::disk('website')->delete($request->path);
 
         return response()->json(['success' => true]);
     }

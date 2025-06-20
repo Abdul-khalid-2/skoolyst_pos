@@ -83,7 +83,7 @@ class BrandController extends Controller
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $path = $request->file('logo')->store('brands', 'public');
+        $path = Storage::disk('website')->put('brands', $request->logo);
 
         return response()->json([
             'path' => $path,
@@ -97,7 +97,7 @@ class BrandController extends Controller
             'path' => 'required|string',
         ]);
 
-        Storage::disk('public')->delete($request->path);
+        Storage::disk('website')->delete($request->path);
 
         return response()->json(['success' => true]);
     }

@@ -57,7 +57,7 @@
                                                 $images = json_decode($product->image_paths);
                                                 $firstImage = $images[0] ?? null;
                                             @endphp
-                                            <img src="{{ asset('storage/'.$firstImage) }}" class="img-fluid rounded avatar-50 mr-3" alt="{{ $product->name }}">
+                                            <img src="{{ asset('Backend/'.$firstImage) }}" class="img-fluid rounded avatar-50 mr-3" alt="{{ $product->name }}">
                                         @else
                                             <div class="avatar-50 mr-3 bg-primary rounded-circle d-flex align-items-center justify-content-center">
                                                 <span class="text-white">{{ strtoupper(substr($product->name, 0, 1)) }}</span>

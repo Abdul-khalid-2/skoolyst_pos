@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -53,7 +54,7 @@ class UserController extends Controller
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $path = Storage::disk('website')->put('profile_images', $request->profile_image);
             $user->update(['profile_image' => $path]);
         }
 
@@ -89,7 +90,7 @@ class UserController extends Controller
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $path = Storage::disk('website')->put('profile_images', $request->profile_image);
             $user->update(['profile_image' => $path]);
         }
 
