@@ -74,7 +74,7 @@
                                 <td>{{ $product->brand->name ?? 'N/A' }}</td>
                                 <td>
                                     @if($product->variants_count > 0)
-                                        ${{ number_format($product->variants->min('selling_price'), 2) }} - ${{ number_format($product->variants->max('selling_price'), 2) }}
+                                        Rs {{ number_format($product->variants->min('selling_price'), 2) }} - Rs {{ number_format($product->variants->max('selling_price'), 2) }}
                                     @else
                                         N/A
                                     @endif

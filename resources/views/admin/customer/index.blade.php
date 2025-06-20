@@ -62,8 +62,8 @@
                                 <td>{{ $customer->phone }}</td>
                                 <td>{{ $customer->email ?? 'N/A' }}</td>
                                 <td><span class="badge badge-{{ $customer->customer_group == 'retail' ? 'primary' : ($customer->customer_group == 'wholesale' ? 'success' : 'warning') }}">{{ ucfirst($customer->customer_group) }}</span></td>
-                                <td>${{ number_format($customer->credit_limit, 2) }}</td>
-                                <td>${{ number_format($customer->balance, 2) }}</td>
+                                <td>Rs {{ number_format($customer->credit_limit, 2) }}</td>
+                                <td>Rs {{ number_format($customer->balance, 2) }}</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip"

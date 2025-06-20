@@ -51,7 +51,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-2">Total Cost</p>
-                                        <h4>$ 4598</h4>
+                                        <h4>Rs 4598</h4>
                                     </div>
                                 </div>
                                 <div class="iq-progress-bar mt-2">
@@ -266,7 +266,7 @@
                         <div class="d-flex align-items-top justify-content-between">
                             <div class="">
                                 <p class="mb-0">Income</p>
-                                <h5>$ 98,7800 K</h5>
+                                <h5>Rs 98,7800 K</h5>
                             </div>
                             <div class="card-header-toolbar d-flex align-items-center">
                                 <div class="dropdown">
@@ -291,7 +291,7 @@
                         <div class="d-flex align-items-top justify-content-between">
                             <div class="">
                                 <p class="mb-0">Expenses</p>
-                                <h5>$ 45,8956 K</h5>
+                                <h5>Rs 45,8956 K</h5>
                             </div>
                             <div class="card-header-toolbar d-flex align-items-center">
                                 <div class="dropdown">
