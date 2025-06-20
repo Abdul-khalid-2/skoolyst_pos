@@ -27,6 +27,7 @@ class Sale extends Model
         'status',
         'notes',
         'sale_date',
+        'walk_in_customer_info',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class Sale extends Model
         'amount_paid' => 'decimal:2',
         'change_amount' => 'decimal:2',
         'sale_date' => 'datetime',
+        'walk_in_customer_info' => 'array',
     ];
 
     public function tenant()

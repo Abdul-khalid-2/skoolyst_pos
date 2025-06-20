@@ -184,7 +184,18 @@
                 <div class="info-box">
                     <div class="info-label">BILL TO</div>
                     <div class="info-value">
-                        {{ $sale->customer ? $sale->customer->name : 'Walk-in Customer' }}<br>
+                        <strong>Customer:</strong> 
+                            @if($sale->customer)
+                                {{ $sale->customer->name }}
+                            @elseif($sale->walk_in_customer_info && isset($sale->walk_in_customer_info['name']))
+                                {{ $sale->walk_in_customer_info['name'] }} 
+                                @if(isset($sale->walk_in_customer_info['phone']))
+                                    ({{ $sale->walk_in_customer_info['phone'] }})
+                                @endif
+                            @else
+                                Walk-in Customer
+                            @endif
+                        <br>
                         @if($sale->customer && $sale->customer->address)
                             {{ $sale->customer->address }}<br>
                         @endif

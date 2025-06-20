@@ -73,19 +73,17 @@ class SaleController extends Controller
 
         // Handle customer
         $customerId = null; // Default to null for walk-in customers
+        $walkInCustomerInfo = null;
 
         if ($request->customer_id !== 'Walk-in-Customer' && $request->customer_id) {
             // Existing customer selected
             $customerId = $request->customer_id;
         } elseif ($request->filled('custom_customer_name')) {
             // Create new customer for named walk-in
-            $customer = Customer::create([
+            $walkInCustomerInfo = [
                 'name' => $request->custom_customer_name,
                 'phone' => $request->custom_customer_phone,
-                'tenant_id' => auth()->user()->tenant_id,
-                // Add any other default customer fields here
-            ]);
-            $customerId = $customer->id;
+            ];
         }
         // Else remains null for anonymous walk-in customers
 
@@ -113,6 +111,7 @@ class SaleController extends Controller
             'tenant_id' => auth()->user()->tenant_id,
             'branch_id' => $request->branch_id,
             'customer_id' => $customerId, // Will be null for walk-in customers
+            'walk_in_customer_info' => $walkInCustomerInfo,
             'user_id' => auth()->id(),
             'invoice_number' => $request->invoice_number,
             'sale_date' => $request->sale_date,

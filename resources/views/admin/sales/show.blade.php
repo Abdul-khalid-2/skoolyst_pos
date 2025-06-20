@@ -48,13 +48,28 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Customer:</strong> {{ $sale->customer ? $sale->customer->name : 'Walk-in' }}</p>
+                                <p>
+                                    <strong>Customer:</strong> 
+                                    @if($sale->customer)
+                                        {{ $sale->customer->name }}
+                                    @elseif($sale->walk_in_customer_info && isset($sale->walk_in_customer_info['name']))
+                                        {{ $sale->walk_in_customer_info['name'] }} 
+                                        @if(isset($sale->walk_in_customer_info['phone']))
+                                            ({{ $sale->walk_in_customer_info['phone'] }})
+                                        @endif
+                                    @else
+                                        Walk-in Customer
+                                    @endif
+                                </p>
                                 <p><strong>Branch:</strong> {{ $sale->branch->name }}</p>
                                 <p><strong>Sales Person:</strong> {{ $sale->user->name }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Date:</strong> {{ $sale->sale_date->format('M d, Y H:i') }}</p>
                                 <p><strong>Invoice #:</strong> {{ $sale->invoice_number }}</p>
+                                @if($sale->walk_in_customer_info && isset($sale->walk_in_customer_info['phone']))
+                                    <p><strong>Customer Phone:</strong> {{ $sale->walk_in_customer_info['phone'] }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>
