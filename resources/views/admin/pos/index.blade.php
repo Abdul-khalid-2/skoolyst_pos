@@ -861,7 +861,7 @@
                 $('#addCustomerBtn').on('click', function() { // Add customer button
                     $('#customerModal').modal('show');
                 });
-                $('#saveCustomerBtn').on('click', function() {// Save customer button
+                $('#saveCustomerBtn').on('click', function() { // Save customer button
                     const customerData = {
                         name: $('#newCustomerName').val(),
                         phone: $('#newCustomerPhone').val(),
