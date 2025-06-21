@@ -223,7 +223,7 @@
                                                         @foreach($product->inventoryLogs->take(5) as $log)
                                                         <tr>
                                                             <td>{{ $log->created_at->format('M d, Y H:i') }}</td>
-                                                            <td>{{ $log->variant->name }}</td>
+                                                            <td>{{ $log->variant->name ? $log->variant->name .' ('. $log->variant->sku .') ' : 'N/A' }}</td>
                                                             <td class="{{ $log->quantity_change > 0 ? 'text-success' : 'text-danger' }}">
                                                                 {{ $log->quantity_change > 0 ? '+' : '' }}{{ $log->quantity_change }}
                                                             </td>
