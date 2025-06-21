@@ -6,19 +6,15 @@
     <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
     <style>
-        /* Base Styles */
         .pos-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
             height: auto;
         }
-        
         .product-area, .cart-container {
             width: 100%;
         }
-        
-        /* Product Grid */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -28,12 +24,11 @@
             background: #f8f9fa;
             border-radius: 5px;
             max-height: 400px;
-        }
-        
+        }        
         .product-card {
             background: white;
             border-radius: 5px;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -42,21 +37,16 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-        }
-        
+        }        
         .product-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
+        }        
         .product-card img {
             max-width: 100%;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 5px;
+            width:100%;
+            height:150px
         }
-        
-        /* Cart Area */
         .cart-container {
             background: white;
             border-radius: 5px;
@@ -64,15 +54,13 @@
             display: flex;
             flex-direction: column;
             height: auto;
-        }
-        
+        }        
         .cart-items {
             flex-grow: 1;
             overflow-y: auto;
             margin-bottom: 15px;
             max-height: 300px;
-        }
-        
+        }        
         .cart-item {
             display: flex;
             justify-content: space-between;
@@ -80,115 +68,91 @@
             border-bottom: 1px solid #eee;
             flex-wrap: wrap;
             gap: 5px;
-        }
-        
+        }        
         .cart-item-controls {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-        }
-        
+        }        
         .cart-item-controls input {
             width: 50px;
             text-align: center;
             margin: 0 5px;
         }
-        
-        /* Responsive Layout */
         @media (min-width: 992px) {
             .pos-container {
                 flex-direction: row;
-                /* height: calc(100vh - 180px); */
-            }
-            
+            }            
             .product-area {
                 width: 70%;
-            }
-            
+            }            
             .cart-container {
                 width: 30%;
                 height: 100%;
-            }
-            
+            }            
             .product-grid {
                 max-height: calc(100vh - 280px);
-            }
-            
+            }            
             .cart-items {
                 max-height: calc(100vh - 550px);
             }
-        }
-        
+        }        
         @media (max-width: 768px) {
             .product-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-            
+            }            
             .payment-methods, .quick-cash-buttons {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            
+            }            
             .category-tabs {
                 overflow-x: auto;
                 white-space: nowrap;
                 display: block;
                 padding-bottom: 5px;
-            }
-            
+            }            
             .category-tab {
                 display: inline-block;
             }
-        }
-        
+        }        
         @media (max-width: 576px) {
             .product-grid {
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            }
-            
+            }            
             .cart-item {
                 flex-direction: column;
-            }
-            
+            }            
             .cart-item-controls {
                 justify-content: flex-end;
-            }
-            
+            }            
             .product-card img {
                 height: 50px;
-            }
-            
+            }            
             .product-name {
                 font-size: 0.9rem;
             }
         }
-        
-        /* Common Styles */
         .category-tabs {
             display: flex;
             margin-bottom: 10px;
             border-bottom: 1px solid #ddd;
             flex-wrap: nowrap;
-        }
-        
+        }        
         .category-tab {
             padding: 8px 15px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
             white-space: nowrap;
-        }
-        
+        }        
         .category-tab.active {
             border-bottom: 2px solid #0d6efd;
             color: #0d6efd;
-        }
-        
+        }        
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 5px;
             margin: 10px 0;
-        }
-        
+        }        
         .payment-method-btn {
             padding: 8px;
             text-align: center;
@@ -199,21 +163,18 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-        
+        }        
         .payment-method-btn.active {
             background: #0d6efd;
             color: white;
             border-color: #0d6efd;
-        }
-        
+        }        
         .quick-cash-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 5px;
             margin: 10px 0;
-        }
-        
+        }        
         .quick-cash-btn {
             padding: 8px;
             text-align: center;
@@ -221,35 +182,26 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             cursor: pointer;
-        }
-        
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
+        }  
+        ::-webkit-scrollbar {/* Scrollbar styling */
             width: 8px;
             height: 8px;
-        }
-        
+        }        
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 10px;
-        }
-        
+        }        
         ::-webkit-scrollbar-thumb {
             background: #c1c1c1;
             border-radius: 10px;
-        }
-        
+        }        
         ::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
         }
-
-
-        /* Updated Category Tabs Styles */
-            .category-tabs-container {
+            .category-tabs-container { /* Updated Category Tabs Styles */
                 position: relative;
                 margin-bottom: 15px;
-            }
-            
+            }            
             .category-tabs {
                 display: flex;
                 overflow-x: auto;
@@ -257,12 +209,10 @@
                 -ms-overflow-style: none; /* IE/Edge */
                 padding-bottom: 5px;
                 margin-bottom: -5px; /* Compensate for padding */
-            }
-            
+            }        
             .category-tabs::-webkit-scrollbar {
                 display: none; /* Chrome/Safari */
-            }
-            
+            }            
             .category-tab {
                 flex: 0 0 auto;
                 padding: 8px 15px;
@@ -270,15 +220,12 @@
                 border-bottom: 2px solid transparent;
                 white-space: nowrap;
                 position: relative;
-            }
-            
+            }            
             .category-tab.active {
                 border-bottom: 2px solid #0d6efd;
                 color: #0d6efd;
             }
-            
-            /* Navigation arrows for foldable devices */
-            .category-nav-arrow {
+            .category-nav-arrow { /* Navigation arrows for foldable devices */
                 position: absolute;
                 top: 0;
                 bottom: 0;
@@ -291,36 +238,29 @@
                 z-index: 10;
                 opacity: 0;
                 transition: opacity 0.3s;
-            }
-            
+            }            
             .category-nav-arrow.left {
                 left: 0;
                 background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }
-            
+            }            
             .category-nav-arrow.right {
                 right: 0;
                 background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }
-            
+            }            
             .category-tabs-container:hover .category-nav-arrow {
                 opacity: 1;
-            }
-            
-            /* Responsive adjustments */
-            @media (max-width: 1200px) {
+            }                        
+            @media (max-width: 1200px) {/* Responsive adjustments */
                 .category-tab {
                     padding: 8px 12px;
                     font-size: 0.9rem;
                 }
-            }
-            
+            }            
             @media (max-width: 768px) {
                 .category-tab {
                     padding: 8px 10px;
                     font-size: 0.85rem;
-                }
-                
+                }                
                 .category-nav-arrow {
                     opacity: 1; /* Always show on mobile */
                     width: 25px;
@@ -361,14 +301,9 @@
                                     <div class="barcode-scanner mb-3">
                                         <div class="input-group">
                                             <input type="text" id="barcodeInput" class="form-control" placeholder="Scan barcode or search product..." autofocus>
-                                            <button class="btn btn-outline-secondary" type="button" id="searchProductBtn">
-                                                <i class="las la-search"></i>
-                                            </button>
+                                            <button class="btn btn-outline-secondary" type="button" id="searchProductBtn"><i class="las la-search"></i></button>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Category Tabs -->
-
                                     <div class="category-tabs-container">
                                         <div class="category-nav-arrow left">
                                             <i class="las la-angle-left"></i>
@@ -383,14 +318,12 @@
                                             <i class="las la-angle-right"></i>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Product Grid -->
                                     <div class="product-grid" id="productGrid">
                                         @foreach($products as $product)
                                             <div class="product-card" data-product-id="{{ $product->id }}" 
                                                 data-variants="{{ $product->variants->count() > 1 ? 'true' : 'false' }}">
                                                 @if($product->image_paths)
-                                                    <img src="{{ json_decode($product->image_paths)[0] ?? asset('Backend/assets/images/brake_system.jpg') }}" alt="{{ $product->name }}">
+                                                    <img src="{{ json_decode('Backend/'.$product->image_paths)[0] ?? asset('Backend/assets/images/brake_system.jpg') }}" alt="{{ $product->name }}">
                                                 @else
                                                     <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" alt="{{ $product->name }}">
                                                 @endif
@@ -404,10 +337,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                
-                                <!-- Cart & Payment Area -->
                                 <div class="cart-container">
-                                    <!-- Customer Selection -->
                                     <div class="mb-3">
                                         <select id="customerSelect" class="form-control">
                                             <option value="0">Walk-in Customer</option>
@@ -415,17 +345,11 @@
                                                 <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
                                             @endforeach
                                         </select>
-                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addCustomerBtn">
-                                            <i class="las la-user-plus"></i> New Customer
-                                        </button>
-                                    </div>
-                                    
-                                    <!-- Cart Items -->
+                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addCustomerBtn"><i class="las la-user-plus"></i> New Customer</button>
+                                    </div>                                    
                                     <div class="cart-items" id="cartItems">
                                         <div class="text-muted text-center py-5">Your cart is empty</div>
-                                    </div>
-                                    
-                                    <!-- Cart Summary -->
+                                    </div>                                
                                     <div class="cart-summary">
                                         <div class="summary-row">
                                             <span>Subtotal:</span>
@@ -446,34 +370,26 @@
                                             <span>Total:</span>
                                             <span id="cartTotal">Rs 0.00</span>
                                         </div>
-                                        
-                                        <!-- Payment Methods -->
-                                        <div class="payment-methods">
+                                        <div class="payment-methods"><!-- Payment Methods -->
                                             @foreach($paymentMethods as $method)
                                                 <div class="payment-method-btn" data-method-id="{{ $method->id }}">
                                                     {{ $method->name }}
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <input type="hidden" name="payment_method_id" id="paymentMethodId">
-                                        
-                                        <!-- Payment Reference -->
-                                        <div class="mb-3">
+                                        <input type="hidden" name="payment_method_id" id="paymentMethodId"> 
+                                        <div class="mb-3"><!-- Payment Reference -->
                                             <label>Payment Reference</label>
                                             <input type="text" class="form-control" name="payment_reference" id="paymentReference" placeholder="Optional reference">
                                         </div>
-                                        
-                                        <!-- Amount Paid -->
-                                        <div class="mb-3">
+                                        <div class="mb-3"><!-- Amount Paid -->
                                             <label>Amount Paid</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">Rs</span>
                                                 <input type="number" step="0.01" min="0" class="form-control" name="amount_paid" id="amountPaid" value="0">
                                             </div>
                                         </div>
-                                        
-                                        <!-- Quick Cash Buttons -->
-                                        <div class="quick-cash-buttons">
+                                        <div class="quick-cash-buttons"><!-- Quick Cash Buttons -->
                                             <button type="button" class="quick-cash-btn" data-amount="500">500</button>
                                             <button type="button" class="quick-cash-btn" data-amount="1000">1000</button>
                                             <button type="button" class="quick-cash-btn" data-amount="2000">2000</button>
@@ -481,21 +397,15 @@
                                             <button type="button" class="quick-cash-btn" data-amount="10000">10000</button>
                                             <button type="button" class="quick-cash-btn" data-amount="total">Exact</button>
                                         </div>
-                                        
-                                        <!-- Change Due -->
-                                        <div class="summary-row mb-3">
+                                        <div class="summary-row mb-3"> <!-- Change Due -->
                                             <span>Change Due:</span>
                                             <span id="changeDue">Rs 0.00</span>
                                         </div>
-                                        
-                                        <!-- Notes -->
-                                        <div class="mb-3">
+                                        <div class="mb-3"><!-- Notes -->
                                             <label>Notes</label>
                                             <textarea name="notes" class="form-control" rows="2"></textarea>
                                         </div>
-                                        
-                                        <!-- Action Buttons -->
-                                        <div class="d-grid gap-2">
+                                        <div class="d-grid gap-2"><!-- Action Buttons -->
                                             <button type="button" class="btn btn-danger" id="clearCartBtn">
                                                 <i class="las la-trash"></i> Clear
                                             </button>
@@ -506,36 +416,28 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Hidden fields for cart items -->
-                            <div id="cartItemsData"></div>
+                            <div id="cartItemsData"></div> <!-- Hidden fields for cart items -->
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Variant Selection Modal -->
-    <div class="modal fade" id="variantModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="variantModal" tabindex="-1" aria-hidden="true"> <!-- Variant Selection Modal -->
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Select Variant</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="variantModalBody">
-                    <!-- Variant options will be loaded here -->
-                </div>
+                <div class="modal-body" id="variantModalBody"><!-- Variant options will be loaded here --></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- New Customer Modal -->
-    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true"> <!-- New Customer Modal -->
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -569,7 +471,6 @@
     </div>
 
     @push('js')
-        <!-- Backend Bundle JavaScript -->
         <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
         <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
         <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
@@ -581,12 +482,10 @@
             const cart = {
                 items: [],
                 addItem: function(productId, variantId, quantity = 1, price, costPrice, name, variantName) {
-                    // Convert prices to numbers if they're strings
-                    price = typeof price === 'string' ? parseFloat(price) : price;
-                    costPrice = typeof costPrice === 'string' ? parseFloat(costPrice) : costPrice;
+                    price = typeof price === 'string' ? parseFloat(price) : price; // Convert prices to numbers if they're strings
+                    costPrice = typeof costPrice === 'string' ? parseFloat(costPrice) : costPrice;                    
                     
-                    // Check if item already exists in cart
-                    const existingItem = this.items.find(item => 
+                    const existingItem = this.items.find(item =>  // Check if item already exists in cart
                         item.productId === productId && item.variantId === variantId
                     );
                     
@@ -628,7 +527,6 @@
                     
                     this.items.forEach(item => {
                         subtotal += item.price * item.quantity;
-                        // Add tax calculation if needed
                     });
                     
                     const discount = parseFloat($('#cartDiscount').val()) || 0;
@@ -637,8 +535,7 @@
                     return { subtotal, tax, discount, total };
                 },
                 updateCart: function() {
-                    // Update cart UI
-                    const cartItemsEl = $('#cartItems');
+                    const cartItemsEl = $('#cartItems');// Update cart UI
                     
                     if (this.items.length === 0) {
                         cartItemsEl.html('<div class="text-muted text-center py-5">Your cart is empty</div>');
@@ -672,46 +569,37 @@
                                 </div>
                             `;
                         });
-                        
                         cartItemsEl.html(html);
                     }
                     
-                    // Update totals
-                    const totals = this.calculateTotals();
+                    const totals = this.calculateTotals();// Update totals
                     $('#cartSubtotal').text('Rs ' + totals.subtotal.toFixed(2));
                     $('#cartTax').text('Rs ' + totals.tax.toFixed(2));
                     $('#cartTotal').text('Rs ' + totals.total.toFixed(2));
                     
-                    // Update hidden form fields
-                    $('#formSubtotal').val(totals.subtotal);
+                    $('#formSubtotal').val(totals.subtotal);// Update hidden form fields
                     $('#formTaxAmount').val(totals.tax);
                     $('#formDiscountAmount').val(totals.discount);
                     $('#formTotalAmount').val(totals.total);
                     
-                    // Update amount paid if set to "total"
-                    if ($('#amountPaid').val() === $('#cartTotal').text().replace('Rs ', '')) {
+                    if ($('#amountPaid').val() === $('#cartTotal').text().replace('Rs ', '')) { // Update amount paid if set to "total"
                         $('#amountPaid').val(totals.total.toFixed(2));
                         this.updateChangeDue();
                     } else {
                         this.updateChangeDue();
                     }
-                    
-                    // Update hidden fields for form submission
-                    this.updateFormData();
+                    this.updateFormData();// Update hidden fields for form submission
                 },
                 updateChangeDue: function() {
                     const total = parseFloat($('#cartTotal').text().replace('Rs ', '')) || 0;
                     const amountPaid = parseFloat($('#amountPaid').val()) || 0;
-                    const changeDue = Math.max(0, amountPaid - total);
-                    
+                    const changeDue = Math.max(0, amountPaid - total);                    
                     $('#changeDue').text('Rs ' + changeDue.toFixed(2));
                 },
                 updateFormData: function() {
-                    // Update customer ID
-                    $('#formCustomerId').val($('#customerSelect').val());
+                    $('#formCustomerId').val($('#customerSelect').val());// Update customer ID                    
                     
-                    // Update cart items data
-                    let itemsHtml = '';
+                    let itemsHtml = ''; // Update cart items data
                     this.items.forEach((item, index) => {
                         itemsHtml += `
                             <input type="hidden" name="items[${index}][product_id]" value="${item.productId}">
@@ -723,15 +611,11 @@
                             <input type="hidden" name="items[${index}][discount_rate]" value="0">
                         `;
                     });
-                    
                     $('#cartItemsData').html(itemsHtml);
                 }
             };
-            
-            // Initialize POS functionality
-            function initPOS() {
-                // Product card click handler on page relod show product variant model
-                $('.product-card').on('click', function() {
+            function initPOS() {        // Initialize POS functionality         
+                $('.product-card').on('click', function() {// Product card click handler on page relod show product variant model
 
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('variants');
@@ -752,7 +636,7 @@
                                         <div class="d-flex justify-content-between align-items-center p-2 border rounded">
                                             <div>
                                                 <strong>${variant.name}</strong>
-                                                <div class="small">SKU: ${variant.sku}</div>
+                                                <div class="small" style="font-size:20px"> ${variant.sku}</div>
                                             </div>
                                             <div>
                                                 <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
@@ -762,11 +646,9 @@
                                     </div>
                                 `;
                             });
-                            
                             $('#variantModalBody').html(modalBody);
                             
-                            // Initialize and show modal
-                            var modal = new bootstrap.Modal(document.getElementById('variantModal'));
+                            var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
                             modal.show();
                             
                         }).fail(function(error) {
@@ -776,8 +658,7 @@
                         const productName = $(this).find('.product-name').text();
                         const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
                         
-                        // Get product details via API to ensure we have cost price
-                        $.get(`/products/${productId}`, function(product) {
+                        $.get(`/products/${productId}`, function(product) {// Get product details via API to ensure we have cost price
                             const variant = product.variants[0];
                             cart.addItem(
                                 productId, 
@@ -792,8 +673,7 @@
                     }
                 });
                 
-                // Variant selection in modal
-                $(document).on('click', '.variant-option', function() {
+                $(document).on('click', '.variant-option', function() { // Variant selection in modal
                     cart.addItem(
                         $(this).data('product-id'),
                         $(this).data('variant-id'),
@@ -806,8 +686,7 @@
                     $('#variantModal').modal('hide');
                 });
                 
-                // Cart item controls
-                $(document).on('click', '.remove-item', function() {
+                $(document).on('click', '.remove-item', function() { // Cart item controls
                     const index = $(this).closest('.cart-item').data('index');
                     cart.removeItem(index);
                 });
@@ -817,62 +696,45 @@
                     const currentQty = parseInt($(this).siblings('.quantity-input').val());
                     cart.updateQuantity(index, currentQty + 1);
                 });
-                
                 $(document).on('click', '.decrement', function() {
                     const index = $(this).closest('.cart-item').data('index');
                     const currentQty = parseInt($(this).siblings('.quantity-input').val());
                     cart.updateQuantity(index, currentQty - 1);
                 });
-                
                 $(document).on('change', '.quantity-input', function() {
                     const index = $(this).closest('.cart-item').data('index');
                     const newQty = parseInt($(this).val());
                     cart.updateQuantity(index, newQty);
                 });
-                
-                // Clear cart button
-                $('#clearCartBtn').on('click', function() {
+                $('#clearCartBtn').on('click', function() {// Clear cart button
                     if (confirm('Are you sure you want to clear the cart?')) {
                         cart.clear();
                     }
                 });
-                
-                // Discount input
-                $('#cartDiscount').on('change', function() {
+                $('#cartDiscount').on('change', function() {// Discount input
                     cart.updateCart();
                 });
-                
-                // Amount paid input
-                $('#amountPaid').on('input', function() {
+                $('#amountPaid').on('input', function() {// Amount paid input
                     cart.updateChangeDue();
                 });
-                
-                // Quick cash buttons
-                $('.quick-cash-btn').on('click', function() {
+                $('.quick-cash-btn').on('click', function() {// Quick cash buttons
                     const amount = $(this).data('amount');
-                    
                     if (amount === 'total') {
                         $('#amountPaid').val($('#cartTotal').text().replace('Rs ', ''));
                     } else {
                         const currentAmount = parseFloat($('#amountPaid').val()) || 0;
                         $('#amountPaid').val(currentAmount + parseFloat(amount));
                     }
-                    
                     cart.updateChangeDue();
-                });
-                
-                // Payment method selection
-                $('.payment-method-btn').on('click', function() {
+                });    
+                $('.payment-method-btn').on('click', function() { // Payment method selection
                     $('.payment-method-btn').removeClass('active');
                     $(this).addClass('active');
                     $('#paymentMethodId').val($(this).data('method-id'));
                 });
-                
-                // Barcode scanner input
-                $('#barcodeInput').on('keypress', function(e) {
+                $('#barcodeInput').on('keypress', function(e) { // Barcode scanner input
                     if (e.which === 13) { // Enter key
                         const barcode = $(this).val().trim();
-                        
                         if (barcode) {
                             $.get(`/products/barcode/${barcode}`, function(productVariant) {
                                 if (productVariant) {
@@ -895,9 +757,7 @@
                         }
                     }
                 });
-                
-                // Search product button
-                $('#searchProductBtn').on('click', function() {
+                $('#searchProductBtn').on('click', function() { // Search product button
                     const searchTerm = $('#barcodeInput').val().trim();
                     
                     if (searchTerm) {
@@ -914,7 +774,7 @@
                                     html += `
                                         <div class="product-card" data-product-id="${product.id}" 
                                             data-variants="${hasVariants ? 'true' : 'false'}">
-                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : '/images/default-product.png'}" 
+                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'Backend/assets/images/brake_system.jpg'}" 
                                                 alt="${product.name}">
                                             <div class="product-name">${product.name}</div>
                                             ${hasVariants ? 
@@ -923,20 +783,16 @@
                                         </div>
                                     `;
                                 });
-                            }
-                            
+                            }                            
                             $('#productGrid').html(html);
                             $('#barcodeInput').val('');
-                            
-                            // Rebind click events for new product cards
-                            $('.product-card').on('click', function() {
+                            $('.product-card').on('click', function() {// Rebind click events for new product cards
                                 alert('new Product')
                                 const productId = $(this).data('product-id');
                                 const hasVariants = $(this).data('variants');
                                 
                                 if (hasVariants) {
-                                    // Show variant selection modal
-                                    $.get(`/products/${productId}/variants_data`, function(variants) {
+                                    $.get(`/products/${productId}/variants_data`, function(variants) {// Show variant selection modal
                                         let modalBody = '';
                                         
                                         variants.forEach(variant => {
@@ -965,13 +821,11 @@
                                         $('#variantModalBody').html(modalBody);
                                         $('#variantModal').modal('show');
                                     });
-                                } else {
-                                    // Add directly to cart (single variant)
-                                    const productName = $(this).find('.product-name').text();
+                                } else {                                    
+                                    const productName = $(this).find('.product-name').text();// Add directly to cart (single variant)
                                     const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
                                     
-                                    // Get product details via API to ensure we have cost price
-                                    $.get(`/products/${productId}`, function(product) {
+                                    $.get(`/products/${productId}`, function(product) {// Get product details via API to ensure we have cost price
                                         const variant = product.variants[0];
                                         cart.addItem(
                                             productId, 
@@ -989,33 +843,25 @@
                     }
                 });
                 
-                // Category tabs
-                $('.category-tab').on('click', function() {
+                $('.category-tab').on('click', function() {// Category tabs
 
                     $('.category-tab').removeClass('active');
                     $(this).addClass('active');
-                    
-                    const categoryId = $(this).data('category-id');
-                    
+                    const categoryId = $(this).data('category-id');                    
                     if (categoryId) {
                         $.get(`/categories/${categoryId}/products`, function(products) {
                             updateProductGrid(products);
                         });
                     } else {
-                        // Show all products
-                        $.get('/products', function(products) {
+                        $.get('/pos_products', function(products) {// Show all products
                             updateProductGrid(products);
                         });
                     }
                 });
-                
-                // Add customer button
-                $('#addCustomerBtn').on('click', function() {
+                $('#addCustomerBtn').on('click', function() { // Add customer button
                     $('#customerModal').modal('show');
                 });
-                
-                // Save customer button
-                $('#saveCustomerBtn').on('click', function() {
+                $('#saveCustomerBtn').on('click', function() {// Save customer button
                     const customerData = {
                         name: $('#newCustomerName').val(),
                         phone: $('#newCustomerPhone').val(),
@@ -1023,37 +869,29 @@
                         address: $('#newCustomerAddress').val(),
                         tenant_id: {{ auth()->user()->tenant_id }}
                     };
-                    
                     if (!customerData.name || !customerData.phone) {
                         alert('Name and phone are required');
                         return;
                     }
-                    
-                    $.post('/customers', customerData, function(response) {
-                        // Add new customer to dropdown
-                        $('#customerSelect').append(
+                    $.post('/customers', customerData, function(response) {                        
+                        $('#customerSelect').append( // Add new customer to dropdown
                             `<option value="${response.id}">${response.name} (${response.phone})</option>`
                         ).val(response.id);
-                        
-                        // Clear form
-                        $('#newCustomerName').val('');
+                        $('#newCustomerName').val(''); // Clear form
                         $('#newCustomerPhone').val('');
                         $('#newCustomerEmail').val('');
                         $('#newCustomerAddress').val('');
-                        
                         $('#customerModal').modal('hide');
                     }).fail(function() {
                         alert('Error saving customer');
                     });
                 });
                 
-                // Customer select change
-                $('#customerSelect').on('change', function() {
+                $('#customerSelect').on('change', function() { // Customer select change
                     $('#formCustomerId').val($(this).val());
                 });
                 
-                // Form submission
-                $('#posForm').on('submit', function(e) {
+                $('#posForm').on('submit', function(e) { // Form submission
                     if (cart.items.length === 0) {
                         e.preventDefault();
                         alert('Please add items to the cart before completing the sale');
@@ -1066,8 +904,7 @@
                         return;
                     }
                     
-                    // Debug: Log form data before submission
-                    const formData = new FormData(this);
+                    const formData = new FormData(this); // Debug: Log form data before submission
                     const formDataObj = {};
                     formData.forEach((value, key) => {
                         formDataObj[key] = value;
@@ -1085,21 +922,17 @@
                     }
                 });
             }
-            
             function updateProductGrid(products) {
-                let html = '';
-                
+                console.log(products);
+                let html = '';                
                 if (products.length === 0) {
                     html = '<div class="text-muted text-center py-5">No products found in this category</div>';
                 } else {
                     products.forEach(product => {
-                        // Check if product has any variants at all
-                        const hasAnyVariants = product.variants && product.variants.length > 0;
-                        // Check if product has multiple variants (for modal)
-                        const hasMultipleVariants = hasAnyVariants && product.variants.length > 1;
+                        const hasAnyVariants = product.variants && product.variants.length > 0;  // Check if product has any variants at all                       
+                        const hasMultipleVariants = hasAnyVariants && product.variants.length > 1; // Check if product has multiple variants (for modal)
                         
-                        // Price display logic
-                        let priceDisplay = '';
+                        let priceDisplay = ''; // Price display logic
                         if (hasAnyVariants && !hasMultipleVariants) {
                             priceDisplay = `Rs ${product.variants[0].selling_price.toFixed(2)}`;
                         } else if (!hasAnyVariants) {
@@ -1110,7 +943,7 @@
                             <div class="product-card" data-product-id="${product.id}" 
                                 data-has-variants="${hasAnyVariants ? 'true' : 'false'}"
                                 data-multiple-variants="${hasMultipleVariants ? 'true' : 'false'}">
-                                <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : '/images/default-product.png'}" 
+                                <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'Backend/assets/images/download.jpeg'}" 
                                     alt="${product.name}">
                                 <div class="product-name">${product.name}</div>
                                 ${hasMultipleVariants ? 
@@ -1122,16 +955,13 @@
                 }
                 
                 $('#productGrid').html(html);
-                
-                // Rebind click events for new product cards
-                $('.product-card').on('click', function() {
+                $('.product-card').on('click', function() { // Rebind click events for new product cards
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('has-variants');
                     const hasMultipleVariants = $(this).data('multiple-variants');
                     
                     if (hasMultipleVariants) {
-                        // Show variant selection modal for products with multiple variants
-                        $.get(`/products/${productId}/variants_data`, function(variants) {
+                        $.get(`/products/${productId}/variants_data`, function(variants) { // Show variant selection modal for products with multiple variants
                             if (variants && variants.length > 0) {
                                 let modalBody = '';
                                 
@@ -1157,11 +987,8 @@
                                         </div>
                                     `;
                                 });
-                                
                                 $('#variantModalBody').html(modalBody);
-                                
-                                // Initialize and show modal
-                                var modal = new bootstrap.Modal(document.getElementById('variantModal'));
+                                var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
                                 modal.show();
                             } else {
                                 alert('No variants found for this product');
@@ -1171,13 +998,11 @@
                             alert('Error loading variants');
                         });
                     } else if (hasVariants) {
-                        // Single variant case - add directly to cart
-                        const productName = $(this).find('.product-name').text();
+                        const productName = $(this).find('.product-name').text(); // Single variant case - add directly to cart
                         const priceText = $(this).find('.product-price').text();
                         const price = parseFloat(priceText.replace('Rs ', '')) || 0;
                         
-                        // Get product details via API
-                        $.get(`/products/${productId}`, function(product) {
+                        $.get(`/products/${productId}`, function(product) {  // Get product details via API
                             if (product.variants && product.variants.length === 1) {
                                 const variant = product.variants[0];
                                 cart.addItem(
@@ -1190,8 +1015,7 @@
                                     variant.name
                                 );
                             } else {
-                                // Fallback for unexpected cases
-                                cart.addItem(
+                                cart.addItem(// Fallback for unexpected cases
                                     productId, 
                                     null, 
                                     1, 
@@ -1202,8 +1026,7 @@
                                 );
                             }
                         }).fail(function() {
-                            // Fallback if API fails
-                            cart.addItem(
+                            cart.addItem( // Fallback if API fails
                                 productId, 
                                 null, 
                                 1, 
@@ -1214,8 +1037,7 @@
                             );
                         });
                     } else {
-                        // No variants case
-                        const productName = $(this).find('.product-name').text();
+                        const productName = $(this).find('.product-name').text(); // No variants case
                         const priceText = $(this).find('.product-price').text();
                         const price = parseFloat(priceText.replace('Rs ', '')) || 0;
                         
@@ -1234,31 +1056,20 @@
             initPOS();
         });
         </script>
-
         <script>
             $(document).ready(function() {
                 const tabsContainer = $('.category-tabs');
                 const leftArrow = $('.category-nav-arrow.left');
                 const rightArrow = $('.category-nav-arrow.right');
-                
-                // Check scroll position on load
-                updateArrowVisibility();
-                
-                // Update arrow visibility on scroll
-                tabsContainer.on('scroll', updateArrowVisibility);
-                
-                // Navigation arrow click handlers
-                leftArrow.on('click', function() {
+                updateArrowVisibility();// Check scroll position on load                
+                tabsContainer.on('scroll', updateArrowVisibility);// Update arrow visibility on scroll                
+                leftArrow.on('click', function() { // Navigation arrow click handlers
                     tabsContainer.animate({scrollLeft: tabsContainer.scrollLeft() - 200}, 300);
                 });
-                
                 rightArrow.on('click', function() {
                     tabsContainer.animate({scrollLeft: tabsContainer.scrollLeft() + 200}, 300);
                 });
-                
-                // Handle window resize
-                $(window).on('resize', updateArrowVisibility);
-                
+                $(window).on('resize', updateArrowVisibility); // Handle window resize
                 function updateArrowVisibility() {
                     const scrollLeft = tabsContainer.scrollLeft();
                     const scrollWidth = tabsContainer[0].scrollWidth;

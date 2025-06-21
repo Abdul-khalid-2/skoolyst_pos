@@ -58,6 +58,7 @@ Route::get('/products/{product}/variants_data', [PosController::class, 'variants
 Route::get('/products/search/{term}', [PosController::class, 'search']);
 Route::get('/products/barcode/{barcode}', [PosController::class, 'barcode']);
 Route::get('/categories/{category}/products', [PosController::class, 'products']);
+Route::get('/pos_products', [PosController::class, 'posProducts']);
 
 Route::resource('sales', SaleController::class);
 Route::post('sales/{sale}/add-payment', [SaleController::class, 'addPayment'])->name('sales.add-payment');
