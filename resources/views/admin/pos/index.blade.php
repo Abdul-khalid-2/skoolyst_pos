@@ -98,7 +98,7 @@
         @media (min-width: 992px) {
             .pos-container {
                 flex-direction: row;
-                height: calc(100vh - 180px);
+                /* height: calc(100vh - 180px); */
             }
             
             .product-area {
@@ -368,13 +368,7 @@
                                     </div>
                                     
                                     <!-- Category Tabs -->
-                                    {{-- <div class="category-tabs">
-                                        <div class="category-tab active" data-category-id="">All Products</div>
-                                        @foreach($categories as $category)
-                                            <div class="category-tab" data-category-id="{{ $category->id }}">{{ $category->name }}</div>
-                                        @endforeach
-                                    </div> --}}
-                                    <!-- Updated Category Tabs HTML -->
+
                                     <div class="category-tabs-container">
                                         <div class="category-nav-arrow left">
                                             <i class="las la-angle-left"></i>
