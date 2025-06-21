@@ -41,7 +41,7 @@
                                     @forelse($inventoryLogs as $log)
                                     <tr>
                                         <td>{{ $log->created_at->format('M d, Y H:i') }}</td>
-                                        <td>{{ $log->variant->name ?? 'N/A' }}</td>
+                                        <td>{{ $log->variant->name ? $log->variant->name .'('. $log->variant->sku .')' : 'N/A' }}</td>
                                         <td>{{ $log->branch->name ?? 'N/A' }}</td>
                                         <td class="{{ $log->quantity_change > 0 ? 'text-success' : 'text-danger' }}">
                                             {{ $log->quantity_change > 0 ? '+' : '' }}{{ $log->quantity_change }}
