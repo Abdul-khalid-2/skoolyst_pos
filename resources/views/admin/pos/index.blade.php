@@ -444,16 +444,27 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="variantModal" tabindex="-1" aria-hidden="true"> <!-- Variant Selection Modal -->
-        <div class="modal-dialog modal-sm">
+
+    <div class="modal fade" id="variantModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Variant</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="variantModalBody"><!-- Variant options will be loaded here --></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <div class="modal-body">
+                    <div class="popup text-left">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Select Variant</h5>
+                            <div class="btn btn-primary" data-dismiss="modal" aria-label="Close">x</div>
+                        </div>
+                        <div class="content create-workform bg-body" >
+                            <div class="py-3" id="variantModalBody">
+                              
+                            </div>
+                            <div class="col-lg-12 mt-4">
+                                <div class="d-flex flex-wrap">
+                                    <div class="btn btn-primary mr-4" data-dismiss="modal">Close</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
