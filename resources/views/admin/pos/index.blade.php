@@ -281,7 +281,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="posForm" action="{{ route('sales.store') }}" method="POST">
+                        <form id="posForm" method="POST">
                             @csrf
                             <input type="hidden" name="invoice_number" value="MD-{{ \Carbon\Carbon::now()->format('Ymd-his') }}">
                             <input type="hidden" name="sale_date" value="{{ date('Y-m-d') }}">
@@ -919,35 +919,85 @@
                     $('#formCustomerId').val($(this).val());
                 });
                 
-                $('#posForm').on('submit', function(e) { // Form submission
+                $('#posForm').on('submit', function(e) {
+                    e.preventDefault();
+                    
                     if (cart.items.length === 0) {
-                        e.preventDefault();
                         alert('Please add items to the cart before completing the sale');
                         return;
                     }
                     
                     if (!$('#paymentMethodId').val()) {
-                        e.preventDefault();
                         alert('Please select a payment method');
                         return;
                     }
                     
-                    const formData = new FormData(this); // Debug: Log form data before submission
-                    const formDataObj = {};
-                    formData.forEach((value, key) => {
-                        formDataObj[key] = value;
-                    });
-                    console.log('Form data being submitted:', formDataObj);
+                    const form = this;
+                    const formData = new FormData(form);
                     
-                    const amountPaid = parseFloat($('#amountPaid').val()) || 0;
-                    const total = parseFloat($('#cartTotal').text().replace('Rs ', '')) || 0;
+                    // Disable the submit button to prevent multiple submissions
+                    $('#completeSaleBtn').prop('disabled', true).html('<i class="las la-spinner la-spin"></i> Processing...');
                     
-                    if (amountPaid < total) {
-                        if (!confirm('Amount paid is less than total. This will create a partial payment. Continue?')) {
-                            e.preventDefault();
-                            return;
+                    $.ajax({
+                        url: $(form).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            $('#completeSaleBtn').prop('disabled', false).html('<i class="las la-check-circle"></i> Complete Sale');
+                            
+                            if (response.success) {
+                                // Clear the cart
+                                cart.clear();
+                                
+                                // Show success message
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sale Completed',
+                                    text: 'Invoice #' + response.invoice_number + ' has been created',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                                
+                                // Inject the invoice HTML into the DOM
+                                $('body').append(response.invoice_html);
+                                
+                                // Show the invoice modal
+                                var invoiceModal = new bootstrap.Modal(document.getElementById('invoiceModal'));
+                                invoiceModal.show();
+                                
+                                
+                                // Remove modal when closed
+                                $('#invoiceModal').on('hidden.bs.modal', function () {
+                                    $(this).remove();
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#completeSaleBtn').prop('disabled', false).html('<i class="las la-check-circle"></i> Complete Sale');
+                            
+                            let errorMessage = 'An error occurred while processing the sale';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            } else if (xhr.responseText) {
+                                try {
+                                    const errorResponse = JSON.parse(xhr.responseText);
+                                    if (errorResponse.message) {
+                                        errorMessage = errorResponse.message;
+                                    }
+                                } catch (e) {
+                                    errorMessage = xhr.responseText;
+                                }
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Sale Failed',
+                                text: errorMessage,
+                            });
                         }
-                    }
+                    });
                 });
             }
             function updateProductGrid(products) {
