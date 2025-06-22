@@ -95,7 +95,7 @@
                                 Morning
                             @elseif(now()->hour < 17)
                                 Afternoon
-                            @else
+                            @elseif(now()->hour < 21)
                                 Evening
                             @endif
                         </h3>
