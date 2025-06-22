@@ -15,7 +15,7 @@ class PosController extends Controller
     public function index()
     {
         $tenantId = auth()->user()->tenant_id;
-        
+
         return view('admin.pos.index', [
             'categories' => Category::where('tenant_id', $tenantId)
                 ->withCount('products')
@@ -80,15 +80,46 @@ class PosController extends Controller
         return $variant ? response()->json($variant) : response()->json(null, 404);
     }
 
+    // public function products(Category $category)
+    // {
+    //     $this->authorizeCategoryAccess($category);
+    //     $products = $category->products()
+    //         ->with('variants')
+    //         ->get();
+
+    //     return response()->json($products);
+    // }
     public function products(Category $category)
     {
         $this->authorizeCategoryAccess($category);
         $products = $category->products()
-            ->with('variants')
-            ->get();
+            ->with(['variants' => function($query) {
+                $query->orderBy('name');
+            }])
+            ->get()
+            ->map(function($product) {
+                // Ensure image_paths is properly formatted
+                if ($product->image_paths) {
+                    try {
+                        $decoded = is_string($product->image_paths) 
+                            ? json_decode($product->image_paths, true) 
+                            : $product->image_paths;
+                        
+                        if (is_array($decoded)) {
+                            $product->image_paths = array_map(function($path) {
+                                return ltrim($path, '/'); // Remove leading slash if exists
+                            }, $decoded);
+                        }
+                    } catch (\Exception $e) {
+                        $product->image_paths = null;
+                    }
+                }
+                return $product;
+            });
 
         return response()->json($products);
     }
+
 
     public function storeCustomer(Request $request)
     {
@@ -130,7 +161,26 @@ class PosController extends Controller
             ->with(['variants' => function ($query) {
                 $query->orderBy('name');
             }])
-            ->get();
+            ->get()
+            ->map(function($product) {
+                // Same image path processing as above
+                if ($product->image_paths) {
+                    try {
+                        $decoded = is_string($product->image_paths) 
+                            ? json_decode($product->image_paths, true) 
+                            : $product->image_paths;
+                        
+                        if (is_array($decoded)) {
+                            $product->image_paths = array_map(function($path) {
+                                return ltrim($path, '/');
+                            }, $decoded);
+                        }
+                    } catch (\Exception $e) {
+                        $product->image_paths = null;
+                    }
+                }
+                return $product;
+            });
 
         return response()->json($products);
     }

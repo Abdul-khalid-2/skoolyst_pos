@@ -17,7 +17,7 @@
         }
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
             overflow-y: auto;
             padding: 10px;
@@ -265,7 +265,7 @@
                     opacity: 1; /* Always show on mobile */
                     width: 25px;
                 }
-            }
+        }
     </style>
     @endpush
 
@@ -309,7 +309,7 @@
                                             <i class="las la-angle-left"></i>
                                         </div>
                                         <div class="category-tabs">
-                                            <div class="category-tab active" data-category-id="">All Products</div>
+                                            <div class="category-tab search_active active" data-category-id="">All Products</div>
                                             @foreach($categories as $category)
                                                 <div class="category-tab" data-category-id="{{ $category->id }}">{{ $category->name }}</div>
                                             @endforeach
@@ -323,9 +323,9 @@
                                             <div class="product-card" data-product-id="{{ $product->id }}" 
                                                 data-variants="{{ $product->variants->count() > 1 ? 'true' : 'false' }}">
                                                 @if($product->image_paths)
-                                                    <img src="{{ json_decode('Backend/'.$product->image_paths)[0] ?? asset('Backend/assets/images/brake_system.jpg') }}" alt="{{ $product->name }}">
+                                                    <img src="{{ json_decode('Backend/'.$product->image_paths)[0] ?? asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
                                                 @else
-                                                    <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" alt="{{ $product->name }}">
+                                                    <img src="{{ asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
                                                 @endif
                                                 <div class="product-name">{{ $product->name }}</div>
                                                 @if($product->variants->count() > 1)
@@ -338,14 +338,35 @@
                                     </div>
                                 </div>
                                 <div class="cart-container">
-                                    <div class="mb-3">
-                                        <select id="customerSelect" class="form-control">
-                                            <option value="0">Walk-in Customer</option>
-                                            @foreach($customers as $customer)
-                                                <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addCustomerBtn"><i class="las la-user-plus"></i> New Customer</button>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Customer</label>
+                                            <div class="input-group">
+                                                <select name="customer_id" id="customerSelect" class="form-control select2-customer">
+                                                    <option value="Walk-in-Customer" selected>Walk-in Customer</option>
+                                                    @foreach($customers as $customer)
+                                                        <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-outline-secondary" id="addCustomCustomer">
+                                                        <i class="las la-user-plus"></i> New Customer
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div id="customCustomerContainer" class="mt-2" style="display: none;">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="custom_customer_name" id="customCustomerName" 
+                                                            class="form-control" placeholder="Customer Name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="custom_customer_phone" id="customCustomerPhone" 
+                                                            class="form-control" placeholder="Phone Number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>                                    
                                     <div class="cart-items" id="cartItems">
                                         <div class="text-muted text-center py-5">Your cart is empty</div>
@@ -759,6 +780,8 @@
                 });
                 $('#searchProductBtn').on('click', function() { // Search product button
                     const searchTerm = $('#barcodeInput').val().trim();
+                    $('.category-tab').removeClass('active');
+                    $('.search_active').addClass('active');
                     
                     if (searchTerm) {
                         $.get(`/products/search/${searchTerm}`, function(products) {
@@ -774,7 +797,7 @@
                                     html += `
                                         <div class="product-card" data-product-id="${product.id}" 
                                             data-variants="${hasVariants ? 'true' : 'false'}">
-                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'Backend/assets/images/brake_system.jpg'}" 
+                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'backend/assets/images/no_image.png'}" 
                                                 alt="${product.name}">
                                             <div class="product-name">${product.name}</div>
                                             ${hasVariants ? 
@@ -807,7 +830,7 @@
                                                     <div class="d-flex justify-content-between align-items-center p-2 border rounded">
                                                         <div>
                                                             <strong>${variant.name}</strong>
-                                                            <div class="small">SKU: ${variant.sku}</div>
+                                                            <div class="small" style="font-size:20px"> ${variant.sku}</div>
                                                         </div>
                                                         <div>
                                                             <div>Rs ${variant.selling_price.toFixed(2)}</div>
@@ -858,33 +881,27 @@
                         });
                     }
                 });
-                $('#addCustomerBtn').on('click', function() { // Add customer button
-                    $('#customerModal').modal('show');
-                });
-                $('#saveCustomerBtn').on('click', function() { // Save customer button
-                    const customerData = {
-                        name: $('#newCustomerName').val(),
-                        phone: $('#newCustomerPhone').val(),
-                        email: $('#newCustomerEmail').val(),
-                        address: $('#newCustomerAddress').val(),
-                        tenant_id: {{ auth()->user()->tenant_id }}
-                    };
-                    if (!customerData.name || !customerData.phone) {
-                        alert('Name and phone are required');
-                        return;
+                $('#addCustomCustomer').click(function() {
+                    $('#customCustomerContainer').toggle();
+                    if ($('#customCustomerContainer').is(':visible')) {
+                        $(this).html('<i class="las la-user-minus"></i> Cancel');
+                        // Set to Walk-in Customer when showing custom fields
+                        $('#customerSelect').val('Walk-in-Customer').trigger('change');
+                    } else {
+                        $(this).html('<i class="las la-user-plus"></i> New Customer');
+                        $('#customCustomerName').val('');
+                        $('#customCustomerPhone').val('');
                     }
-                    $.post('/customers', customerData, function(response) {                        
-                        $('#customerSelect').append( // Add new customer to dropdown
-                            `<option value="${response.id}">${response.name} (${response.phone})</option>`
-                        ).val(response.id);
-                        $('#newCustomerName').val(''); // Clear form
-                        $('#newCustomerPhone').val('');
-                        $('#newCustomerEmail').val('');
-                        $('#newCustomerAddress').val('');
-                        $('#customerModal').modal('hide');
-                    }).fail(function() {
-                        alert('Error saving customer');
-                    });
+                });
+                
+                // When customer is selected, hide custom fields
+                $('#customerSelect').on('change', function() {
+                    if ($(this).val() !== 'Walk-in-Customer') {
+                        $('#customCustomerContainer').hide();
+                        $('#addCustomCustomer').html('<i class="las la-user-plus"></i> New Customer');
+                        $('#customCustomerName').val('');
+                        $('#customCustomerPhone').val('');
+                    }
                 });
                 
                 $('#customerSelect').on('change', function() { // Customer select change
@@ -923,31 +940,48 @@
                 });
             }
             function updateProductGrid(products) {
-                console.log(products);
+                // console.log(products);
                 let html = '';                
                 if (products.length === 0) {
                     html = '<div class="text-muted text-center py-5">No products found in this category</div>';
                 } else {
                     products.forEach(product => {
-                        const hasAnyVariants = product.variants && product.variants.length > 0;  // Check if product has any variants at all                       
-                        const hasMultipleVariants = hasAnyVariants && product.variants.length > 1; // Check if product has multiple variants (for modal)
+                        // Safely check for variants
+                        const variants = product.variants || [];
+                        const hasAnyVariants = variants.length > 0;
+                        const hasMultipleVariants = variants.length > 1;
                         
-                        let priceDisplay = ''; // Price display logic
-                        if (hasAnyVariants && !hasMultipleVariants) {
-                            priceDisplay = `Rs ${product.variants[0].selling_price.toFixed(2)}`;
-                        } else if (!hasAnyVariants) {
-                            priceDisplay = 'Rs 0.00'; // Default for products with no variants
+                        // Handle image path
+                        let imagePath = 'backend/assets/images/no_image.png';
+                        try {
+                            if (product.image_paths) {
+                                const parsedPaths = typeof product.image_paths === 'string' 
+                                    ? JSON.parse(product.image_paths) 
+                                    : product.image_paths;
+                                if (Array.isArray(parsedPaths)) {
+                                    imagePath = parsedPaths[0] || imagePath;
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing image paths:", e);
                         }
-                        
+
+                        // Price display logic
+                        let priceDisplay = 'Rs 0.00';
+                        if (hasAnyVariants && !hasMultipleVariants) {
+                            const price = variants[0].selling_price;
+                            priceDisplay = `Rs ${parseFloat(price).toFixed(2)}`;
+                        }
+
                         html += `
                             <div class="product-card" data-product-id="${product.id}" 
                                 data-has-variants="${hasAnyVariants ? 'true' : 'false'}"
                                 data-multiple-variants="${hasMultipleVariants ? 'true' : 'false'}">
-                                <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'Backend/assets/images/download.jpeg'}" 
-                                    alt="${product.name}">
+                                <img src="${imagePath.startsWith('http') ? imagePath : '/' + imagePath}" 
+                                    alt="${product.name}" onerror="this.src='backend/assets/images/no_image.png'">
                                 <div class="product-name">${product.name}</div>
                                 ${hasMultipleVariants ? 
-                                    `<div class="text-muted small">${product.variants.length} variants</div>` : 
+                                    `<div class="text-muted small">${variants.length} variants</div>` : 
                                     `<div class="product-price">${priceDisplay}</div>`}
                             </div>
                         `;
@@ -955,7 +989,11 @@
                 }
                 
                 $('#productGrid').html(html);
-                $('.product-card').on('click', function() { // Rebind click events for new product cards
+                bindProductCardEvents();
+            }
+
+            function bindProductCardEvents() {
+                $('.product-card').off('click').on('click', function() {
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('has-variants');
                     const hasMultipleVariants = $(this).data('multiple-variants');
@@ -977,7 +1015,7 @@
                                             <div class="d-flex justify-content-between align-items-center p-2 border rounded">
                                                 <div>
                                                     <strong>${variant.name}</strong>
-                                                    <div class="small">SKU: ${variant.sku}</div>
+                                                    <div class="small" style="font-size:20px"> ${variant.sku}</div>
                                                 </div>
                                                 <div>
                                                     <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
