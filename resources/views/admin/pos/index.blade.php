@@ -739,8 +739,12 @@
                     cart.updateQuantity(index, newQty);
                 });
                 $('#clearCartBtn').on('click', function() {// Clear cart button
-                    if (confirm('Are you sure you want to clear the cart?')) {
+                    if (confirm('Are you sure you want to clear form?')) {
                         cart.clear();
+                        document.getElementById('posForm').reset();                            
+                        this.items = [];                            
+                        this.updateCart();
+                        $('#customerSelect').val('Walk-in-Customer').trigger('change');
                     }
                 });
                 $('#cartDiscount').on('change', function() {// Discount input
@@ -950,6 +954,14 @@
                             if (response.success) {
                                 // Clear the cart
                                 cart.clear();
+                                document.getElementById('posForm').reset();
+                                
+                                const newInvoiceNumber = 'MD-' + new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -5);
+                                $('input[name="invoice_number"]').val(newInvoiceNumber);
+
+                                $('#customerSelect').val('Walk-in-Customer').trigger('change');
+                                $('#paymentMethodId').val('');
+                                $('.payment-method-btn').removeClass('active');
                                 
                                 // Show success message
                                 Swal.fire({
@@ -960,16 +972,13 @@
                                     timer: 2000
                                 });
                                 
-                                // Inject the invoice HTML into the DOM
+                                // Inject and show invoice
                                 $('body').append(response.invoice_html);
-                                
-                                // Show the invoice modal
                                 var invoiceModal = new bootstrap.Modal(document.getElementById('invoiceModal'));
                                 invoiceModal.show();
                                 
-                                
                                 // Remove modal when closed
-                                $('#invoiceModal').on('hidden.bs.modal', function () {
+                                $('#invoiceModal').on('hidden.bs.modal', function() {
                                     $(this).remove();
                                 });
                             }
