@@ -91,12 +91,14 @@
                 <div class="card card-transparent card-block card-stretch card-height border-none">
                     <div class="card-body p-0 mt-lg-2 mt-0">
                         <h3 class="mb-3">Hi {{ auth()->user()->name }}, Good 
-                            @if(now()->hour < 12)
+                            @if(now()->hour > 6 && now()->hour <12)
                                 Morning
                             @elseif(now()->hour < 17)
                                 Afternoon
                             @elseif(now()->hour < 21)
                                 Evening
+                            @else
+                                Night
                             @endif
                         </h3>
                         <p class="mb-0 mr-4">Your dashboard gives you views of key performance or business process.</p>
