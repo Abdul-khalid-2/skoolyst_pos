@@ -98,7 +98,7 @@
                             @elseif(now()->hour < 21)
                                 Evening
                             @else
-                                Night
+                                Night see you tommarow
                             @endif
                         </h3>
                         <p class="mb-0 mr-4">Your dashboard gives you views of key performance or business process.</p>
