@@ -26,6 +26,7 @@ use App\Http\Controllers\{
     ExpenseController,
     IncomeController,
     InventoryReportController,
+    PosController,
     SalesReportController,
     TransactionController
 };
@@ -47,12 +48,18 @@ Route::get('/dashboard/revenue-cost', [BackendController::class, 'getRevenueCost
 // Route::get('dashboard', [BackendController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Sales routes
-Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
-    //     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
-    //     Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
-    Route::get('/pos', [SaleController::class, 'pos'])->name('pos.index');
-});
-
+// Route::prefix('sales')->middleware(['auth', 'verified'])->group(function () {
+//     //     Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+//     //     Route::get('/create', [SaleController::class, 'create'])->name('sales.create');
+//     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+// });
+Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+Route::get('/products/{product}/variants_data', [PosController::class, 'variants']);
+Route::get('/products/search/{term}', [PosController::class, 'search']);
+Route::get('/products/barcode/{barcode}', [PosController::class, 'barcode']);
+Route::get('/categories/{category}/products', [PosController::class, 'products']);
+Route::get('/pos_products', [PosController::class, 'posProducts']);
+Route::post('/pos', [PosController::class, 'store'])->name('pos.store');
 
 Route::resource('sales', SaleController::class);
 Route::post('sales/{sale}/add-payment', [SaleController::class, 'addPayment'])->name('sales.add-payment');
@@ -224,6 +231,7 @@ Route::middleware('auth')->group(function () {
 // Website Routes 
 Route::view('/product_details', 'product_details')->name('product_details');
 Route::view('/our_products', 'our_products')->name('our_products');
+
 // branches
 Route::resource('branches', BranchController::class)
     ->middleware(['auth', 'verified']);
