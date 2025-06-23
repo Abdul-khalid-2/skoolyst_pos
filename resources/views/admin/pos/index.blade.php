@@ -1,10 +1,10 @@
 <x-app-layout>
     @push('css')
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend-plugin.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend.css?v=1.0.0') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
     <style>
         .pos-container {
             display: flex;
@@ -323,7 +323,7 @@
                                             <div class="product-card" data-product-id="{{ $product->id }}" 
                                                 data-variants="{{ $product->variants->count() > 1 ? 'true' : 'false' }}">
                                                 @if($product->image_paths)
-                                                    <img src="{{ json_decode('Backend/'.$product->image_paths)[0] ?? asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
+                                                    <img src="{{ json_decode('backend/'.$product->image_paths)[0] ?? asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
                                                 @else
                                                     <img src="{{ asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
                                                 @endif
@@ -503,11 +503,11 @@
     </div>
 
     @push('js')
-        <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
-        <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
-        <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
-        <script async src="{{ asset('Backend/assets/js/chart-custom.js') }}"></script>
-        <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+        <script src="{{ asset('backend/assets/js/backend-bundle.min.js') }}"></script>
+        <script src="{{ asset('backend/assets/js/table-treeview.js') }}"></script>
+        <script src="{{ asset('backend/assets/js/customizer.js') }}"></script>
+        <script async src="{{ asset('backend/assets/js/chart-custom.js') }}"></script>
+        <script src="{{ asset('backend/assets/js/app.js') }}"></script>
         
         <script>
         $(document).ready(function() {

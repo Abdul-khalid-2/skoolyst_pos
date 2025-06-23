@@ -1,11 +1,11 @@
 <x-app-layout>
     @push('css')
-        <link rel="stylesheet" href=" {{ asset('/Backend/assets/css/backend-plugin.min.css') }}">
-        <link rel="stylesheet" href=" {{ asset('/Backend/assets/css/backend.css?v=1.0.0') }}">
-        <link rel="stylesheet" href=" {{ asset('/Backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href=" {{ asset('/backend/assets/css/backend-plugin.min.css') }}">
+        <link rel="stylesheet" href=" {{ asset('/backend/assets/css/backend.css?v=1.0.0') }}">
+        <link rel="stylesheet" href=" {{ asset('/backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet"
-            href=" {{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
-        <link rel="stylesheet" href=" {{ asset('/Backend/assets/vendor/remixicon/fonts/remixicon.css') }}">
+            href=" {{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
+        <link rel="stylesheet" href=" {{ asset('/backend/assets/vendor/remixicon/fonts/remixicon.css') }}">
 
     @endpush
     <div class="container-fluid">
@@ -26,7 +26,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-4 card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-info-light">
-                                        <img src=" {{ asset('/Backend/assets/images/product/1.png') }}"
+                                        <img src=" {{ asset('/backend/assets/images/product/1.png') }}"
                                             class="img-fluid" alt="image">
                                     </div>
                                     <div>
@@ -46,7 +46,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-4 card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-danger-light">
-                                        <img src=" {{ asset('/Backend/assets/images/product/2.png') }}"
+                                        <img src=" {{ asset('/backend/assets/images/product/2.png') }}"
                                             class="img-fluid" alt="image">
                                     </div>
                                     <div>
@@ -66,7 +66,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-4 card-total-sale">
                                     <div class="icon iq-icon-box-2 bg-success-light">
-                                        <img src=" {{ asset('/Backend/assets/images/product/3.png') }}"
+                                        <img src=" {{ asset('/backend/assets/images/product/3.png') }}"
                                             class="img-fluid" alt="image">
                                     </div>
                                     <div>
@@ -162,7 +162,7 @@
                                 <div class="card card-block card-stretch card-height mb-0">
                                     <div class="card-body">
                                         <div class="bg-warning-light rounded">
-                                            <img src=" {{ asset('/Backend/assets/images/product/01.png') }}"
+                                            <img src=" {{ asset('/backend/assets/images/product/01.png') }}"
                                                 class="style-img img-fluid m-auto p-3" alt="image">
                                         </div>
                                         <div class="style-text text-left mt-3">
@@ -176,7 +176,7 @@
                                 <div class="card card-block card-stretch card-height mb-0">
                                     <div class="card-body">
                                         <div class="bg-danger-light rounded">
-                                            <img src=" {{ asset('/Backend/assets/images/product/02.png') }}"
+                                            <img src=" {{ asset('/backend/assets/images/product/02.png') }}"
                                                 class="style-img img-fluid m-auto p-3" alt="image">
                                         </div>
                                         <div class="style-text text-left mt-3">
@@ -190,7 +190,7 @@
                                 <div class="card card-block card-stretch card-height mb-0">
                                     <div class="card-body">
                                         <div class="bg-info-light rounded">
-                                            <img src=" {{ asset('/Backend/assets/images/product/03.png') }}"
+                                            <img src=" {{ asset('/backend/assets/images/product/03.png') }}"
                                                 class="style-img img-fluid m-auto p-3" alt="image">
                                         </div>
                                         <div class="style-text text-left mt-3">
@@ -204,7 +204,7 @@
                                 <div class="card card-block card-stretch card-height mb-0">
                                     <div class="card-body">
                                         <div class="bg-success-light rounded">
-                                            <img src=" {{ asset('/Backend/assets/images/product/02.png') }}"
+                                            <img src=" {{ asset('/backend/assets/images/product/02.png') }}"
                                                 class="style-img img-fluid m-auto p-3" alt="image">
                                         </div>
                                         <div class="style-text text-left mt-3">
@@ -233,7 +233,7 @@
                     <div class="card-body card-item-right">
                         <div class="d-flex align-items-top">
                             <div class="bg-warning-light rounded">
-                                <img src=" {{ asset('/Backend/assets/images/product/04.png') }}"
+                                <img src=" {{ asset('/backend/assets/images/product/04.png') }}"
                                     class="style-img img-fluid m-auto" alt="image">
                             </div>
                             <div class="style-text text-left">
@@ -248,7 +248,7 @@
                     <div class="card-body card-item-right">
                         <div class="d-flex align-items-top">
                             <div class="bg-danger-light rounded">
-                                <img src=" {{ asset('/Backend/assets/images/product/05.png') }}"
+                                <img src=" {{ asset('/backend/assets/images/product/05.png') }}"
                                     class="style-img img-fluid m-auto" alt="image">
                             </div>
                             <div class="style-text text-left">
@@ -379,15 +379,15 @@
     </div>
 
 @push('js')
-    <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/backend-bundle.min.js') }}"></script>
     <!-- Table Treeview JavaScript -->
-    <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/table-treeview.js') }}"></script>
     <!-- Chart Custom JavaScript -->
-    <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/customizer.js') }}"></script>
     <!-- Chart Custom JavaScript -->
-    <script async src="{{ asset('Backend/assets/js/chart-custom.js') }}"></script>
+    <script async src="{{ asset('backend/assets/js/chart-custom.js') }}"></script>
     <!-- app JavaScript -->
-    <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
 @endpush
 
 </x-app-layout>

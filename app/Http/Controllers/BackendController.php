@@ -19,9 +19,9 @@ class BackendController extends Controller
         // 1. Core metrics
         //$totalSales = Sale::where('tenant_id', $tenantId)->sum('total_amount');
         //$totalCost = Sale::with('items')->get()->sum(function ($sale) {
-       //     return $sale->items->sum(function ($item) {
-       //         return $item->quantity * $item->cost_price;
-       //     });
+        //     return $sale->items->sum(function ($item) {
+        //         return $item->quantity * $item->cost_price;
+        //     });
         //});
         //$productsSold = SaleItem::where('tenant_id', $tenantId)->sum('quantity');
         //$profit = $totalSales - $totalCost;
@@ -32,23 +32,23 @@ class BackendController extends Controller
         $today = now()->format('Y-m-d'); // Gets current date in YYYY-MM-DD format
 
         $totalSales = Sale::where('tenant_id', $tenantId)
-                            ->whereDate('sale_date', $today)
-                            ->sum('total_amount');
+            ->whereDate('sale_date', $today)
+            ->sum('total_amount');
 
 
         // Today's total cost (more efficient query)
-        $totalCost = SaleItem::whereHas('sale', function($query) use ($tenantId, $today) {
-                            $query->where('tenant_id', $tenantId)
-                                ->whereDate('sale_date', $today);
-                        })
-                        ->sum(\DB::raw('quantity * cost_price'));
+        $totalCost = SaleItem::whereHas('sale', function ($query) use ($tenantId, $today) {
+            $query->where('tenant_id', $tenantId)
+                ->whereDate('sale_date', $today);
+        })
+            ->sum(\DB::raw('quantity * cost_price'));
 
         // Today's products sold
-        $productsSold = SaleItem::whereHas('sale', function($query) use ($tenantId, $today) {
-                                $query->where('tenant_id', $tenantId)
-                                    ->whereDate('sale_date', $today);
-                            })
-                            ->sum('quantity');
+        $productsSold = SaleItem::whereHas('sale', function ($query) use ($tenantId, $today) {
+            $query->where('tenant_id', $tenantId)
+                ->whereDate('sale_date', $today);
+        })
+            ->sum('quantity');
 
         // Today's profit and margin
         $profit = $totalSales - $totalCost;
@@ -85,7 +85,7 @@ class BackendController extends Controller
                     'total_revenue' => $items->sum('total_price'),
                     'image' => $product->image_paths
                         ? asset('storage/' . json_decode($product->image_paths, true)[0])
-                        : asset('Backend/assets/images/product/04.png')
+                        : asset('backend/assets/images/product/04.png')
                 ];
             })
             ->sortByDesc('total_sold')
@@ -146,7 +146,7 @@ class BackendController extends Controller
                     'total_revenue' => $items->sum('total_price'),
                     'image' => $product->image_paths
                         ? asset('storage/' . json_decode($product->image_paths, true)[0])
-                        : asset('Backend/assets/images/product/04.png')
+                        : asset('backend/assets/images/product/04.png')
                 ];
             })
             ->sortByDesc('total_sold')
@@ -281,7 +281,7 @@ class BackendController extends Controller
                     'total_revenue' => $items->sum('total_price'),
                     'image' => $product->image_paths
                         ? asset('storage/' . json_decode($product->image_paths, true)[0])
-                        : asset('Backend/assets/images/product/04.png')
+                        : asset('backend/assets/images/product/04.png')
                 ];
             })
             ->sortByDesc('total_sold')

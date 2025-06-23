@@ -1,11 +1,11 @@
 <x-app-layout>
 
     @push('css')
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend-plugin.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend.css?v=1.0.0') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
     @endpush
 
 
@@ -53,7 +53,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/01.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/01.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Organic Cream
@@ -90,7 +90,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/02.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/02.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Rain Umbrella
@@ -127,7 +127,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/03.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/03.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Serum Bottle
@@ -164,7 +164,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/04.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/04.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Coffee Beans
@@ -201,7 +201,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/05.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/05.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Book Shelves
@@ -238,7 +238,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/06.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/06.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Dinner Set
@@ -275,7 +275,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/07.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/07.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Nike Shoes
@@ -312,7 +312,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/08.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/08.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Computer Glasses
@@ -349,7 +349,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('Backend/assets/images/table/product/09.jpg')}}"
+                                        <img src="{{ asset('backend/assets/images/table/product/09.jpg')}}"
                                             class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
                                             Alloy Jewel Set
@@ -424,20 +424,20 @@
 
     @push('js')
     <!-- Backend Bundle JavaScript -->
-    <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/backend-bundle.min.js') }}"></script>
 
     <!-- Table Treeview JavaScript -->
-    <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/table-treeview.js') }}"></script>
 
     <!-- Chart Custom JavaScript -->
-    <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/customizer.js') }}"></script>
 
 
     <!-- Chart Custom JavaScript -->
-    <script async src="{{ asset('Backend/assets/js/chart-custom.js') }}"></script>
+    <script async src="{{ asset('backend/assets/js/chart-custom.js') }}"></script>
 
     <!-- app JavaScript -->
-    <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
     @endpush
 </x-app-layout>
 

@@ -79,7 +79,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="h-12 w-auto" src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">&nbsp;&nbsp; <span style="font-size: 30px;color:#0ea5e9;margin-bottom:-2%"> MD-Autos</span> 
+                    <img class="h-12 w-auto" src="{{ asset('backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">&nbsp;&nbsp; <span style="font-size: 30px;color:#0ea5e9;margin-bottom:-2%"> MD-Autos</span> 
                 </div>
                 
                 <!-- Nav items -->
@@ -206,7 +206,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Product 1 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                    <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
+                    <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
                          alt="Engine Parts" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Engine Components</h3>
@@ -221,7 +221,7 @@
                 
                 <!-- Product 2 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                    <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" 
+                    <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
                          alt="Brake System" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Brake System</h3>
@@ -236,7 +236,7 @@
                 
                 <!-- Product 3 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                    <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" 
+                    <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
                          alt="Suspension Parts" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Suspension Parts</h3>
@@ -263,7 +263,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
-                    <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
+                    <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
                          alt="About MD Autos" class="rounded-xl shadow-md w-full">
                 </div>
                 <div class="md:w-1/2">

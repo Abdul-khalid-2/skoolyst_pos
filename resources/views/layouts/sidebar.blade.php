@@ -1,7 +1,7 @@
 <div class="iq-sidebar sidebar-default">
     <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
         <a href="{{ route('admin.dashboard') }}" class="header-logo">
-            <img src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" 
+            <img src="{{ asset('backend/assets/images/MDLogo.jpg') }}" 
                  class="img-fluid rounded-normal light-logo" alt="logo">
             <h5 class="logo-title light-logo ml-3">MD-Autos</h5>
         </a>

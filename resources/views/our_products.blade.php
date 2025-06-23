@@ -196,7 +196,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="h-12 w-auto" src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">&nbsp;&nbsp; <span style="font-size: 30px;color:#0ea5e9;margin-bottom:-2%"> MD-Autos</span> 
+                    <img class="h-12 w-auto" src="{{ asset('backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">&nbsp;&nbsp; <span style="font-size: 30px;color:#0ea5e9;margin-bottom:-2%"> MD-Autos</span> 
                 </div>
                 
                 <!-- Nav items -->
@@ -472,7 +472,7 @@
                         <!-- Product 1 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" alt="Turbocharger" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" alt="Turbocharger" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 right-2">
                                     <span class="bg-secondary-600 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</span>
                                 </div>
@@ -510,7 +510,7 @@
                         <!-- Product 2 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" alt="Brake Pads" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" alt="Brake Pads" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 left-2">
                                     <button class="p-2 bg-white rounded-full shadow-md hover:bg-primary-100 hover:text-primary-600 transition-slow">
                                         <i class="far fa-heart"></i>
@@ -545,7 +545,7 @@
                         <!-- Product 3 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" alt="Shock Absorber" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" alt="Shock Absorber" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 right-2">
                                     <span class="bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded-full">BESTSELLER</span>
                                 </div>
@@ -583,7 +583,7 @@
                         <!-- Product 4 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" alt="Fuel Injector" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" alt="Fuel Injector" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 left-2">
                                     <button class="p-2 bg-white rounded-full shadow-md hover:bg-primary-100 hover:text-primary-600 transition-slow">
                                         <i class="far fa-heart"></i>
@@ -618,7 +618,7 @@
                         <!-- Product 5 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" alt="Air Brake Chamber" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" alt="Air Brake Chamber" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 right-2">
                                     <span class="bg-secondary-600 text-white text-xs font-bold px-2 py-1 rounded-full">SALE</span>
                                 </div>
@@ -659,7 +659,7 @@
                         <!-- Product 6 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" alt="Leaf Spring" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" alt="Leaf Spring" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 left-2">
                                     <button class="p-2 bg-white rounded-full shadow-md hover:bg-primary-100 hover:text-primary-600 transition-slow">
                                         <i class="far fa-heart"></i>
@@ -694,7 +694,7 @@
                         <!-- Product 7 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" alt="Water Pump" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" alt="Water Pump" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 left-2">
                                     <button class="p-2 bg-white rounded-full shadow-md hover:bg-primary-100 hover:text-primary-600 transition-slow">
                                         <i class="far fa-heart"></i>
@@ -729,7 +729,7 @@
                         <!-- Product 8 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" alt="Brake Drum" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" alt="Brake Drum" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 left-2">
                                     <button class="p-2 bg-white rounded-full shadow-md hover:bg-primary-100 hover:text-primary-600 transition-slow">
                                         <i class="far fa-heart"></i>
@@ -764,7 +764,7 @@
                         <!-- Product 9 -->
                         <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-slow">
                             <div class="relative">
-                                <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" alt="Tie Rod End" class="w-full h-48 object-cover">
+                                <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" alt="Tie Rod End" class="w-full h-48 object-cover">
                                 <div class="absolute top-2 right-2">
                                     <span class="bg-secondary-600 text-white text-xs font-bold px-2 py-1 rounded-full">LIMITED</span>
                                 </div>

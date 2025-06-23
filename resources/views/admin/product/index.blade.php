@@ -1,10 +1,10 @@
 <x-app-layout>
     @push('css')
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend-plugin.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/css/backend.css?v=1.0.0') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('Backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css"/>
 
     @endpush
@@ -57,7 +57,7 @@
                                                 $images = json_decode($product->image_paths);
                                                 $firstImage = $images[0] ?? null;
                                             @endphp
-                                            <img src="{{ asset('Backend/'.$firstImage) }}" class="img-fluid rounded avatar-50 mr-3" alt="{{ $product->name }}">
+                                            <img src="{{ asset('backend/'.$firstImage) }}" class="img-fluid rounded avatar-50 mr-3" alt="{{ $product->name }}">
                                         @else
                                             <div class="avatar-50 mr-3 bg-primary rounded-circle d-flex align-items-center justify-content-center">
                                                 <span class="text-white">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
@@ -126,19 +126,19 @@
 
     @push('js')
     <!-- Backend Bundle JavaScript -->
-    <script src="{{ asset('Backend/assets/js/backend-bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/backend-bundle.min.js') }}"></script>
 
     <!-- Table Treeview JavaScript -->
-    <script src="{{ asset('Backend/assets/js/table-treeview.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/table-treeview.js') }}"></script>
 
     <!-- Chart Custom JavaScript -->
-    <script src="{{ asset('Backend/assets/js/customizer.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/customizer.js') }}"></script>
 
     <!-- Chart Custom JavaScript -->
-    <script async src="{{ asset('Backend/assets/js/chart-custom.js') }}"></script>
+    <script async src="{{ asset('backend/assets/js/chart-custom.js') }}"></script>
 
     <!-- app JavaScript -->
-    <script src="{{ asset('Backend/assets/js/app.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
     
     <script>
         $(document).ready(function() {

@@ -97,7 +97,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <img class="h-12 w-auto" src="{{ asset('Backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">
+                    <img class="h-12 w-auto" src="{{ asset('backend/assets/images/MDLogo.jpg') }}" alt="MD Autos Logo">
                 </div>
                 
                 <!-- Nav items -->
@@ -146,20 +146,20 @@
                 <!-- Product Images -->
                 <div class="lg:w-1/2">
                     <div class="bg-white p-4 rounded-xl shadow-sm">
-                        <img id="main-image" src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
+                        <img id="main-image" src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
                              alt="Engine Components" class="w-full h-96 object-contain rounded-lg">
                         
                         <div class="product-gallery">
-                            <img src="{{ asset('Backend/assets/images/Engine_Components.jpg') }}" 
+                            <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
                                  alt="Engine Components" class="border rounded-md h-20 object-cover" 
                                  onclick="changeImage(this.src)">
-                            <img src="{{ asset('Backend/assets/images/engine_part1.jpg') }}" 
+                            <img src="{{ asset('backend/assets/images/engine_part1.jpg') }}" 
                                  alt="Engine Part 1" class="border rounded-md h-20 object-cover" 
                                  onclick="changeImage(this.src)">
-                            <img src="{{ asset('Backend/assets/images/engine_part2.jpg') }}" 
+                            <img src="{{ asset('backend/assets/images/engine_part2.jpg') }}" 
                                  alt="Engine Part 2" class="border rounded-md h-20 object-cover" 
                                  onclick="changeImage(this.src)">
-                            <img src="{{ asset('Backend/assets/images/engine_part3.jpg') }}" 
+                            <img src="{{ asset('backend/assets/images/engine_part3.jpg') }}" 
                                  alt="Engine Part 3" class="border rounded-md h-20 object-cover" 
                                  onclick="changeImage(this.src)">
                         </div>
@@ -496,7 +496,7 @@
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- Related Product 1 -->
                     <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                        <img src="{{ asset('Backend/assets/images/brake_system.jpg') }}" 
+                        <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
                              alt="Brake System" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Brake System Kit</h3>
@@ -522,7 +522,7 @@
                     
                     <!-- Related Product 2 -->
                     <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                        <img src="{{ asset('Backend/assets/images/Suspension_Parts.jpg') }}" 
+                        <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
                              alt="Suspension Parts" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Suspension Kit</h3>
@@ -547,7 +547,7 @@
                     
                     <!-- Related Product 3 -->
                     <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                        <img src="{{ asset('Backend/assets/images/cooling_system.jpg') }}" 
+                        <img src="{{ asset('backend/assets/images/cooling_system.jpg') }}" 
                              alt="Cooling System" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2">Cooling System Kit</h3>
