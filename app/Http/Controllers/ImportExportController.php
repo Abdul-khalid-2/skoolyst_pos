@@ -79,6 +79,13 @@ class ImportExportController extends Controller
                 'products' => $products,
                 'includeVariants' => $includeVariants
             ]);
+
+            // Set options for page breaks
+            $pdf->setOption('margin-top', 10);
+            $pdf->setOption('margin-bottom', 10);
+            $pdf->setOption('margin-left', 10);
+            $pdf->setOption('margin-right', 10);
+
             return $pdf->download($fileName);
         }
 
