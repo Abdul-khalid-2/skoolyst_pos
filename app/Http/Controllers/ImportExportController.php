@@ -32,16 +32,23 @@ class ImportExportController extends Controller
             'import_file' => 'required|file|mimes:csv,txt,xlsx|max:2048'
         ]);
 
+        $file = $request->file('import_file');
+        if (!$file->isValid()) {
+            return back()->with('error', 'Invalid file upload');
+        }
+
         try {
             $import = new ProductsImport();
-            Excel::import($import, $request->file('import_file'));
+            Excel::import($import, $file);
 
             $importedCount = $import->getRowCount();
             $skippedCount = $import->getSkippedCount();
+            $errors = $import->getErrors();
 
             $message = "Successfully imported {$importedCount} products.";
             if ($skippedCount > 0) {
                 $message .= " {$skippedCount} rows were skipped due to errors.";
+                session()->flash('import_errors', $errors);
             }
 
             return redirect()->back()
@@ -108,63 +115,149 @@ class ImportExportController extends Controller
      */
     public function downloadTemplate()
     {
-        $templatePath = storage_path('app/public/templates/products_import_template.csv');
+        $templateDir = storage_path('app/public/templates');
+        $templatePath = $templateDir . '/products_import_template.csv';
 
-        if (!file_exists($templatePath)) {
-            \Storage::makeDirectory('public/templates');
-
-            $headers = [
-                'name',
-                'sku',
-                'barcode',
-                'category',
-                'brand',
-                'supplier',
-                'description',
-                'status',
-                'is_taxable',
-                'track_inventory',
-                'reorder_level',
-                'variant_name',
-                'variant_sku',
-                'variant_barcode',
-                'purchase_price',
-                'selling_price',
-                'current_stock',
-                'unit_type',
-                'weight'
-            ];
-
-            $template = fopen($templatePath, 'w');
-            fputcsv($template, $headers);
-
-            // Add sample data
-            $sampleData = [
-                'Sample Product',
-                'PROD001',
-                '123456789',
-                'Electronics',
-                'Brand A',
-                'Supplier X',
-                'Sample product description',
-                'active',
-                '1',
-                '1',
-                '5',
-                'Variant 1',
-                'PROD001-V1',
-                '987654321',
-                '10.00',
-                '15.00',
-                '100',
-                'pcs',
-                '0.5'
-            ];
-            fputcsv($template, $sampleData);
-
-            fclose($template);
+        if (!file_exists($templateDir)) {
+            if (!mkdir($templateDir, 0755, true)) {
+                return back()->with('error', 'Failed to create templates directory');
+            }
         }
 
-        return response()->download($templatePath)->deleteFileAfterSend(true);
+        $headers = [
+            'name',
+            'sku',
+            'barcode',
+            'category',
+            'brand',
+            'supplier',
+            'description',
+            'status',
+            'is_taxable',
+            'track_inventory',
+            'reorder_level',
+            'variant_name',
+            'variant_sku',
+            'variant_barcode',
+            'purchase_price',
+            'selling_price',
+            'current_stock',
+            'unit_type',
+            'weight'
+        ];
+
+        $sampleProducts = [
+            // Product 1 with 2 variants (category, brand, supplier can be null)
+            [
+                'name' => 'Wireless Earbuds',
+                'sku' => 'WEB-100',
+                'barcode' => '',
+                'category' => '',
+                'brand' => '',
+                'supplier' => '',
+                'description' => 'Premium wireless earbuds with charging case',
+                'status' => 'active',
+                'is_taxable' => '1',
+                'track_inventory' => '1',
+                'reorder_level' => '15',
+                'variant_name' => 'Black',
+                'variant_sku' => 'WEB-100-BK',
+                'variant_barcode' => '',
+                'purchase_price' => '49.99',
+                'selling_price' => '89.99',
+                'current_stock' => '50',
+                'unit_type' => 'pcs',
+                'weight' => '0.1'
+            ],
+            [
+                'name' => 'Wireless Earbuds',
+                'sku' => 'WEB-100',
+                'barcode' => '',
+                'category' => '',
+                'brand' => '',
+                'supplier' => '',
+                'description' => 'Premium wireless earbuds with charging case',
+                'status' => 'active',
+                'is_taxable' => '1',
+                'track_inventory' => '1',
+                'reorder_level' => '15',
+                'variant_name' => 'White',
+                'variant_sku' => 'WEB-100-WH',
+                'variant_barcode' => '',
+                'purchase_price' => '49.99',
+                'selling_price' => '89.99',
+                'current_stock' => '30',
+                'unit_type' => 'pcs',
+                'weight' => '0.1'
+            ],
+
+            // Product 2 with 2 variants (category, brand, supplier can be null)
+            [
+                'name' => 'Bluetooth Speaker',
+                'sku' => 'BTS-200',
+                'barcode' => '',
+                'category' => '',
+                'brand' => '',
+                'supplier' => '',
+                'description' => 'Portable waterproof bluetooth speaker',
+                'status' => 'active',
+                'is_taxable' => '1',
+                'track_inventory' => '1',
+                'reorder_level' => '10',
+                'variant_name' => 'Black',
+                'variant_sku' => 'BTS-200-BK',
+                'variant_barcode' => '',
+                'purchase_price' => '39.99',
+                'selling_price' => '69.99',
+                'current_stock' => '25',
+                'unit_type' => 'pcs',
+                'weight' => '0.5'
+            ],
+            [
+                'name' => 'Bluetooth Speaker',
+                'sku' => 'BTS-200',
+                'barcode' => '',
+                'category' => '',
+                'brand' => '',
+                'supplier' => '',
+                'description' => 'Portable waterproof bluetooth speaker',
+                'status' => 'active',
+                'is_taxable' => '1',
+                'track_inventory' => '1',
+                'reorder_level' => '10',
+                'variant_name' => 'Blue',
+                'variant_sku' => 'BTS-200-BL',
+                'variant_barcode' => '',
+                'purchase_price' => '39.99',
+                'selling_price' => '69.99',
+                'current_stock' => '20',
+                'unit_type' => 'pcs',
+                'weight' => '0.5'
+            ]
+        ];
+
+        try {
+            $file = fopen($templatePath, 'w');
+            if ($file === false) {
+                throw new \Exception("Could not open file for writing");
+            }
+
+            fwrite($file, "\xEF\xBB\xBF"); // UTF-8 BOM
+            fputcsv($file, $headers);
+
+            foreach ($sampleProducts as $product) {
+                fputcsv($file, $product);
+            }
+
+            fclose($file);
+
+            if (!file_exists($templatePath)) {
+                throw new \Exception("File was not created successfully");
+            }
+
+            return response()->download($templatePath)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to create template: ' . $e->getMessage());
+        }
     }
 }
