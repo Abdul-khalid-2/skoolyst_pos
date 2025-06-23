@@ -12,11 +12,17 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-                        <h4 class="mb-3">Supplier List</h4>
-                        <p class="mb-0">Manage all your suppliers and vendors in one place.<br> Track supplier information and manage your procurement process.</p>
+                        <h4 class="mb-3">Backup & Data Management</h4>
+                        <p class="mb-0">Manage your system backups and product data imports/exports</p>
                     </div>
-                    {{-- <a href="{{ route('generate.database') }}" class="btn btn-primary add-list"><i
-                            class="las la-plus mr-3"></i>Generate New Dabase</a> --}}
+                    <div>
+                        <button class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#importModal">
+                            <i class="ri-upload-line mr-1"></i> Import
+                        </button>
+                        <button class="btn btn-outline-success mr-2" data-toggle="modal" data-target="#exportModal">
+                            <i class="ri-download-line mr-1"></i> Export
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -57,6 +63,9 @@
             </div>
         </div>
     </div>
+
+    @include('admin.settings.import')
+    @include('admin.settings.export')
 
     @push('js')
     <!-- Backend Bundle JavaScript -->

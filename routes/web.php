@@ -28,6 +28,7 @@ use App\Http\Controllers\{
     InventoryReportController,
     PosController,
     SalesReportController,
+    ImportExportController,
     TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
@@ -239,6 +240,18 @@ Route::resource('branches', BranchController::class)
 // Business
 Route::resource('businesses', BusinessController::class)
     ->middleware(['auth', 'verified']);
+
+// Import/Export Routes
+Route::prefix('import')->group(function () {
+    Route::get('/products', [ImportExportController::class, 'showImport'])->name('import.products.view');
+    Route::post('/products', [ImportExportController::class, 'import'])->name('import.products');
+    Route::get('/template', [ImportExportController::class, 'downloadTemplate'])->name('import.template');
+});
+
+Route::prefix('export')->group(function () {
+    Route::get('/products', [ImportExportController::class, 'showExport'])->name('export.products.view');
+    Route::post('/products', [ImportExportController::class, 'export'])->name('export.products');
+});
 
 Route::get('/database/backup', [BackupController::class, 'databaseBackup'])->name('database.backup');
 Route::get('/remove/backup/{file}', [BackupController::class, 'removeBackup'])->name('remove.backup');
