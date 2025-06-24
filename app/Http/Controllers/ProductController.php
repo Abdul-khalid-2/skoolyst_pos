@@ -106,7 +106,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        // Delete associated images
+
         if ($product->image_paths) {
             $images = json_decode($product->image_paths);
             foreach ($images as $image) {
