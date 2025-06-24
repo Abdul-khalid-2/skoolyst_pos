@@ -60,15 +60,15 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load([
-            'category', 
-            'brand', 
-            'supplier', 
-            'variants', 
-            'inventoryLogs' => function($query) {
+            'category',
+            'brand',
+            'supplier',
+            'variants',
+            'inventoryLogs' => function ($query) {
                 $query->latest()->with(['variant', 'user']);
             }
         ]);
-        
+
         return view('admin.product.show', compact('product'));
     }
 
@@ -115,6 +115,7 @@ class ProductController extends Controller
         }
 
         $product->delete();
+        $product->variants()->delete();
 
         return redirect()->route('products.index')
             ->with('success', 'Product deleted successfully.');

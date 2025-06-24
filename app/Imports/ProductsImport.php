@@ -97,25 +97,28 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
 
             // Process variant if provided
             if (!empty($row['variant_name'])) {
-                ProductVariant::updateOrCreate(
-                    [
-                        'tenant_id' => $this->tenantId,
-                        'product_id' => $product->id,
-                        'name' => $row['variant_name']
-                    ],
-                    [
-                        'sku' => $row['variant_sku'] ?? $product->sku . '-' . Str::slug($row['variant_name']),
-                        'barcode' => $row['variant_barcode'] ?? null,
-                        'purchase_price' => $this->parseNumber($row['purchase_price'] ?? 0),
-                        'selling_price' => $this->parseNumber($row['selling_price'] ?? 0),
-                        'current_stock' => (int)($row['current_stock'] ?? 0),
-                        'unit_type' => $row['unit_type'] ?? 'pcs',
-                        'weight' => $this->parseNumber($row['weight'] ?? null),
-                        'status' => $this->normalizeStatus($row['status'] ?? 'active'),
-                    ]
-                );
-            }
+                if (!empty($row['variant_sku'])) {
+                    $sku = $row['variant_name'] . '-' . $row['variant_sku'];
+                    ProductVariant::updateOrCreate(
+                        [
+                            'tenant_id' => $this->tenantId,
+                            'product_id' => $product->id,
+                            'sku' => $sku,
+                            'name' => $row['variant_name'],  // Include name in the unique identifier
+                        ],
+                        [
 
+                            'barcode' => $row['variant_barcode'] ?? null,
+                            'purchase_price' => $this->parseNumber($row['purchase_price'] ?? 0),
+                            'selling_price' => $this->parseNumber($row['selling_price'] ?? 0),
+                            'current_stock' => (int)($row['current_stock'] ?? 0),
+                            'unit_type' => $row['unit_type'] ?? 'pcs',
+                            'weight' => $this->parseNumber($row['weight'] ?? null),
+                            'status' => $this->normalizeStatus($row['status'] ?? 'active'),
+                        ]
+                    );
+                }
+            }
             $this->rowCount++;
             return $product;
         } catch (\Exception $e) {
