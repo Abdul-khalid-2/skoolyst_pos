@@ -321,6 +321,7 @@ Schema::create('products', function (Blueprint $table) {
             $table->string('unit_type', 50)->default('pcs');
             $table->decimal('weight', 10, 3)->nullable();
             $table->string('status', 20)->default('active');
+            $table->string('remark', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();
             

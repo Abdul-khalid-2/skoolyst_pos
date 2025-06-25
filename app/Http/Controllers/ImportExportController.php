@@ -143,7 +143,7 @@ class ImportExportController extends Controller
             'selling_price',
             'current_stock',
             'unit_type',
-            'weight'
+            'remark'
         ];
 
         $sampleProducts = [
@@ -167,7 +167,7 @@ class ImportExportController extends Controller
                 'selling_price' => '89.99',
                 'current_stock' => '50',
                 'unit_type' => 'pcs',
-                'weight' => '0.1'
+                'remark' => '--'
             ],
             [
                 'name' => 'Wireless Earbuds',
@@ -188,7 +188,7 @@ class ImportExportController extends Controller
                 'selling_price' => '89.99',
                 'current_stock' => '30',
                 'unit_type' => 'pcs',
-                'weight' => '0.1'
+                'remark' => '--'
             ],
 
             // Product 2 with 2 variants (category, brand, supplier can be null)
@@ -211,7 +211,7 @@ class ImportExportController extends Controller
                 'selling_price' => '69.99',
                 'current_stock' => '25',
                 'unit_type' => 'pcs',
-                'weight' => '0.5'
+                'remark' => '--'
             ],
             [
                 'name' => 'Bluetooth Speaker',
@@ -232,7 +232,7 @@ class ImportExportController extends Controller
                 'selling_price' => '69.99',
                 'current_stock' => '20',
                 'unit_type' => 'pcs',
-                'weight' => '0.5'
+                'remark' => '--'
             ]
         ];
 

@@ -21,6 +21,7 @@ class ProductVariant extends Model
         'current_stock',
         'unit_type',
         'weight',
+        'remark',
         'status',
     ];
 

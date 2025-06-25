@@ -98,7 +98,16 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             // Process variant if provided
             if (!empty($row['variant_name'])) {
                 if (!empty($row['variant_sku'])) {
-                    $sku = $row['variant_name'] . '-' . $row['variant_sku'];
+                    // First try to find existing variant
+                    $existingVariant = ProductVariant::where([
+                        'tenant_id' => $this->tenantId,
+                        'product_id' => $product->id,
+                        'sku' => $row['variant_sku'] // Check if SKU exists without the name prefix
+                    ])->first();
+
+                    // Determine the SKU to use
+                    $sku = $existingVariant ? $row['variant_sku'] : $row['variant_name'] . '-' . $row['variant_sku'];
+
                     ProductVariant::updateOrCreate(
                         [
                             'tenant_id' => $this->tenantId,
@@ -113,7 +122,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
                             'selling_price' => $this->parseNumber($row['selling_price'] ?? 0),
                             'current_stock' => (int)($row['current_stock'] ?? 0),
                             'unit_type' => $row['unit_type'] ?? 'pcs',
-                            'weight' => $this->parseNumber($row['weight'] ?? null),
+                            'remark' => $row['remark'] ?? '--',
                             'status' => $this->normalizeStatus($row['status'] ?? 'active'),
                         ]
                     );
@@ -148,7 +157,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             'selling_price' => 'nullable|numeric|min:0',
             'current_stock' => 'nullable|integer|min:0',
             'unit_type' => 'nullable|string',
-            'weight' => 'nullable|numeric|min:0',
+            'remark' => 'nullable',
         ];
     }
 
