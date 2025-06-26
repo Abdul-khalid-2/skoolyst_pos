@@ -106,7 +106,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
                     ])->first();
 
                     // Determine the SKU to use
-                    $sku = $existingVariant ? $row['variant_sku'] : $row['variant_name'] . '-' . $row['variant_sku'];
+                    $sku = $existingVariant ? $row['variant_sku'] : str_replace(' ', '-', $row['variant_sku']);
 
                     ProductVariant::updateOrCreate(
                         [

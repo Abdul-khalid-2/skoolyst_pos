@@ -16,8 +16,8 @@ class ProductController extends Controller
     {
         $products = Product::with(['category', 'brand', 'supplier', 'variants'])
             ->withCount('variants')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->latest()
+            ->get();
 
         return view('admin.product.index', compact('products'));
     }
