@@ -13,15 +13,16 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')
-            ->paginate(10);
+        $users = User::whereDoesntHave('roles', function($query) {
+            $query->where('name', 'super-admin');
+        })->get();
 
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::whereNot('name','super-admin')->get();
         return view('admin.users.create', compact('roles'));
     }
 
@@ -69,7 +70,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $roles = Role::all();
+        $roles = Role::whereNot('name','super-admin')->get();
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
