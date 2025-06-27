@@ -707,8 +707,8 @@
                         height: 300,
                         type: 'bar',
                         stacked: false,
-                        toolbar: { show: true },
-                        animations: { enabled: true }
+                        toolbar: { show: false },
+                        animations: { enabled: false }
                     },
                     dataLabels: { enabled: false },
                     series: [

@@ -56,9 +56,10 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="btn border add-btn shadow-none mx-2 d-none d-md-block"
+                            <a href="{{ route('pos.index') }}" class="btn border add-btn shadow-none mx-2 d-none d-md-block"><i class="las la-plus mr-2"></i>POS</a>
+                            {{-- <a href="#" class="btn border add-btn shadow-none mx-2 d-none d-md-block"
                                 data-toggle="modal" data-target="#new-order"><i class="las la-plus mr-2"></i>New
-                                Order</a>
+                                Order</a> --}}
                         </li>
                         <li class="nav-item nav-icon search-content">
                             <a href="#" class="search-toggle rounded" id="dropdownSearch" data-toggle="dropdown"
