@@ -54,7 +54,6 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
                 $categoryId = $category->id;
             }
 
-            // Process brand if provided
             $brandId = null;
             if (!empty($row['brand'])) {
                 $brand = Brand::firstOrCreate(
