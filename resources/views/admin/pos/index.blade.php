@@ -266,6 +266,19 @@
                     width: 25px;
                 }
         }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        #dueBalance {
+            color: #dc3545; /* Red color for due balance */
+            font-weight: bold;
+        }
+        #changeDue {
+            color: #28a745; /* Green color for change due */
+            font-weight: bold;
+        }
     </style>
     @endpush
 
@@ -293,6 +306,7 @@
                             <input type="hidden" name="discount_amount" id="formDiscountAmount" value="0">
                             <input type="hidden" name="total_amount" id="formTotalAmount" value="0">
                             <input type="hidden" name="customer_id" id="formCustomerId" value="0">
+                            <input type="hidden" name="due_balance" id="formDueBalance" value="0">
                             
                             <div class="pos-container">
                                 <!-- Product Selection Area -->
@@ -422,6 +436,10 @@
                                             <span>Change Due:</span>
                                             <span id="changeDue">Rs 0.00</span>
                                         </div>
+                                        <div class="summary-row mb-3"> <!-- Due Balance -->
+                                            <span>Due Balance:</span>
+                                            <span id="dueBalance">Rs 0.00</span>
+                                        </div>
                                         <div class="mb-3"><!-- Notes -->
                                             <label>Notes</label>
                                             <textarea name="notes" class="form-control" rows="2"></textarea>
@@ -508,7 +526,7 @@
         <script src="{{ asset('backend/assets/js/customizer.js') }}"></script>
         <script async src="{{ asset('backend/assets/js/chart-custom.js') }}"></script>
         <script src="{{ asset('backend/assets/js/app.js') }}"></script>
-        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
         $(document).ready(function() {
             const cart = {
@@ -614,19 +632,18 @@
                     $('#formDiscountAmount').val(totals.discount);
                     $('#formTotalAmount').val(totals.total);
                     
-                    if ($('#amountPaid').val() === $('#cartTotal').text().replace('Rs ', '')) { // Update amount paid if set to "total"
-                        $('#amountPaid').val(totals.total.toFixed(2));
-                        this.updateChangeDue();
-                    } else {
-                        this.updateChangeDue();
-                    }
+                    this.updateChangeDue();
                     this.updateFormData();// Update hidden fields for form submission
                 },
                 updateChangeDue: function() {
                     const total = parseFloat($('#cartTotal').text().replace('Rs ', '')) || 0;
                     const amountPaid = parseFloat($('#amountPaid').val()) || 0;
                     const changeDue = Math.max(0, amountPaid - total);                    
+                    const dueBalance = Math.max(0, total - amountPaid);
+                    
                     $('#changeDue').text('Rs ' + changeDue.toFixed(2));
+                    $('#dueBalance').text('Rs ' + dueBalance.toFixed(2));
+                    $('#formDueBalance').val(dueBalance.toFixed(2));
                 },
                 updateFormData: function() {
                     $('#formCustomerId').val($('#customerSelect').val());// Update customer ID                    
@@ -719,8 +736,11 @@
                 });
                 
                 $(document).on('click', '.remove-item', function() { // Cart item controls
-                    const index = $(this).closest('.cart-item').data('index');
-                    cart.removeItem(index);
+                    var remove = confirm("you want to remove item form cart");
+                    if(remove){
+                        const index = $(this).closest('.cart-item').data('index');
+                        cart.removeItem(index);
+                    }
                 });
                 
                 $(document).on('click', '.increment', function() {
@@ -742,9 +762,9 @@
                     if (confirm('Are you sure you want to clear form?')) {
                         cart.clear();
                         document.getElementById('posForm').reset();                            
-                        this.items = [];                            
-                        this.updateCart();
                         $('#customerSelect').val('Walk-in-Customer').trigger('change');
+                        $('#changeDue').text('Rs 0.00');
+                        $('#dueBalance').text('Rs 0.00');
                     }
                 });
                 $('#cartDiscount').on('change', function() {// Discount input
@@ -825,7 +845,6 @@
                             $('#productGrid').html(html);
                             $('#barcodeInput').val('');
                             $('.product-card').on('click', function() {// Rebind click events for new product cards
-                                alert('new Product')
                                 const productId = $(this).data('product-id');
                                 const hasVariants = $(this).data('variants');
                                 
@@ -917,9 +936,6 @@
                         $('#customCustomerName').val('');
                         $('#customCustomerPhone').val('');
                     }
-                });
-                
-                $('#customerSelect').on('change', function() { // Customer select change
                     $('#formCustomerId').val($(this).val());
                 });
                 
@@ -955,6 +971,12 @@
                                 // Clear the cart
                                 cart.clear();
                                 document.getElementById('posForm').reset();
+                                
+                                // Reset payment displays
+                                $('#changeDue').text('Rs 0.00');
+                                $('#dueBalance').text('Rs 0.00');
+                                $('#amountPaid').val('0');
+                                $('#cartDiscount').val('0');
                                 
                                 const newInvoiceNumber = 'MD-' + new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -5);
                                 $('input[name="invoice_number"]').val(newInvoiceNumber);
