@@ -96,17 +96,79 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             );
 
             // Process variant if provided
+            // if (!empty($row['variant_name'])) {
+            //     if (!empty($row['variant_sku'])) {
+            //         // First try to find existing variant
+            //         $existingVariant = ProductVariant::where([
+            //             'tenant_id' => $this->tenantId,
+            //             'product_id' => $product->id,
+            //             'sku' => $row['variant_sku'] // Check if SKU exists without the name prefix
+            //         ])->first();
+
+            //         // Determine the SKU to use
+            //         $remark = $row['remark'] ?? '--';
+            //         if ($existingVariant) {
+
+            //             $existSameVariant = ProductVariant::where([
+            //                 'remark' => $remark
+            //             ])->first();
+            //             $concateRemare = $row['variant_sku'] . "-" . $remark;
+            //             $sku = $existSameVariant  ? $row['variant_sku'] : str_replace(' ', '-', $row['variant_sku']);
+            //         } else {
+            //             $sku =  str_replace(' ', '-', $row['variant_sku']);
+            //         }
+
+            //         ProductVariant::updateOrCreate(
+            //             [
+            //                 'tenant_id' => $this->tenantId,
+            //                 'product_id' => $product->id,
+            //                 'sku' => $sku,
+            //                 'name' => $row['variant_name'],  // Include name in the unique identifier
+            //             ],
+            //             [
+
+            //                 'barcode' => $row['variant_barcode'] ?? null,
+            //                 'purchase_price' => $this->parseNumber($row['purchase_price'] ?? 0),
+            //                 'selling_price' => $this->parseNumber($row['selling_price'] ?? 0),
+            //                 'current_stock' => (int)($row['current_stock'] ?? 0),
+            //                 'unit_type' => $row['unit_type'] ?? 'pcs',
+            //                 'remark' => $row['remark'] ?? '--',
+            //                 'status' => $this->normalizeStatus($row['status'] ?? 'active'),
+            //             ]
+            //         );
+            //     }
+            // }
             if (!empty($row['variant_name'])) {
                 if (!empty($row['variant_sku'])) {
-                    // First try to find existing variant
-                    $existingVariant = ProductVariant::where([
+                    // First try to find existing variant with same name and SKU but different remark
+                    $existingVariantWithDifferentRemark = ProductVariant::where([
                         'tenant_id' => $this->tenantId,
                         'product_id' => $product->id,
-                        'sku' => $row['variant_sku'] // Check if SKU exists without the name prefix
-                    ])->first();
+                        'name' => $row['variant_name'],
+                    ])
+                        ->where('sku', 'like', $row['variant_sku'] . '%') // SKU starts with the same base
+                        ->where('remark', '!=', $row['remark'] ?? '--')
+                        ->first();
 
                     // Determine the SKU to use
-                    $sku = $existingVariant ? $row['variant_sku'] : str_replace(' ', '-', $row['variant_sku']);
+                    $remarkPart = isset($row['remark']) ? '( ' . str_replace(' ', '-', $row['remark']) . ' )' : '';
+
+                    if ($existingVariantWithDifferentRemark) {
+                        // If there's an existing variant with same name and SKU base but different remark,
+                        // we need to make the SKU unique by adding the remark
+                        $sku = str_replace(' ', '-', $row['variant_sku']) . '-' . $remarkPart;
+                    } else {
+                        // Check if there's an exact match (same name, SKU, and remark)
+                        $existingExactVariant = ProductVariant::where([
+                            'tenant_id' => $this->tenantId,
+                            'product_id' => $product->id,
+                            'name' => $row['variant_name'],
+                            'sku' => $row['variant_sku'],
+                            'remark' => $row['remark'] ?? '--',
+                        ])->first();
+
+                        $sku = $existingExactVariant ? $row['variant_sku'] : str_replace(' ', '-', $row['variant_sku']);
+                    }
 
                     ProductVariant::updateOrCreate(
                         [
