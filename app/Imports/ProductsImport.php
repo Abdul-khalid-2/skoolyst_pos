@@ -49,8 +49,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             $categoryId = null;
             if (!empty($row['category'])) {
                 $category = Category::firstOrCreate(
-                    ['tenant_id' => $this->tenantId, 'name' => $row['category']],
-                    ['code' => Str::upper(Str::substr($row['category'], 0, 3))]
+                    ['tenant_id' => $this->tenantId, 'id' => $row['category']],
                 );
                 $categoryId = $category->id;
             }
@@ -205,7 +204,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:100',
             'barcode' => 'nullable|string|max:100',
-            'category' => 'nullable|string',
+            'category' => 'nullable',
             'brand' => 'nullable|string',
             'supplier' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
