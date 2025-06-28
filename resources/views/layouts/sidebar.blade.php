@@ -57,6 +57,35 @@
                             
                         </ul>
                     </li>
+                    <li class="{{ request()->is('tenants*') || request()->is('businesses*') || request()->is('categories*') || request()->is('brands*') ? 'active' : '' }}">
+                        <a href="#tenant-management" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 21V7a1 1 0 0 1 1-1h4v4h6V6h4a1 1 0 0 1 1 1v14"></path>
+                                <path d="M9 21v-4h6v4"></path>
+                                <path d="M9 6v4h6V6"></path>
+                                <line x1="4" y1="21" x2="20" y2="21"></line>
+                                <rect x="7" y="10" width="2" height="2"></rect>
+                                <rect x="15" y="10" width="2" height="2"></rect>
+                            </svg>
+
+                            <span class="ml-4">Tenant Management</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="tenant-management" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <!-- Tenant Management -->
+                            <li class="{{ request()->routeIs('tenants.index') ? 'active' : '' }}">
+                                <a href="{{ route('tenants.index') }}">
+                                    <i class="las la-minus"></i><span>Tenants List</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </li>
                 @endrole
 
                 <!-- Sales -->

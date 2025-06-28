@@ -29,6 +29,7 @@ use App\Http\Controllers\{
     PosController,
     SalesReportController,
     ImportExportController,
+    TenantController,
     TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
@@ -235,5 +236,9 @@ Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
     Route::resource('branches', BranchController::class);
 });
 
+// Tenant Routes
+Route::resource('tenants', TenantController::class);
+Route::get('tenants/{tenant}/dashboard', [TenantController::class, 'dashboard'])
+    ->name('tenants.dashboard');
 
 require __DIR__ . '/auth.php';

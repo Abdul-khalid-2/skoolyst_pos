@@ -28,7 +28,7 @@ class ImportExportController extends Controller
      */
     public function import(Request $request)
     {
-        set_time_limit(300);
+        set_time_limit(900);
         $request->validate([
             'import_file' => 'required|file|mimes:csv,txt,xlsx|max:2048'
         ]);

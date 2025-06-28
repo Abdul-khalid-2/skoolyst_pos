@@ -148,4 +148,15 @@ class Tenant extends Model
     {
         return $this->hasMany(ActivityLog::class);
     }
+
+    public function onTrial()
+    {
+        return $this->trial_ends_at && $this->trial_ends_at->isFuture();
+    }
+    public function domains()
+    {
+        return [
+            ['name' => "khlaid khan"],
+        ];
+    }
 }
