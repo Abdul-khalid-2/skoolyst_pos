@@ -73,6 +73,8 @@ class ImportExportController extends Controller
      */
     public function export(Request $request)
     {
+        ini_set('memory_limit', '512M'); 
+        set_time_limit(300); 
         $request->validate([
             'format' => 'required|in:csv,xlsx,pdf',
             'include_variants' => 'sometimes|boolean'

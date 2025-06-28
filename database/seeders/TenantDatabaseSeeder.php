@@ -18,6 +18,7 @@ class TenantDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::create(['name' => "super-admin"]);
         Role::create(['name' => "admin"]);
         Role::create(['name' => "seller"]);
         Role::create(['name' => "user"]);
@@ -35,16 +36,27 @@ class TenantDatabaseSeeder extends Seeder
             'trial_ends_at' => null
         ]);
 
-        $user = User::create([
-            'name' => 'mdautos',
-            'email' => 'mdautos@gmail.com',
+        $superadmin = User::create([
+            'name' => 'superadmin',
+            'email' => 'superadmin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('2k19khalidkhan'),
             'remember_token' => null,
             'tenant_id' => $tenant->id,
         ]);
 
-        $user->assignRole('admin');
+        $superadmin->assignRole('super-admin');
+        
+        $admin = User::create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('admin'),
+            'remember_token' => null,
+            'tenant_id' => $tenant->id,
+        ]);
+
+        $admin->assignRole('admin');
 
 
 
