@@ -37,7 +37,6 @@ class PosController extends Controller
                 ->where('is_active', true)
                 ->get(),
             'currentBranch' => Branch::where('tenant_id', $tenantId)
-                ->where('is_main', true)
                 ->firstOrFail()
         ]);
     }
