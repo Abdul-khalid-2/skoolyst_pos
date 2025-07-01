@@ -670,39 +670,7 @@
                     const hasVariants = $(this).data('variants');
                     
                     if (hasVariants) {
-                        $.get(`/products/${productId}/variants_data`, function(variants) {
-                            let modalBody = '';
-                            
-                            variants.forEach(variant => {
-                                modalBody += `
-                                    <div class="mb-2 variant-option" 
-                                        data-product-id="${productId}"
-                                        data-variant-id="${variant.id}"
-                                        data-price="${variant.selling_price}"
-                                        data-cost="${variant.purchase_price}"
-                                        data-name="${variant.product?.name || ''}"
-                                        data-variant-name="${variant.name}">
-                                        <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                            <div>
-                                                <strong>${variant.name}</strong>
-                                                <div class="small" style="font-size:20px"> ${variant.sku}</div>
-                                            </div>
-                                            <div>
-                                                <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
-                                                <div class="small text-muted">Stock: ${variant.current_stock}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                            });
-                            $('#variantModalBody').html(modalBody);
-                            
-                            var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
-                            modal.show();
-                            
-                        }).fail(function(error) {
-                            console.error("Error loading variants:", error);
-                        });
+                        showVariantModel(productId);
                     } else {
                         const productName = $(this).find('.product-name').text();
                         const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
@@ -849,35 +817,7 @@
                                 const hasVariants = $(this).data('variants');
                                 
                                 if (hasVariants) {
-                                    $.get(`/products/${productId}/variants_data`, function(variants) {// Show variant selection modal
-                                        let modalBody = '';
-                                        
-                                        variants.forEach(variant => {
-                                            modalBody += `
-                                                <div class="mb-2 variant-option" 
-                                                    data-product-id="${productId}"
-                                                    data-variant-id="${variant.id}"
-                                                    data-price="${variant.selling_price}"
-                                                    data-cost="${variant.purchase_price}"
-                                                    data-name="${variant.product.name}"
-                                                    data-variant-name="${variant.name}">
-                                                    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                                        <div>
-                                                            <strong>${variant.name}</strong>
-                                                            <div class="small" style="font-size:20px"> ${variant.sku}</div>
-                                                        </div>
-                                                        <div>
-                                                            <div>Rs ${variant.selling_price.toFixed(2)}</div>
-                                                            <div class="small text-muted">Stock: ${variant.current_stock}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            `;
-                                        });
-                                        
-                                        $('#variantModalBody').html(modalBody);
-                                        $('#variantModal').modal('show');
-                                    });
+                                    showVariantModel(productId);
                                 } else {                                    
                                     const productName = $(this).find('.product-name').text();// Add directly to cart (single variant)
                                     const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
@@ -899,7 +839,40 @@
                         });
                     }
                 });
-                
+                function showVariantModel(productId){
+                    $.get(`/products/${productId}/variants_data`, function(variants) {
+                        let modalBody = '';
+                        variants.forEach(variant => {
+                            modalBody += `
+                                <div class="mb-2 variant-option" 
+                                    data-product-id="${productId}"
+                                    data-variant-id="${variant.id}"
+                                    data-price="${variant.selling_price}"
+                                    data-cost="${variant.purchase_price}"
+                                    data-name="${variant.product?.name || ''}"
+                                    data-variant-name="${variant.name}">
+                                    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+                                        <div>
+                                            <strong>${variant.name}</strong>
+                                            <div class="small" style="font-size:20px"> ${variant.sku}</div>
+                                        </div>
+                                        <div>
+                                            <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
+                                            <div class="small text-muted">Stock: ${variant.current_stock}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        $('#variantModalBody').html(modalBody);
+                        
+                        var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
+                        modal.show();
+                        
+                    }).fail(function(error) {
+                        console.error("Error loading variants:", error);
+                    });
+                }
                 $('.category-tab').on('click', function() {// Category tabs
 
                     $('.category-tab').removeClass('active');
