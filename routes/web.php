@@ -29,6 +29,7 @@ use App\Http\Controllers\{
     PosController,
     SalesReportController,
     ImportExportController,
+    TenantController,
     TransactionController
 };
 use App\Http\Controllers\InventoryLogController;
@@ -40,7 +41,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth', 'verified', 'role:user|admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(function () {
 
     Route::get('dashboard', [BackendController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard/financial-data', [BackendController::class, 'getFinancialData']);
@@ -224,10 +225,6 @@ Route::middleware(['auth', 'verified', 'role:user|admin'])->group(function () {
 
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-
-    
-});
 Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
     // Business
     Route::resource('businesses', BusinessController::class);
@@ -235,5 +232,11 @@ Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
     Route::resource('branches', BranchController::class);
 });
 
+Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(function () {
+
+
+    Route::resource('businesses', BusinessController::class);
+    Route::resource('branches', BranchController::class);
+});
 
 require __DIR__ . '/auth.php';
