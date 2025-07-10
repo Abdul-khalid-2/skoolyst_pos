@@ -105,6 +105,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
                     ])
                         ->where('remark', '!=', $row['remark'] ?? '--')
                         ->where('sku', 'like', $row['variant_sku'] . '%') // SKU starts with the same base
+                        ->where('remark', '!=', $row['remark'] ?? '--')
                         ->first();
 
                     // Determine the SKU to use

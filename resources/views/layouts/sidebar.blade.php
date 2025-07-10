@@ -93,41 +93,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="{{ request()->is('businesses*') || request()->is('categories*') || request()->is('brands*') ? 'active' : '' }}">
-                    <a href="#business" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                       <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 21V7a1 1 0 0 1 1-1h4v4h6V6h4a1 1 0 0 1 1 1v14"></path>
-                            <path d="M9 21v-4h6v4"></path>
-                            <path d="M9 6v4h6V6"></path>
-                            <line x1="4" y1="21" x2="20" y2="21"></line>
-                            <rect x="7" y="10" width="2" height="2"></rect>
-                            <rect x="15" y="10" width="2" height="2"></rect>
-                        </svg>
-
-                        <span class="ml-4">Business</span>
-                        <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="10 15 15 20 20 15"></polyline>
-                            <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
-                        </svg>
-                    </a>
-                    <ul id="business" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ request()->routeIs('businesses.index') ? 'active' : '' }}">
-                            <a href="{{ route('businesses.index') }}">
-                                <i class="las la-minus"></i><span>Businesses List</span>
-                            </a>
-                        </li>
-                        
-                        <li class="{{ request()->routeIs('branches.index') ? 'active' : '' }}">
-                            <a href="{{ route('branches.index') }}">
-                                <i class="las la-minus"></i><span>Branches List</span>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li>
-              
+                
 
                 <!-- Inventory -->
                 <li class="{{ request()->is('inventory*') ? 'active' : '' }}">
@@ -316,53 +282,91 @@
                         </li>
                     </ul>
                 </li>
-
-                <!-- Settings -->
-                <li class="{{ request()->is('settings*') ? 'active' : '' }}">
-                    <a href="#settings" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                        <svg class="svg-icon" id="p-dash-settings" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                @role('super-admin')
+<li class="{{ request()->is('businesses*') || request()->is('categories*') || request()->is('brands*') ? 'active' : '' }}">
+                    <a href="#business" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                       <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 21V7a1 1 0 0 1 1-1h4v4h6V6h4a1 1 0 0 1 1 1v14"></path>
+                            <path d="M9 21v-4h6v4"></path>
+                            <path d="M9 6v4h6V6"></path>
+                            <line x1="4" y1="21" x2="20" y2="21"></line>
+                            <rect x="7" y="10" width="2" height="2"></rect>
+                            <rect x="15" y="10" width="2" height="2"></rect>
                         </svg>
-                        <span class="ml-4">Settings</span>
+
+                        <span class="ml-4">Business</span>
                         <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="10 15 15 20 20 15"></polyline>
                             <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                         </svg>
                     </a>
-                    <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="{{ request()->routeIs('settings.general') ? 'active' : '' }}">
-                            <a href="{{ route('settings.general') }}">
-                                <i class="las la-minus"></i><span>General Settings</span>
+                    <ul id="business" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li class="{{ request()->routeIs('businesses.index') ? 'active' : '' }}">
+                            <a href="{{ route('businesses.index') }}">
+                                <i class="las la-minus"></i><span>Businesses List</span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('settings.pos') ? 'active' : '' }}">
-                            <a href="{{ route('settings.pos') }}">
-                                <i class="las la-minus"></i><span>POS Settings</span>
+                        
+                        <li class="{{ request()->routeIs('branches.index') ? 'active' : '' }}">
+                            <a href="{{ route('branches.index') }}">
+                                <i class="las la-minus"></i><span>Branches List</span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('settings.tax') ? 'active' : '' }}">
-                            <a href="{{ route('settings.tax') }}">
-                                <i class="las la-minus"></i><span>Tax Settings</span>
-                            </a>
-                        </li>
-                        <li class="{{ request()->routeIs('settings.business') ? 'active' : '' }}">
-                            <a href="{{ route('settings.business') }}">
-                                <i class="las la-minus"></i><span>Business Settings</span>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </li>
-                <li class="{{ request()->routeIs('database.backup') ? 'active' : '' }}">
-                    <a href="{{ route('database.backup') }}" class="svg-icon">
-                        <svg class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
-                        <span class="ml-4">Data Backup</span>
-                    </a>
-                </li>
+              
+
+                <!-- Settings -->
+                    <li class="{{ request()->is('settings*') ? 'active' : '' }}">
+                        <a href="#settings" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <svg class="svg-icon" id="p-dash-settings" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                            <span class="ml-4">Settings</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline>
+                                <path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li class="{{ request()->routeIs('settings.general') ? 'active' : '' }}">
+                                <a href="{{ route('settings.general') }}">
+                                    <i class="las la-minus"></i><span>General Settings</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('settings.pos') ? 'active' : '' }}">
+                                <a href="{{ route('settings.pos') }}">
+                                    <i class="las la-minus"></i><span>POS Settings</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('settings.tax') ? 'active' : '' }}">
+                                <a href="{{ route('settings.tax') }}">
+                                    <i class="las la-minus"></i><span>Tax Settings</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('settings.business') ? 'active' : '' }}">
+                                <a href="{{ route('settings.business') }}">
+                                    <i class="las la-minus"></i><span>Business Settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="{{ request()->routeIs('database.backup') ? 'active' : '' }}">
+                        <a href="{{ route('database.backup') }}" class="svg-icon">
+                            <svg class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            <span class="ml-4">Data Backup</span>
+                        </a>
+                    </li>
+                @endrole
+                
             </ul>
         </nav>
     </div>
