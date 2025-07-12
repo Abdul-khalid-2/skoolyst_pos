@@ -473,6 +473,10 @@
                             <div class="btn btn-primary" data-dismiss="modal" aria-label="Close">x</div>
                         </div>
                         <div class="content create-workform bg-body" >
+                            <!-- Add search input here -->
+                            <div class="px-3 pt-3">
+                                <input type="text" id="variantSearchInput" class="form-control" placeholder="Search variants...">
+                            </div>
                             <div class="py-3" id="variantModalBody">
                               
                             </div>
@@ -850,7 +854,8 @@
                                     data-price="${variant.selling_price}"
                                     data-cost="${variant.purchase_price}"
                                     data-name="${variant.product?.name || ''}"
-                                    data-variant-name="${variant.name}">
+                                    data-variant-name="${variant.name}"
+                                    data-search-text="${(variant.name + ' ' + variant.sku + ' ' + variant.selling_price).toLowerCase()}">
                                     <div class="d-flex justify-content-between align-items-center p-2 border rounded">
                                         <div>
                                             <strong>${variant.name}</strong>
@@ -866,8 +871,26 @@
                         });
                         $('#variantModalBody').html(modalBody);
                         
+                        // Initialize search functionality
+                        $('#variantSearchInput').on('input', function() {
+                            const searchTerm = $(this).val().toLowerCase();
+                            $('.variant-option').each(function() {
+                                const searchText = $(this).data('search-text');
+                                if (searchText.includes(searchTerm)) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        });
+                        
                         var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
                         modal.show();
+                        
+                        // Focus on search input when modal is shown
+                        $('#variantModal').on('shown.bs.modal', function() {
+                            $('#variantSearchInput').focus();
+                        });
                         
                     }).fail(function(error) {
                         console.error("Error loading variants:", error);
