@@ -81,38 +81,6 @@
             text-align: center;
             margin: 0 5px;
         }
-        
-        /* Order-specific styles */
-        .order-status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-        .status-draft {
-            background-color: #6c757d;
-            color: white;
-        }
-        .status-confirmed {
-            background-color: #0dcaf0;
-            color: white;
-        }
-        .status-completed {
-            background-color: #198754;
-            color: white;
-        }
-        .status-cancelled {
-            background-color: #dc3545;
-            color: white;
-        }
-        .order-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
         @media (min-width: 992px) {
             .pos-container {
                 flex-direction: row;
@@ -130,9 +98,189 @@
             .cart-items {
                 max-height: calc(100vh - 550px);
             }
+        }        
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }            
+            .payment-methods, .quick-cash-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }            
+            .category-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                display: block;
+                padding-bottom: 5px;
+            }            
+            .category-tab {
+                display: inline-block;
+            }
+        }        
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }            
+            .cart-item {
+                flex-direction: column;
+            }            
+            .cart-item-controls {
+                justify-content: flex-end;
+            }            
+            .product-card img {
+                height: 50px;
+            }            
+            .product-name {
+                font-size: 0.9rem;
+            }
         }
-        
-        /* Add all other responsive styles from your POS */
+        .category-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: nowrap;
+        }        
+        .category-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }        
+        .category-tab.active {
+            border-bottom: 2px solid #0d6efd;
+            color: #0d6efd;
+        }        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin: 10px 0;
+        }        
+        .payment-method-btn {
+            padding: 8px;
+            text-align: center;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }        
+        .payment-method-btn.active {
+            background: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }        
+        .quick-cash-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin: 10px 0;
+        }        
+        .quick-cash-btn {
+            padding: 8px;
+            text-align: center;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }  
+        ::-webkit-scrollbar {/* Scrollbar styling */
+            width: 8px;
+            height: 8px;
+        }        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+            .category-tabs-container { /* Updated Category Tabs Styles */
+                position: relative;
+                margin-bottom: 15px;
+            }            
+            .category-tabs {
+                display: flex;
+                overflow-x: auto;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE/Edge */
+                padding-bottom: 5px;
+                margin-bottom: -5px; /* Compensate for padding */
+            }        
+            .category-tabs::-webkit-scrollbar {
+                display: none; /* Chrome/Safari */
+            }            
+            .category-tab {
+                flex: 0 0 auto;
+                padding: 8px 15px;
+                cursor: pointer;
+                border-bottom: 2px solid transparent;
+                white-space: nowrap;
+                position: relative;
+            }            
+            .category-tab.active {
+                border-bottom: 2px solid #0d6efd;
+                color: #0d6efd;
+            }
+            .category-nav-arrow { /* Navigation arrows for foldable devices */
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 30px;
+                background: rgba(255,255,255,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 10;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }            
+            .category-nav-arrow.left {
+                left: 0;
+                background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+            }            
+            .category-nav-arrow.right {
+                right: 0;
+                background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+            }            
+            .category-tabs-container:hover .category-nav-arrow {
+                opacity: 1;
+            }                        
+            @media (max-width: 1200px) {/* Responsive adjustments */
+                .category-tab {
+                    padding: 8px 12px;
+                    font-size: 0.9rem;
+                }
+            }            
+            @media (max-width: 768px) {
+                .category-tab {
+                    padding: 8px 10px;
+                    font-size: 0.85rem;
+                }                
+                .category-nav-arrow {
+                    opacity: 1; /* Always show on mobile */
+                    width: 25px;
+                }
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        #dueBalance {
+            color: #dc3545; /* Red color for due balance */
+            font-weight: bold;
+        }
+        #changeDue {
+            color: #28a745; /* Green color for change due */
+            font-weight: bold;
+        }
     </style>
     @endpush
 
@@ -624,6 +772,10 @@
                                     text: `Order #${response.order.order_number} has been saved`,
                                     showConfirmButton: false,
                                     timer: 1500
+                                }).then(() => {
+                                    cart.clear();
+                                    $btn.prop('disabled', false);
+                                    $btn.html('<i class="las la-check"></i> Confirm Order');
                                 });
                             }
                             this.updateUI();
@@ -822,7 +974,7 @@
                         });
                         return;
                     }
-                    
+                    $(this).prop("disabled",true);
                     Swal.fire({
                         title: 'Confirm Order?',
                         text: 'This will mark the order as confirmed and ready for payment',
@@ -832,10 +984,15 @@
                         cancelButtonText: 'Cancel'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            $(this).html('<i class="las la-spinner la-spin"></i> Processing...');
                             cart.setStatus('confirmed');
                             cart.setStorageType('database');
                             cart.saveOrder().then(() => {
-                                $('#completeOrderBtn').prop('disabled', false);
+                                $(this).prop('disabled', false);
+                                $(this).html('<i class="las la-check"></i> Confirm Order');
+                            }).catch(() => {
+                                $(this).prop('disabled', true);
+                                $(this).html('<i class="las la-check"></i> Confirm Order');
                             });
                         }
                     });
