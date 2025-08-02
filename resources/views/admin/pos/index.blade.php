@@ -1205,6 +1205,11 @@
                     rightArrow.toggle(scrollLeft < (scrollWidth - clientWidth - 1));
                 }
             });
+            jQuery(document).ready(function() {
+                jQuery(".wrapper-menu").addClass("open");
+                jQuery("body").addClass("sidebar-main");
+            });
+            
             </script>
     @endpush
 </x-app-layout>

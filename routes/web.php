@@ -29,6 +29,7 @@ use App\Http\Controllers\{
     PosController,
     SalesReportController,
     ImportExportController,
+    OrderController,
     TenantController,
     TransactionController
 };
@@ -172,8 +173,7 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
 
     // Inventory Logs
     Route::get('inventory-logs/variants/{product}', [InventoryLogController::class, 'getVariants'])
-        ->name('inventory-logs.variants')
-        ;
+        ->name('inventory-logs.variants');
 
     // Users
     Route::resource('users', UserController::class);
@@ -223,6 +223,18 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
     Route::get('/remove/backup/{file}', [BackupController::class, 'removeBackup'])->name('remove.backup');
     Route::get('/download/backup/{file}', [BackupController::class, 'downloadBackup'])->name('download.backup');
 
+
+    // Order Management Routes
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/create', [OrderController::class, 'create'])->name('orders.create');
+        Route::post('/', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+        Route::put('/{order}', [OrderController::class, 'update'])->name('orders.update');
+        Route::post('/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+        Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+        Route::get('/filter', [OrderController::class, 'filter'])->name('orders.filter');
+    });
 });
 
 Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
