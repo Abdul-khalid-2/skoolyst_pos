@@ -468,25 +468,37 @@
                                             <textarea name="notes" class="form-control" rows="2">{{ isset($order) ? $order->notes : '' }}</textarea>
                                         </div>
                                         
-                                        <div class="order-actions">
-                                            <button type="button" class="btn btn-danger" id="clearCartBtn">
-                                                <i class="las la-trash"></i> Clear
-                                            </button>
-                                            <button type="button" class="btn btn-secondary" id="saveDraftBtn">
-                                                <i class="las la-save"></i> Save Draft
-                                            </button>
-                                            <button type="button" class="btn btn-primary" id="confirmOrderBtn">
-                                                <i class="las la-check"></i> Confirm Order
-                                            </button>
-                                            @if(isset($order) && $order->status === 'confirmed')
-                                                <button type="button" class="btn btn-success" id="completeOrderBtn">
-                                                    <i class="las la-check-circle"></i> Complete Sale
+                                        <div class="order-actions row g-1 g-lg-3">
+
+                                            <div class="px-3 mb-2" style="width: 50%">
+                                                <button type="button" class="btn btn-danger w-100" id="clearCartBtn">
+                                                    <i class="las la-trash"></i> Clear
                                                 </button>
-                                            @else
-                                                <button type="button" class="btn btn-success" id="completeOrderBtn" disabled>
-                                                    <i class="las la-check-circle"></i> Complete Sale
+                                            </div>
+
+                                            <div class="px-3 mb-2" style="width: 50%">
+                                                <button type="button" class="btn btn-secondary w-100" id="saveDraftBtn">
+                                                    <i class="las la-save"></i> Save Draft
                                                 </button>
-                                            @endif
+                                            </div>
+
+                                            <div class="col-6 mb-2 col-md-3 col-lg-12 col-xl-12">
+                                                <button type="button" class="btn btn-primary w-100" id="confirmOrderBtn">
+                                                    <i class="las la-check"></i> Confirm Order
+                                                </button>
+                                            </div>
+
+                                            <div class="col-6 col-md-3 col-lg-12 col-xl-12">
+                                                @if(isset($order) && $order->status === 'confirmed')
+                                                    <button type="button" class="btn btn-success w-100 mb-2" id="completeOrderBtn">
+                                                        <i class="las la-check-circle"></i> Complete Sale
+                                                    </button>
+                                                @else
+                                                    <button type="button" class="btn btn-success w-100 mb-2" id="completeOrderBtn" disabled>
+                                                        <i class="las la-check-circle"></i> Complete Sale
+                                                    </button>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

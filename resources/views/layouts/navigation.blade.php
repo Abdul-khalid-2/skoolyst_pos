@@ -57,8 +57,7 @@
                         </li>
                         <li>
                             <a href="{{ route('orders.index') }}" class="btn border add-btn shadow-none mx-2 d-none d-md-block"
-                                ><i class="las la-plus mr-2"></i>New
-                                Order</a>
+                                ><i class="las la-plus mr-2"></i>Orders</a>
                         </li>
                         <li>
                             <a href="#" class="btn border add-btn shadow-none mx-2 d-none d-md-block"

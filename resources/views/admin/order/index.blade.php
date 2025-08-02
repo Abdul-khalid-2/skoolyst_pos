@@ -40,7 +40,7 @@
                         <h4 class="card-title">Order Management</h4>
                         <div>
                             <a href="{{ route('orders.create') }}" class="btn btn-primary">
-                                <i class="las la-cash-register"></i> POS Terminal
+                                <i class="las la-cash-register"></i> New Order
                             </a>
                         </div>
                     </div>
