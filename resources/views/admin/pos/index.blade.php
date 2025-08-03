@@ -5,281 +5,7 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
-    <style>
-        .pos-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: auto;
-        }
-        .product-area, .cart-container {
-            width: 100%;
-        }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            overflow-y: auto;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            max-height: 400px;
-        }        
-        .product-card {
-            background: white;
-            border-radius: 5px;
-            padding: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #e9ecef;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }        
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }        
-        .product-card img {
-            max-width: 100%;
-            width:100%;
-            height:150px
-        }
-        .cart-container {
-            background: white;
-            border-radius: 5px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-        }        
-        .cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            max-height: 300px;
-        }        
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
-            gap: 5px;
-        }        
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }        
-        .cart-item-controls input {
-            width: 50px;
-            text-align: center;
-            margin: 0 5px;
-        }
-        @media (min-width: 992px) {
-            .pos-container {
-                flex-direction: row;
-            }            
-            .product-area {
-                width: 70%;
-            }            
-            .cart-container {
-                width: 30%;
-                height: 100%;
-            }            
-            .product-grid {
-                max-height: calc(100vh - 280px);
-            }            
-            .cart-items {
-                max-height: calc(100vh - 550px);
-            }
-        }        
-        @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }            
-            .payment-methods, .quick-cash-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }            
-            .category-tabs {
-                overflow-x: auto;
-                white-space: nowrap;
-                display: block;
-                padding-bottom: 5px;
-            }            
-            .category-tab {
-                display: inline-block;
-            }
-        }        
-        @media (max-width: 576px) {
-            .product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            }            
-            .cart-item {
-                flex-direction: column;
-            }            
-            .cart-item-controls {
-                justify-content: flex-end;
-            }            
-            .product-card img {
-                height: 50px;
-            }            
-            .product-name {
-                font-size: 0.9rem;
-            }
-        }
-        .category-tabs {
-            display: flex;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            flex-wrap: nowrap;
-        }        
-        .category-tab {
-            padding: 8px 15px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-        }        
-        .category-tab.active {
-            border-bottom: 2px solid #0d6efd;
-            color: #0d6efd;
-        }        
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin: 10px 0;
-        }        
-        .payment-method-btn {
-            padding: 8px;
-            text-align: center;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }        
-        .payment-method-btn.active {
-            background: #0d6efd;
-            color: white;
-            border-color: #0d6efd;
-        }        
-        .quick-cash-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin: 10px 0;
-        }        
-        .quick-cash-btn {
-            padding: 8px;
-            text-align: center;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-        }  
-        ::-webkit-scrollbar {/* Scrollbar styling */
-            width: 8px;
-            height: 8px;
-        }        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }        
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-            .category-tabs-container { /* Updated Category Tabs Styles */
-                position: relative;
-                margin-bottom: 15px;
-            }            
-            .category-tabs {
-                display: flex;
-                overflow-x: auto;
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE/Edge */
-                padding-bottom: 5px;
-                margin-bottom: -5px; /* Compensate for padding */
-            }        
-            .category-tabs::-webkit-scrollbar {
-                display: none; /* Chrome/Safari */
-            }            
-            .category-tab {
-                flex: 0 0 auto;
-                padding: 8px 15px;
-                cursor: pointer;
-                border-bottom: 2px solid transparent;
-                white-space: nowrap;
-                position: relative;
-            }            
-            .category-tab.active {
-                border-bottom: 2px solid #0d6efd;
-                color: #0d6efd;
-            }
-            .category-nav-arrow { /* Navigation arrows for foldable devices */
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 30px;
-                background: rgba(255,255,255,0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                z-index: 10;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }            
-            .category-nav-arrow.left {
-                left: 0;
-                background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }            
-            .category-nav-arrow.right {
-                right: 0;
-                background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }            
-            .category-tabs-container:hover .category-nav-arrow {
-                opacity: 1;
-            }                        
-            @media (max-width: 1200px) {/* Responsive adjustments */
-                .category-tab {
-                    padding: 8px 12px;
-                    font-size: 0.9rem;
-                }
-            }            
-            @media (max-width: 768px) {
-                .category-tab {
-                    padding: 8px 10px;
-                    font-size: 0.85rem;
-                }                
-                .category-nav-arrow {
-                    opacity: 1; /* Always show on mobile */
-                    width: 25px;
-                }
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-        }
-        #dueBalance {
-            color: #dc3545; /* Red color for due balance */
-            font-weight: bold;
-        }
-        #changeDue {
-            color: #28a745; /* Green color for change due */
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('backend/assets/admin/custome-style/pos_terminal.css')}}">
     @endpush
 
     <div class="container-fluid">
@@ -312,17 +38,20 @@
                                 <!-- Product Selection Area -->
                                 <div class="product-area">
                                     <!-- Barcode Scanner -->
-                                    <div class="barcode-scanner mb-3">
+                                     <div class="barcode-scanner mb-3">
                                         <div class="input-group">
-                                            <input type="text" id="barcodeInput" class="form-control" placeholder="Scan barcode or search product..." autofocus>
-                                            <button class="btn btn-outline-secondary" type="button" id="searchProductBtn"><i class="las la-search"></i></button>
+                                            <input type="text" id="barcodeInput" class="form-control" 
+                                                placeholder="Scan barcode or search product..." autofocus>
                                         </div>
                                     </div>
+                                    
+                                    
+                                    <!-- Category Tabs -->
                                     <div class="category-tabs-container">
                                         <div class="category-nav-arrow left">
                                             <i class="las la-angle-left"></i>
                                         </div>
-                                        <div class="category-tabs">
+                                        <div class="category-tabs" id="categoryTabs">
                                             <div class="category-tab search_active active" data-category-id="">All Products</div>
                                             @foreach($categories as $category)
                                                 <div class="category-tab" data-category-id="{{ $category->id }}">{{ $category->name }}</div>
@@ -332,25 +61,18 @@
                                             <i class="las la-angle-right"></i>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Product Grid -->
                                     <div class="product-grid" id="productGrid">
-                                        @foreach($products as $product)
-                                            <div class="product-card" data-product-id="{{ $product->id }}" 
-                                                data-variants="{{ $product->variants->count() > 1 ? 'true' : 'false' }}">
-                                                @if($product->image_paths)
-                                                    <img src="{{ json_decode('backend/'.$product->image_paths)[0] ?? asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
-                                                @else
-                                                    <img src="{{ asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
-                                                @endif
-                                                <div class="product-name">{{ $product->name }}</div>
-                                                @if($product->variants->count() > 1)
-                                                    <div class="text-muted small">{{ $product->variants->count() }} variants</div>
-                                                @else
-                                                    <div class="product-price">Rs {{ $product->variants->first()->selling_price ?? '0.00' }}</div>
-                                                @endif
+                                        <div class="text-center py-5">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
                                             </div>
-                                        @endforeach
+                                        </div>
                                     </div>
                                 </div>
+                                
+                                <!-- Cart Container -->
                                 <div class="cart-container">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -381,10 +103,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                    
+                                    </div>
+                                    
                                     <div class="cart-items" id="cartItems">
                                         <div class="text-muted text-center py-5">Your cart is empty</div>
-                                    </div>                                
+                                    </div>
+                                    
                                     <div class="cart-summary">
                                         <div class="summary-row">
                                             <span>Subtotal:</span>
@@ -405,26 +129,30 @@
                                             <span>Total:</span>
                                             <span id="cartTotal">Rs 0.00</span>
                                         </div>
-                                        <div class="payment-methods"><!-- Payment Methods -->
+                                        
+                                        <div class="payment-methods">
                                             @foreach($paymentMethods as $method)
-                                                <div class="payment-method-btn" data-method-id="{{ $method->id }}">
+                                                <button type="button" class="payment-method-btn" data-method-id="{{ $method->id }}">
                                                     {{ $method->name }}
-                                                </div>
+                                                </button>
                                             @endforeach
                                         </div>
-                                        <input type="hidden" name="payment_method_id" id="paymentMethodId"> 
-                                        <div class="mb-3"><!-- Payment Reference -->
+                                        <input type="hidden" name="payment_method_id" id="paymentMethodId">
+                                        
+                                        <div class="mb-3">
                                             <label>Payment Reference</label>
                                             <input type="text" class="form-control" name="payment_reference" id="paymentReference" placeholder="Optional reference">
                                         </div>
-                                        <div class="mb-3"><!-- Amount Paid -->
+                                        
+                                        <div class="mb-3">
                                             <label>Amount Paid</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">Rs</span>
                                                 <input type="number" step="0.01" min="0" class="form-control" name="amount_paid" id="amountPaid" value="0">
                                             </div>
                                         </div>
-                                        <div class="quick-cash-buttons"><!-- Quick Cash Buttons -->
+                                        
+                                        <div class="quick-cash-buttons">
                                             <button type="button" class="quick-cash-btn" data-amount="500">500</button>
                                             <button type="button" class="quick-cash-btn" data-amount="1000">1000</button>
                                             <button type="button" class="quick-cash-btn" data-amount="2000">2000</button>
@@ -432,19 +160,23 @@
                                             <button type="button" class="quick-cash-btn" data-amount="10000">10000</button>
                                             <button type="button" class="quick-cash-btn" data-amount="total">Exact</button>
                                         </div>
-                                        <div class="summary-row mb-3"> <!-- Change Due -->
+                                        
+                                        <div class="summary-row mb-3">
                                             <span>Change Due:</span>
                                             <span id="changeDue">Rs 0.00</span>
                                         </div>
-                                        <div class="summary-row mb-3"> <!-- Due Balance -->
+                                        
+                                        <div class="summary-row mb-3">
                                             <span>Due Balance:</span>
                                             <span id="dueBalance">Rs 0.00</span>
                                         </div>
-                                        <div class="mb-3"><!-- Notes -->
+                                        
+                                        <div class="mb-3">
                                             <label>Notes</label>
                                             <textarea name="notes" class="form-control" rows="2"></textarea>
                                         </div>
-                                        <div class="d-grid gap-2"><!-- Action Buttons -->
+                                        
+                                        <div class="d-grid gap-2">
                                             <button type="button" class="btn btn-danger" id="clearCartBtn">
                                                 <i class="las la-trash"></i> Clear
                                             </button>
@@ -455,7 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="cartItemsData"></div> <!-- Hidden fields for cart items -->
+                            <div id="cartItemsData"></div>
                         </form>
                     </div>
                 </div>
@@ -463,6 +195,7 @@
         </div>
     </div>
 
+    <!-- Variant Selection Modal -->
     <div class="modal fade" id="variantModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -472,13 +205,12 @@
                             <h5 class="modal-title">Select Variant</h5>
                             <div class="btn btn-primary" data-dismiss="modal" aria-label="Close">x</div>
                         </div>
-                        <div class="content create-workform bg-body" >
-                            <!-- Add search input here -->
+                        <div class="content create-workform bg-body">
                             <div class="px-3 pt-3">
                                 <input type="text" id="variantSearchInput" class="form-control" placeholder="Search variants...">
                             </div>
                             <div class="py-3" id="variantModalBody">
-                              
+                                <!-- Variants will be loaded here -->
                             </div>
                             <div class="col-lg-12 mt-4">
                                 <div class="d-flex flex-wrap">
@@ -491,7 +223,9 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true"> <!-- New Customer Modal -->
+
+    <!-- New Customer Modal -->
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -524,6 +258,25 @@
         </div>
     </div>
 
+    <!-- Print Modal -->
+    <div class="modal fade" id="printModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Print Bill</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <iframe id="billIframe" src="" style="width:100%; height:70vh; border:none;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="printIframe()">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('js')
         <script src="{{ asset('backend/assets/js/backend-bundle.min.js') }}"></script>
         <script src="{{ asset('backend/assets/js/table-treeview.js') }}"></script>
@@ -533,13 +286,20 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
         $(document).ready(function() {
+            // Global variables to store products and categories
+            let allPosProducts = [];
+            let allCategories = [];
+            let currentBranch = null;
+            let allCustomers = [];
+
+            // Cart object to manage cart operations
             const cart = {
                 items: [],
                 addItem: function(productId, variantId, quantity = 1, price, costPrice, name, variantName) {
-                    price = typeof price === 'string' ? parseFloat(price) : price; // Convert prices to numbers if they're strings
-                    costPrice = typeof costPrice === 'string' ? parseFloat(costPrice) : costPrice;                    
+                    price = typeof price === 'string' ? parseFloat(price) : price;
+                    costPrice = typeof costPrice === 'string' ? parseFloat(costPrice) : costPrice;
                     
-                    const existingItem = this.items.find(item =>  // Check if item already exists in cart
+                    const existingItem = this.items.find(item => 
                         item.productId === productId && item.variantId === variantId
                     );
                     
@@ -573,6 +333,7 @@
                 },
                 clear: function() {
                     this.items = [];
+                    $('#cartDiscount').val('0');
                     this.updateCart();
                 },
                 calculateTotals: function() {
@@ -589,7 +350,7 @@
                     return { subtotal, tax, discount, total };
                 },
                 updateCart: function() {
-                    const cartItemsEl = $('#cartItems');// Update cart UI
+                    const cartItemsEl = $('#cartItems');
                     
                     if (this.items.length === 0) {
                         cartItemsEl.html('<div class="text-muted text-center py-5">Your cart is empty</div>');
@@ -626,20 +387,21 @@
                         cartItemsEl.html(html);
                     }
                     
-                    const totals = this.calculateTotals();// Update totals
+                    const totals = this.calculateTotals();
                     $('#cartSubtotal').text('Rs ' + totals.subtotal.toFixed(2));
                     $('#cartTax').text('Rs ' + totals.tax.toFixed(2));
                     $('#cartTotal').text('Rs ' + totals.total.toFixed(2));
                     
-                    $('#formSubtotal').val(totals.subtotal);// Update hidden form fields
+                    $('#formSubtotal').val(totals.subtotal);
                     $('#formTaxAmount').val(totals.tax);
                     $('#formDiscountAmount').val(totals.discount);
                     $('#formTotalAmount').val(totals.total);
                     
-                    this.updateChangeDue();
-                    this.updateFormData();// Update hidden fields for form submission
+                    this.updateFormData();
+                    
+                    this.updateUI();
                 },
-                updateChangeDue: function() {
+                         updateChangeDue: function() {
                     const total = parseFloat($('#cartTotal').text().replace('Rs ', '')) || 0;
                     const amountPaid = parseFloat($('#amountPaid').val()) || 0;
                     const changeDue = Math.max(0, amountPaid - total);                    
@@ -649,10 +411,11 @@
                     $('#dueBalance').text('Rs ' + dueBalance.toFixed(2));
                     $('#formDueBalance').val(dueBalance.toFixed(2));
                 },
+                // Update hidden form fields
                 updateFormData: function() {
-                    $('#formCustomerId').val($('#customerSelect').val());// Update customer ID                    
+                    $('#formCustomerId').val($('#customerSelect').val());
                     
-                    let itemsHtml = ''; // Update cart items data
+                    let itemsHtml = '';
                     this.items.forEach((item, index) => {
                         itemsHtml += `
                             <input type="hidden" name="items[${index}][product_id]" value="${item.productId}">
@@ -660,15 +423,244 @@
                             <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
                             <input type="hidden" name="items[${index}][unit_price]" value="${item.price}">
                             <input type="hidden" name="items[${index}][cost_price]" value="${item.costPrice}">
-                            <input type="hidden" name="items[${index}][tax_rate]" value="0">
-                            <input type="hidden" name="items[${index}][discount_rate]" value="0">
                         `;
                     });
                     $('#cartItemsData').html(itemsHtml);
+                },
+                
+                // Set order status
+                setStatus: function(status) {
+                    this.status = status;
+                    $('#formStatus').val(status);
+                    this.updateUI();
+                },
+                
+                // Set storage type
+                setStorageType: function(type) {
+                    this.storageType = type;
+                    $('#formStorageType').val(type);
+                },
+                
+                // Update UI based on status
+                updateUI: function() {
+                    $('#saveDraftBtn').prop('disabled', this.status === 'completed');
+                    $('#confirmOrderBtn').prop('disabled', this.status === 'completed');
+                    $('#completeOrderBtn').prop('disabled', this.status !== 'confirmed');
+                    
+                    if (this.status === 'confirmed') {
+                        $('.order-status-badge').removeClass('status-draft status-confirmed status-completed status-cancelled')
+                            .addClass('status-confirmed')
+                            .text('Confirmed');
+                    }
+                },
+                
+                // Save order (create or update)
+                saveOrder: function() {
+                    const formData = this.getFormData();
+                    const url = this.orderId ? `/orders/${this.orderId}` : '/orders';
+                    const method = this.orderId ? 'PUT' : 'POST';
+                    
+                    return $.ajax({
+                        url: url,
+                        type: method,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: (response) => {
+                            if (response.order) {
+                                this.orderId = response.order.id;
+                                this.status = response.order.status;
+                                this.storageType = response.order.storage_type;
+                                
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Order Saved',
+                                    text: `Order #${response.order.order_number} has been saved`,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    cart.clear();
+                                    $btn.prop('disabled', false);
+                                    $btn.html('<i class="las la-check"></i> Confirm Order');
+                                });
+                            }
+                            this.updateUI();
+                        },
+                        error: (xhr) => {
+                            let errorMessage = 'An error occurred while saving the order';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Save Failed',
+                                text: errorMessage,
+                            });
+                        }
+                    });
+                },
+                getFormData: function() {
+                    const form = $('#orderForm')[0];
+                    const formData = new FormData(form);
+                    
+                    this.items.forEach((item, index) => {
+                        formData.append(`items[${index}][product_id]`, item.productId);
+                        formData.append(`items[${index}][variant_id]`, item.variantId);
+                        formData.append(`items[${index}][quantity]`, item.quantity);
+                        formData.append(`items[${index}][unit_price]`, item.price);
+                        formData.append(`items[${index}][cost_price]`, item.costPrice);
+                    });
+                    
+                    formData.append('status', this.status);
+                    formData.append('storage_type', this.storageType);
+                    
+                    return formData;
                 }
             };
-            function initPOS() {        // Initialize POS functionality         
-                $('.product-card').on('click', function() {// Product card click handler on page relod show product variant model
+
+            // Initialize the POS system
+            function initializePOS() {
+                loadAllData().then(() => {
+                    renderCategories();
+                    renderProducts();
+                    initializeEventHandlers();
+                });
+            }
+
+            // Load all initial data
+            function loadAllData() {
+                return $.get('/allPosProducts', function(response) {
+                    allPosProducts = response.products;
+                    allCategories = response.categories;
+                    currentBranch = response.currentBranch;
+                    allCustomers = response.customers;
+                    
+                    // Update customer dropdown
+                    updateCustomerDropdown();
+                    
+                    // Update branch info in header
+                    updateBranchInfo();
+                }).fail(function(error) {
+                    console.error("Error loading data:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Loading Failed',
+                        text: 'Failed to load products and categories'
+                    });
+                });
+            }
+
+            // Render categories in the tabs
+            function renderCategories() {
+                let html = '<div class="category-tab search_active active" data-category-id="">All Products</div>';
+                
+                allCategories.forEach(category => {
+                    html += `<div class="category-tab" data-category-id="${category.id}">${category.name}</div>`;
+                });
+                
+                $('#categoryTabs').html(html);
+            }
+
+            // Render products in the grid
+            function renderProducts(filterCategoryId = '', searchTerm = '') {
+                let filteredProducts = allPosProducts;
+                
+                // Filter by category if specified
+                if (filterCategoryId) {
+                    filteredProducts = allPosProducts.filter(product => product.category_id == filterCategoryId);
+                }
+                
+                // Filter by search term if specified
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredProducts = filteredProducts.filter(product => {
+                        // Check product name
+                        if (product.name.toLowerCase().includes(term)) return true;
+                        
+                        // Check variants
+                        return product.variants.some(variant => {
+                            // Check variant name or barcode
+                            return variant.name.toLowerCase().includes(term) || 
+                                (variant.barcode && variant.barcode.toLowerCase().includes(term));
+                        });
+                    });
+                }
+                
+                let html = '';
+                
+                if (filteredProducts.length === 0) {
+                    html = '<div class="text-muted text-center py-5">No products found</div>';
+                } else {
+                    filteredProducts.forEach(product => {
+                        const hasVariants = product.variants.length > 1;
+                        const price = hasVariants ? '' : `Rs ${product.variants[0].selling_price.toFixed(2)}`;
+                        
+                        // Handle image path
+                        let imagePath = '/backend/assets/images/no_image.png';
+                        try {
+                            if (product.image_paths) {
+                                const parsedPaths = typeof product.image_paths === 'string' 
+                                    ? JSON.parse(product.image_paths) 
+                                    : product.image_paths;
+                                if (Array.isArray(parsedPaths) && parsedPaths.length > 0) {
+                                    imagePath = parsedPaths[0].startsWith('http') ? parsedPaths[0] : '/' + parsedPaths[0];
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing image paths:", e);
+                        }
+
+                        html += `
+                            <div class="product-card" data-product-id="${product.id}" 
+                                data-category-id="${product.category_id}"
+                                data-variants="${hasVariants ? 'true' : 'false'}">
+                                <img src="${imagePath}" alt="${product.name}" 
+                                    onerror="this.src='/backend/assets/images/no_image.png'">
+                                <div class="product-name">${product.name}</div>
+                                ${hasVariants ? 
+                                    `<div class="text-muted small">${product.variants.length} variants</div>` : 
+                                    `<div class="product-price">${price}</div>`}
+                            </div>
+                        `;
+                    });
+                }
+                
+                $('#productGrid').html(html);
+            }
+
+            // Update customer dropdown
+            function updateCustomerDropdown() {
+                let html = '<option value="Walk-in-Customer" selected>Walk-in Customer</option>';
+                
+                allCustomers.forEach(customer => {
+                    html += `<option value="${customer.id}">${customer.name} (${customer.phone})</option>`;
+                });
+                
+                $('#customerSelect').html(html);
+            }
+
+            // Update branch info in header
+            function updateBranchInfo() {
+                if (currentBranch) {
+                    $('.branch-info').text(`Branch: ${currentBranch.name}`);
+                }
+            }
+
+            // Initialize event handlers
+            function initializeEventHandlers() {
+                // Category tab click
+                $(document).on('click', '.category-tab', function() {
+                    $('.category-tab').removeClass('active');
+                    $(this).addClass('active');
+                    
+                    const categoryId = $(this).data('category-id');
+                    renderProducts(categoryId);
+                });
+                
+
+                // Product card click handler
+                 $(document).on('click', '.product-card', function() {// Product card click handler on page relod show product variant model
 
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('variants');
@@ -694,7 +686,22 @@
                     }
                 });
                 
-                $(document).on('click', '.variant-option', function() { // Variant selection in modal
+                $('.payment-method-btn').on('click', function() { // Payment method selection
+                    $('.payment-method-btn').removeClass('active');
+                    $(this).addClass('active');
+                    $('#paymentMethodId').val($(this).data('method-id'));
+                });
+                // Search button click
+                $('#barcodeInput').on('keyup', function(e) {
+                    const searchTerm = $(this).val().trim();
+                    $('.category-tab').removeClass('active');
+                    $('.search_active').addClass('active');
+                    renderProducts('', searchTerm);
+                });
+                
+                // Barcode scanner enter key
+                // Variant selection in modal
+                $(document).on('click', '.variant-option', function() {
                     cart.addItem(
                         $(this).data('product-id'),
                         $(this).data('variant-id'),
@@ -708,11 +715,8 @@
                 });
                 
                 $(document).on('click', '.remove-item', function() { // Cart item controls
-                    var remove = confirm("you want to remove item form cart");
-                    if(remove){
-                        const index = $(this).closest('.cart-item').data('index');
-                        cart.removeItem(index);
-                    }
+                    const index = $(this).closest('.cart-item').data('index');
+                    cart.removeItem(index);
                 });
                 
                 $(document).on('click', '.increment', function() {
@@ -731,13 +735,23 @@
                     cart.updateQuantity(index, newQty);
                 });
                 $('#clearCartBtn').on('click', function() {// Clear cart button
-                    if (confirm('Are you sure you want to clear form?')) {
-                        cart.clear();
-                        document.getElementById('posForm').reset();                            
-                        $('#customerSelect').val('Walk-in-Customer').trigger('change');
-                        $('#changeDue').text('Rs 0.00');
-                        $('#dueBalance').text('Rs 0.00');
-                    }
+                    Swal.fire({
+                        title: 'Clear Cart?',
+                        text: 'Are you sure you want to clear all items from the cart?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, clear it!',
+                        cancelButtonText: 'No, keep items'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            cart.clear();
+                            document.getElementById('posForm').reset();                            
+                            $('#customerSelect').val('Walk-in-Customer').trigger('change');
+                            $('#changeDue').text('Rs 0.00');
+                            $('#dueBalance').text('Rs 0.00');
+                        }
+                    });
+                    
                 });
                 $('#cartDiscount').on('change', function() {// Discount input
                     cart.updateCart();
@@ -754,168 +768,94 @@
                         $('#amountPaid').val(currentAmount + parseFloat(amount));
                     }
                     cart.updateChangeDue();
-                });    
-                $('.payment-method-btn').on('click', function() { // Payment method selection
-                    $('.payment-method-btn').removeClass('active');
-                    $(this).addClass('active');
-                    $('#paymentMethodId').val($(this).data('method-id'));
+                });  
+                // Clear cart button
+                $('#clearCartBtn').on('click', function() {
+                    Swal.fire({
+                        title: 'Clear Cart?',
+                        text: 'Are you sure you want to clear all items from the cart?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, clear it!',
+                        cancelButtonText: 'No, keep items'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            cart.clear();
+                        }
+                    });
                 });
-                $('#barcodeInput').on('keypress', function(e) { // Barcode scanner input
-                    if (e.which === 13) { // Enter key
-                        const barcode = $(this).val().trim();
-                        if (barcode) {
-                            $.get(`/products/barcode/${barcode}`, function(productVariant) {
-                                if (productVariant) {
-                                    cart.addItem(
-                                        productVariant.product_id,
-                                        productVariant.id,
-                                        1,
-                                        productVariant.selling_price,
-                                        productVariant.purchase_price,
-                                        productVariant.product.name,
-                                        productVariant.name
-                                    );
-                                    $('#barcodeInput').val('');
-                                } else {
-                                    alert('Product not found!');
-                                }
-                            }).fail(function() {
-                                alert('Error looking up product');
+                
+                // Save as draft button
+                $('#saveDraftBtn').on('click', function() {
+                    if (cart.items.length === 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Empty Cart',
+                            text: 'Please add items to the order before saving'
+                        });
+                        return;
+                    }
+                    
+                    cart.setStatus('draft');
+                    cart.setStorageType('database');
+                    cart.saveOrder();
+                });
+                
+                // Confirm order button
+                $('#confirmOrderBtn').on('click', function() {
+                    if (cart.items.length === 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Empty Cart',
+                            text: 'Please add items to the order before confirming'
+                        });
+                        return;
+                    }
+                    $(this).prop("disabled",true);
+                    Swal.fire({
+                        title: 'Confirm Order?',
+                        text: 'This will mark the order as confirmed and ready for payment',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, confirm',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $(this).html('<i class="las la-spinner la-spin"></i> Processing...');
+                            cart.setStatus('confirmed');
+                            cart.setStorageType('database');
+                            cart.saveOrder().then(() => {
+                                $(this).prop('disabled', false);
+                                $(this).html('<i class="las la-check"></i> Confirm Order');
+                            }).catch(() => {
+                                $(this).prop('disabled', true);
+                                $(this).html('<i class="las la-check"></i> Confirm Order');
                             });
                         }
-                    }
-                });
-                $('#searchProductBtn').on('click', function() { // Search product button
-                    const searchTerm = $('#barcodeInput').val().trim();
-                    $('.category-tab').removeClass('active');
-                    $('.search_active').addClass('active');
-                    
-                    if (searchTerm) {
-                        $.get(`/products/search/${searchTerm}`, function(products) {
-                            let html = '';
-                            
-                            if (products.length === 0) {
-                                html = '<div class="text-muted text-center py-5">No products found</div>';
-                            } else {
-                                products.forEach(product => {
-                                    const hasVariants = product.variants.length > 1;
-                                    const price = hasVariants ? '' : `Rs ${product.variants[0].selling_price.toFixed(2)}`;
-                                    
-                                    html += `
-                                        <div class="product-card" data-product-id="${product.id}" 
-                                            data-variants="${hasVariants ? 'true' : 'false'}">
-                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'backend/assets/images/no_image.png'}" 
-                                                alt="${product.name}">
-                                            <div class="product-name">${product.name}</div>
-                                            ${hasVariants ? 
-                                                `<div class="text-muted small">${product.variants.length} variants</div>` : 
-                                                `<div class="product-price">${price}</div>`}
-                                        </div>
-                                    `;
-                                });
-                            }                            
-                            $('#productGrid').html(html);
-                            $('#barcodeInput').val('');
-                            $('.product-card').on('click', function() {// Rebind click events for new product cards
-                                const productId = $(this).data('product-id');
-                                const hasVariants = $(this).data('variants');
-                                
-                                if (hasVariants) {
-                                    showVariantModel(productId);
-                                } else {                                    
-                                    const productName = $(this).find('.product-name').text();// Add directly to cart (single variant)
-                                    const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
-                                    
-                                    $.get(`/products/${productId}`, function(product) {// Get product details via API to ensure we have cost price
-                                        const variant = product.variants[0];
-                                        cart.addItem(
-                                            productId, 
-                                            variant.id, 
-                                            1, 
-                                            variant.selling_price, 
-                                            variant.purchase_price,
-                                            product.name,
-                                            variant.name
-                                        );
-                                    });
-                                }
-                            });
-                        });
-                    }
-                });
-                function showVariantModel(productId){
-                    $.get(`/products/${productId}/variants_data`, function(variants) {
-                        let modalBody = '';
-                        variants.forEach(variant => {
-                            modalBody += `
-                                <div class="mb-2 variant-option" 
-                                    data-product-id="${productId}"
-                                    data-variant-id="${variant.id}"
-                                    data-price="${variant.selling_price}"
-                                    data-cost="${variant.purchase_price}"
-                                    data-name="${variant.product?.name || ''}"
-                                    data-variant-name="${variant.name}"
-                                    data-search-text="${(variant.name + ' ' + variant.sku + ' ' + variant.selling_price).toLowerCase()}">
-                                    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                        <div>
-                                            <strong>${variant.name}</strong>
-                                            <div class="small" style="font-size:20px"> ${variant.sku}</div>
-                                        </div>
-                                        <div>
-                                            <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
-                                            <div class="small text-muted">Stock: ${variant.current_stock}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        $('#variantModalBody').html(modalBody);
-                        
-                        // Initialize search functionality
-                        $('#variantSearchInput').on('input', function() {
-                            const searchTerm = $(this).val().toLowerCase();
-                            $('.variant-option').each(function() {
-                                const searchText = $(this).data('search-text');
-                                if (searchText.includes(searchTerm)) {
-                                    $(this).show();
-                                } else {
-                                    $(this).hide();
-                                }
-                            });
-                        });
-                        
-                        var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
-                        modal.show();
-                        
-                        // Focus on search input when modal is shown
-                        $('#variantModal').on('shown.bs.modal', function() {
-                            $('#variantSearchInput').focus();
-                        });
-                        
-                    }).fail(function(error) {
-                        console.error("Error loading variants:", error);
                     });
-                }
-                $('.category-tab').on('click', function() {// Category tabs
-
-                    $('.category-tab').removeClass('active');
-                    $(this).addClass('active');
-                    const categoryId = $(this).data('category-id');                    
-                    if (categoryId) {
-                        $.get(`/categories/${categoryId}/products`, function(products) {
-                            updateProductGrid(products);
-                        });
-                    } else {
-                        $.get('/pos_products', function(products) {// Show all products
-                            updateProductGrid(products);
-                        });
-                    }
                 });
+                
+                // Complete order button
+                $('#completeOrderBtn').on('click', function() {
+                    Swal.fire({
+                        title: 'Complete Order?',
+                        text: 'This will convert the order to a sale and update inventory',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Complete Sale',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            cart.completeOrder();
+                        }
+                    });
+                });
+                
+                // Customer selection
                 $('#addCustomCustomer').click(function() {
                     $('#customCustomerContainer').toggle();
                     if ($('#customCustomerContainer').is(':visible')) {
                         $(this).html('<i class="las la-user-minus"></i> Cancel');
-                        // Set to Walk-in Customer when showing custom fields
                         $('#customerSelect').val('Walk-in-Customer').trigger('change');
                     } else {
                         $(this).html('<i class="las la-user-plus"></i> New Customer');
@@ -924,7 +864,6 @@
                     }
                 });
                 
-                // When customer is selected, hide custom fields
                 $('#customerSelect').on('change', function() {
                     if ($(this).val() !== 'Walk-in-Customer') {
                         $('#customCustomerContainer').hide();
@@ -1027,189 +966,123 @@
                     });
                 });
             }
-            function updateProductGrid(products) {
-                // console.log(products);
-                let html = '';                
-                if (products.length === 0) {
-                    html = '<div class="text-muted text-center py-5">No products found in this category</div>';
-                } else {
-                    products.forEach(product => {
-                        // Safely check for variants
-                        const variants = product.variants || [];
-                        const hasAnyVariants = variants.length > 0;
-                        const hasMultipleVariants = variants.length > 1;
-                        
-                        // Handle image path
-                        let imagePath = asset('backend/assets/images/no_image.png');
-                        try {
-                            if (product.image_paths) {
-                                const parsedPaths = typeof product.image_paths === 'string' 
-                                    ? JSON.parse(product.image_paths) 
-                                    : product.image_paths;
-                                if (Array.isArray(parsedPaths)) {
-                                    imagePath = parsedPaths[0] || imagePath;
-                                }
-                            }
-                        } catch (e) {
-                            console.error("Error parsing image paths:", e);
-                        }
-
-                        // Price display logic
-                        let priceDisplay = 'Rs 0.00';
-                        if (hasAnyVariants && !hasMultipleVariants) {
-                            const price = variants[0].selling_price;
-                            priceDisplay = `Rs ${parseFloat(price).toFixed(2)}`;
-                        }
-
-                        html += `
-                            <div class="product-card" data-product-id="${product.id}" 
-                                data-has-variants="${hasAnyVariants ? 'true' : 'false'}"
-                                data-multiple-variants="${hasMultipleVariants ? 'true' : 'false'}">
-                                <img src="${imagePath.startsWith('http') ? imagePath : '/' + imagePath}" 
-                                    alt="${product.name}" onerror="this.src='backend/assets/images/no_image.png'">
-                                <div class="product-name">${product.name}</div>
-                                ${hasMultipleVariants ? 
-                                    `<div class="text-muted small">${variants.length} variants</div>` : 
-                                    `<div class="product-price">${priceDisplay}</div>`}
+            function showVariantModel(productId) {
+                // Create and show loader before making the request
+                const loaderHtml = `
+                    <div class="advanced-loader">
+                        <div class="loader-backdrop"></div>
+                        <div class="loader-content">
+                            <div class="spinner-container">
+                                <div class="spinner">
+                                    <div class="spinner-circle spinner-circle-outer"></div>
+                                    <div class="spinner-circle spinner-circle-inner"></div>
+                                    <div class="spinner-circle spinner-circle-single-1"></div>
+                                    <div class="spinner-circle spinner-circle-single-2"></div>
+                                </div>
                             </div>
-                        `;
-                    });
-                }
+                            <div class="loader-text">Loading variants...</div>
+                            <div class="progress-container">
+                                <div class="progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 
-                $('#productGrid').html(html);
-                bindProductCardEvents();
-            }
-
-            function bindProductCardEvents() {
-                $('.product-card').off('click').on('click', function() {
-                    const productId = $(this).data('product-id');
-                    const hasVariants = $(this).data('has-variants');
-                    const hasMultipleVariants = $(this).data('multiple-variants');
+                $('body').append(loaderHtml);
+                
+                // Start progress bar animation
+                const progressBar = $('.progress-bar');
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 5;
+                    progressBar.css('width', `${Math.min(progress, 90)}%`);
+                }, 200);
+                
+                $.get(`/products/${productId}/variants_data`, function(variants) {
+                    clearInterval(progressInterval);
+                    progressBar.css('width', '100%');
                     
-                    if (hasMultipleVariants) {
-                        $.get(`/products/${productId}/variants_data`, function(variants) { // Show variant selection modal for products with multiple variants
-                            if (variants && variants.length > 0) {
-                                let modalBody = '';
-                                
-                                variants.forEach(variant => {
-                                    modalBody += `
-                                        <div class="mb-2 variant-option" 
-                                            data-product-id="${productId}"
-                                            data-variant-id="${variant.id}"
-                                            data-price="${variant.selling_price}"
-                                            data-cost="${variant.purchase_price}"
-                                            data-name="${variant.product?.name || ''}"
-                                            data-variant-name="${variant.name}">
-                                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                                <div>
-                                                    <strong>${variant.name}</strong>
-                                                    <div class="small" style="font-size:20px"> ${variant.sku}</div>
-                                                </div>
-                                                <div>
-                                                    <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
-                                                    <div class="small text-muted">Stock: ${variant.current_stock}</div>
-                                                </div>
-                                            </div>
+                    // Add slight delay for smooth transition
+                    setTimeout(() => {
+                        $('.advanced-loader').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        let modalBody = '';
+                        variants.forEach(variant => {
+                            modalBody += `
+                                <div class="mb-2 variant-option" 
+                                    data-product-id="${productId}"
+                                    data-variant-id="${variant.id}"
+                                    data-price="${variant.selling_price}"
+                                    data-cost="${variant.purchase_price}"
+                                    data-name="${variant.product?.name || ''}"
+                                    data-variant-name="${variant.name}"
+                                    data-search-text="${(variant.name + ' ' + variant.sku + ' ' + variant.selling_price).toLowerCase()}">
+                                    <div class="d-flex justify-content-between align-items-center p-2 border rounded">
+                                        <div>
+                                            <strong>${variant.name}</strong>
+                                            <div class="small" style="font-size:20px"> ${variant.sku}</div>
                                         </div>
-                                    `;
-                                });
-                                $('#variantModalBody').html(modalBody);
-                                var modal = new bootstrap.Modal(document.getElementById('variantModal'));// Initialize and show modal
-                                modal.show();
-                            } else {
-                                alert('No variants found for this product');
-                            }
-                        }).fail(function(error) {
-                            console.error("Error loading variants:", error);
-                            alert('Error loading variants');
+                                        <div>
+                                            <div>Rs ${parseFloat(variant.selling_price).toFixed(2)}</div>
+                                            <div class="small text-muted">Stock: ${variant.current_stock}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
                         });
-                    } else if (hasVariants) {
-                        const productName = $(this).find('.product-name').text(); // Single variant case - add directly to cart
-                        const priceText = $(this).find('.product-price').text();
-                        const price = parseFloat(priceText.replace('Rs ', '')) || 0;
                         
-                        $.get(`/products/${productId}`, function(product) {  // Get product details via API
-                            if (product.variants && product.variants.length === 1) {
-                                const variant = product.variants[0];
-                                cart.addItem(
-                                    productId, 
-                                    variant.id, 
-                                    1, 
-                                    variant.selling_price, 
-                                    variant.purchase_price,
-                                    product.name,
-                                    variant.name
-                                );
-                            } else {
-                                cart.addItem(// Fallback for unexpected cases
-                                    productId, 
-                                    null, 
-                                    1, 
-                                    price, 
-                                    price * 0.8, // Default cost price
-                                    productName,
-                                    'Default'
-                                );
-                            }
-                        }).fail(function() {
-                            cart.addItem( // Fallback if API fails
-                                productId, 
-                                null, 
-                                1, 
-                                price, 
-                                price * 0.8, // Default cost price
-                                productName,
-                                'Default'
-                            );
+                        $('#variantModalBody').html(modalBody);
+                        
+                        // Initialize search functionality
+                        $('#variantSearchInput').on('input', function() {
+                            const searchTerm = $(this).val().toLowerCase();
+                            $('.variant-option').each(function() {
+                                const searchText = $(this).data('search-text');
+                                $(this).toggle(searchText.includes(searchTerm));
+                            });
                         });
-                    } else {
-                        const productName = $(this).find('.product-name').text(); // No variants case
-                        const priceText = $(this).find('.product-price').text();
-                        const price = parseFloat(priceText.replace('Rs ', '')) || 0;
                         
-                        cart.addItem(
-                            productId, 
-                            null, 
-                            1, 
-                            price, 
-                            price * 0.8, // Default cost price
-                            productName,
-                            'Default'
-                        );
-                    }
+                        var modal = new bootstrap.Modal(document.getElementById('variantModal'));
+                        modal.show();
+                        
+                        // Focus on search input when modal is shown
+                        $('#variantModal').on('shown.bs.modal', function() {
+                            $('#variantSearchInput').focus();
+                        });
+                        
+                    }, 300);
+                    
+                }).fail(function(error) {
+                    clearInterval(progressInterval);
+                    $('.loader-text').text('Failed to load variants');
+                    $('.spinner-container').html('<i class="fas fa-exclamation-circle error-icon"></i>');
+                    progressBar.css('width', '100%').addClass('error');
+                    
+                    setTimeout(() => {
+                        $('.advanced-loader').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        console.error("Error loading variants:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to load product variants'
+                        });
+                    }, 1000);
                 });
             }
-            initPOS();
+            // Initialize the POS system
+            initializePOS();
         });
-        </script>
-        <script>
-            $(document).ready(function() {
-                const tabsContainer = $('.category-tabs');
-                const leftArrow = $('.category-nav-arrow.left');
-                const rightArrow = $('.category-nav-arrow.right');
-                updateArrowVisibility();// Check scroll position on load                
-                tabsContainer.on('scroll', updateArrowVisibility);// Update arrow visibility on scroll                
-                leftArrow.on('click', function() { // Navigation arrow click handlers
-                    tabsContainer.animate({scrollLeft: tabsContainer.scrollLeft() - 200}, 300);
-                });
-                rightArrow.on('click', function() {
-                    tabsContainer.animate({scrollLeft: tabsContainer.scrollLeft() + 200}, 300);
-                });
-                $(window).on('resize', updateArrowVisibility); // Handle window resize
-                function updateArrowVisibility() {
-                    const scrollLeft = tabsContainer.scrollLeft();
-                    const scrollWidth = tabsContainer[0].scrollWidth;
-                    const clientWidth = tabsContainer[0].clientWidth;
-                    
-                    leftArrow.toggle(scrollLeft > 0);
-                    rightArrow.toggle(scrollLeft < (scrollWidth - clientWidth - 1));
-                }
-            });
-            jQuery(document).ready(function() {
-                jQuery(".wrapper-menu").addClass("open");
-                jQuery("body").addClass("sidebar-main");
-            });
-            
-            </script>
+
+        jQuery(document).ready(function() {
+            jQuery(".wrapper-menu").addClass("open");
+            jQuery("body").addClass("sidebar-main");
+        });
+
+    </script>
     @endpush
 </x-app-layout>

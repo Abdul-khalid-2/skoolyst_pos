@@ -26,7 +26,7 @@ class PosController extends Controller
                 ->withCount('products')
                 ->get(),
             'products' => Product::where('tenant_id', $tenantId)
-                ->with(['variants' => function($query) {
+                ->with(['variants' => function ($query) {
                     $query->orderBy('name');
                 }])
                 ->get(),
@@ -41,6 +41,26 @@ class PosController extends Controller
         ]);
     }
 
+    public function allProducts()
+    {
+        $tenantId = auth()->user()->tenant_id;
+
+        return response()->json([
+            'categories' => Category::where('tenant_id', $tenantId)
+                ->withCount('products')
+                ->get(),
+            'products' => Product::where('tenant_id', $tenantId)
+                ->with(['variants' => function ($query) {
+                    $query->orderBy('name');
+                }])
+                ->get(),
+            'customers' => Customer::where('tenant_id', $tenantId)
+                ->orderBy('name')
+                ->get(),
+            'currentBranch' => Branch::where('tenant_id', $tenantId)
+                ->firstOrFail()
+        ]);
+    }
     public function variants(Product $product)
     {
         $this->authorizeProductAccess($product);
@@ -56,14 +76,14 @@ class PosController extends Controller
     public function search($term)
     {
         $products = Product::where('tenant_id', auth()->user()->tenant_id)
-            ->where(function($query) use ($term) {
+            ->where(function ($query) use ($term) {
                 $query->where('name', 'like', "%$term%")
                     ->orWhere('sku', 'like', "%$term%")
                     ->orWhere('barcode', 'like', "%$term%")
-                    ->orWhereHas('variants', function($q) use ($term) {
+                    ->orWhereHas('variants', function ($q) use ($term) {
                         $q->where('name', 'like', "%$term%")
-                          ->orWhere('sku', 'like', "%$term%")
-                          ->orWhere('barcode', 'like', "%$term%");
+                            ->orWhere('sku', 'like', "%$term%")
+                            ->orWhere('barcode', 'like', "%$term%");
                     });
             })
             ->with('variants')
@@ -75,7 +95,7 @@ class PosController extends Controller
     public function barcode($barcode)
     {
         $variant = ProductVariant::where('barcode', $barcode)
-            ->whereHas('product', function($q) {
+            ->whereHas('product', function ($q) {
                 $q->where('tenant_id', auth()->user()->tenant_id);
             })
             ->with('product')
@@ -88,20 +108,20 @@ class PosController extends Controller
     {
         $this->authorizeCategoryAccess($category);
         $products = $category->products()
-            ->with(['variants' => function($query) {
+            ->with(['variants' => function ($query) {
                 $query->orderBy('name');
             }])
             ->get()
-            ->map(function($product) {
+            ->map(function ($product) {
                 // Ensure image_paths is properly formatted
                 if ($product->image_paths) {
                     try {
-                        $decoded = is_string($product->image_paths) 
-                            ? json_decode($product->image_paths, true) 
+                        $decoded = is_string($product->image_paths)
+                            ? json_decode($product->image_paths, true)
                             : $product->image_paths;
-                        
+
                         if (is_array($decoded)) {
-                            $product->image_paths = array_map(function($path) {
+                            $product->image_paths = array_map(function ($path) {
                                 return ltrim($path, '/'); // Remove leading slash if exists
                             }, $decoded);
                         }
@@ -117,7 +137,7 @@ class PosController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'customer_id' => 'nullable',
             'branch_id' => 'required|exists:branches,id',
@@ -237,12 +257,12 @@ class PosController extends Controller
             if ($request->ajax()) {
                 $business = Business::first(); // Get business info
                 $sale->load(['items.product', 'items.variant', 'payments.paymentMethod', 'customer', 'branch']);
-                
+
                 $invoiceHtml = view('admin.pos.invoice', [
                     'sale' => $sale,
                     'business' => $business
                 ])->render();
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Sale completed successfully',
@@ -253,7 +273,6 @@ class PosController extends Controller
 
             return redirect()->route('sales.show', $sale->id)
                 ->with('success', 'Sale completed successfully.');
-
         } catch (\Exception $e) {
             // Return JSON error response for AJAX requests
             if ($request->ajax()) {
@@ -309,16 +328,16 @@ class PosController extends Controller
                 $query->orderBy('name');
             }])
             ->get()
-            ->map(function($product) {
+            ->map(function ($product) {
                 // Same image path processing as above
                 if ($product->image_paths) {
                     try {
-                        $decoded = is_string($product->image_paths) 
-                            ? json_decode($product->image_paths, true) 
+                        $decoded = is_string($product->image_paths)
+                            ? json_decode($product->image_paths, true)
                             : $product->image_paths;
-                        
+
                         if (is_array($decoded)) {
-                            $product->image_paths = array_map(function($path) {
+                            $product->image_paths = array_map(function ($path) {
                                 return ltrim($path, '/');
                             }, $decoded);
                         }

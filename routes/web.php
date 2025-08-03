@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
     Route::get('/pos_products', [PosController::class, 'posProducts']);
     Route::post('/pos', [PosController::class, 'store'])->name('pos.store');
 
+    Route::get('product/{sale}/print', [PosController::class, 'print'])->name('sale.print');
+    Route::get('/allPosProducts', [PosController::class, 'allProducts'])->name('allPosProducts');
+
     Route::resource('sales', SaleController::class);
     Route::post('sales/{sale}/add-payment', [SaleController::class, 'addPayment'])->name('sales.add-payment');
     Route::get('sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
