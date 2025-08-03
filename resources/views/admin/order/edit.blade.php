@@ -406,7 +406,9 @@
                 saveOrder: function() {
                     const formData = this.getFormData();
                     const url = "/orders/" + this.orderId;
-                    const method = "PUT";
+                    const method = "POST"; // Change to POST and use _method parameter
+                    formData.append('_method', 'PUT'); // Add this line for Laravel to recognize it as PUT request                    
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
                     
                     return $.ajax({
                         url: url,
@@ -414,6 +416,9 @@
                         data: formData,
                         processData: false,
                         contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken // Add CSRF token to headers
+                        },
                         success: (response) => {
                             if (response.order) {
                                 this.status = response.order.status;
@@ -572,6 +577,23 @@
                             });
                         }
                     });
+                },
+                getFormData: function() {
+                    const form = $('#orderForm')[0];
+                    const formData = new FormData(form);
+                    
+                    this.items.forEach((item, index) => {
+                        formData.append(`items[${index}][product_id]`, item.productId);
+                        formData.append(`items[${index}][variant_id]`, item.variantId);
+                        formData.append(`items[${index}][quantity]`, item.quantity);
+                        formData.append(`items[${index}][unit_price]`, item.price);
+                        formData.append(`items[${index}][cost_price]`, item.costPrice);
+                    });
+                    
+                    formData.append('status', this.status);
+                    formData.append('storage_type', this.storageType);
+                    
+                    return formData;
                 }
             };
             
