@@ -181,7 +181,7 @@
                                         <div class="summary-row">
                                             <span>Discount:</span>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" step="0.01" min="0" id="cartDiscount" class="form-control" 
+                                                <input type="number" step="1" min="0" id="cartDiscount" class="form-control" 
                                                     value="{{ number_format($order->discount_amount, 2) }}">
                                                 <span class="input-group-text">Rs</span>
                                             </div>
@@ -664,7 +664,6 @@
 
                 
                 $(document).on('click', '.increment', function() {
-                    alert('testing increment button');
                     const index = $(this).closest('.cart-item').data('index');
                     const currentQty = parseInt($(this).siblings('.quantity-input').val());
                     cart.updateQuantity(index, currentQty + 1);
