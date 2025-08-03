@@ -152,7 +152,8 @@ class OrderController extends Controller
             return response()->json([
                 'success' => true,
                 'order' => $order->load(['items.product', 'items.variant', 'customer']),
-                'message' => 'Order saved successfully'
+                'message' => 'Order saved successfully',
+                'print_url' => route('orders.print', $order->id) // Add print URL to response
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -287,7 +288,8 @@ class OrderController extends Controller
             return response()->json([
                 'success' => true,
                 'order' => $order->load(['items.product', 'items.variant', 'customer']),
-                'message' => 'Order updated successfully'
+                'message' => 'Order updated successfully',
+                'print_url' => route('orders.print', $order->id)
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -314,7 +316,8 @@ class OrderController extends Controller
                 'success' => true,
                 'sale' => $sale,
                 'order' => $order,
-                'message' => 'Order completed and converted to sale successfully'
+                'message' => 'Order completed and converted to sale successfully',
+                'print_url' => route('orders.print', $order->id) // Add print URL to response
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -322,6 +325,15 @@ class OrderController extends Controller
                 'message' => 'Error completing order: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function print(Order $order)
+    {
+        $currentBranch = Branch::find($order->branch_id);
+        return view('admin.order.orderbill', [
+            'order' => $order,
+            'currentBranch' => $currentBranch
+        ]);
     }
 
     public function cancel(Order $order)

@@ -234,6 +234,7 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
         Route::post('/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
         Route::post('/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
         Route::get('/filter', [OrderController::class, 'filter'])->name('orders.filter');
+        Route::get('/{order}/print', [OrderController::class, 'print'])->name('orders.print');
     });
     Route::get('/allProducts', [OrderController::class, 'allProducts'])->name('allProducts');
 });

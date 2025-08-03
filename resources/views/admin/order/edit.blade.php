@@ -425,11 +425,17 @@
                                 this.storageType = response.order.storage_type;
                                 
                                 Swal.fire({
+                                    title: 'Order Saved Successfully',
+                                    text: 'Would you like to print the bill?',
                                     icon: 'success',
-                                    title: 'Order Updated',
-                                    text: `Order #${response.order.order_number} has been updated`,
-                                    showConfirmButton: false,
-                                    timer: 1500
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Print Bill',
+                                    cancelButtonText: 'Cancel'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Open print view in new tab
+                                        window.open(response.print_url, '_blank');
+                                    }
                                 });
                                 
                                 this.updateUI();
@@ -550,12 +556,19 @@
                                 this.status = 'completed';
                                 this.updateUI();
                                 
+                                // Show print modal
                                 Swal.fire({
-                                    icon: 'success',
                                     title: 'Order Completed',
-                                    text: response.message,
-                                    showConfirmButton: false,
-                                    timer: 1500
+                                    text: 'Would you like to print the bill?',
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Print Bill',
+                                    cancelButtonText: 'Cancel'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Open print view in new tab
+                                        window.open(response.print_url, '_blank');
+                                    }
                                 }).then(() => {
                                     window.location.href = "{{ route('orders.index') }}";
                                 });
