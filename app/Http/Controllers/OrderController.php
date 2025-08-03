@@ -162,6 +162,32 @@ class OrderController extends Controller
         }
     }
 
+    // public function edit(Order $order)
+    // {
+    //     $tenantId = auth()->user()->tenant_id;
+
+    //     if ($order->tenant_id !== $tenantId || $order->status === 'completed') {
+    //         abort(403);
+    //     }
+
+    //     return view('admin.order.create', [
+    //         'order' => $order->load(['items.product', 'items.variant', 'customer']),
+    //         'categories' => Category::where('tenant_id', $tenantId)
+    //             ->withCount('products')
+    //             ->get(),
+    //         'products' => Product::where('tenant_id', $tenantId)
+    //             ->with(['variants' => function ($query) {
+    //                 $query->orderBy('name');
+    //             }])
+    //             ->get(),
+    //         'customers' => Customer::where('tenant_id', $tenantId)
+    //             ->orderBy('name')
+    //             ->get(),
+    //         'currentBranch' => Branch::where('tenant_id', $tenantId)
+    //             ->firstOrFail()
+    //     ]);
+    // }
+
     public function edit(Order $order)
     {
         $tenantId = auth()->user()->tenant_id;
@@ -170,16 +196,19 @@ class OrderController extends Controller
             abort(403);
         }
 
-        return view('admin.order.create', [
+        // Load products with variants and stock information
+        $products = Product::where('tenant_id', $tenantId)
+            ->with(['variants' => function ($query) {
+                $query->orderBy('name');
+            }])
+            ->get();
+
+        return view('admin.order.edit', [
             'order' => $order->load(['items.product', 'items.variant', 'customer']),
             'categories' => Category::where('tenant_id', $tenantId)
                 ->withCount('products')
                 ->get(),
-            'products' => Product::where('tenant_id', $tenantId)
-                ->with(['variants' => function ($query) {
-                    $query->orderBy('name');
-                }])
-                ->get(),
+            'products' => $products,
             'customers' => Customer::where('tenant_id', $tenantId)
                 ->orderBy('name')
                 ->get(),

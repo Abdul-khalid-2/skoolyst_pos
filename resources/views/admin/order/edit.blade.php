@@ -5,11 +5,7 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
-
-
-    {{-- custome style --}}
     <link rel="stylesheet" href="{{ asset('backend/assets/admin/custome-style/creater_order.css')}}">
-
     @endpush
 
     <div class="container-fluid">
@@ -17,32 +13,30 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4 class="card-title">Create New Order</h4>
+                        <h4 class="card-title">Update Order #{{ $order->order_number }}</h4>
                         <div>
                             <span class="badge bg-primary me-2">Branch: {{ $currentBranch->name ?? 'Not Selected' }}</span>
                             <span class="badge bg-secondary">User: {{ auth()->user()->name }}</span>
-                            @if(isset($order))
                             <span class="order-status-badge status-{{ $order->status }}">
                                 {{ ucfirst($order->status) }}
                             </span>
-                            @endif
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="orderForm" method="POST" action="{{route('orders.store') }}">
-                            @csrf                          
-                            <input type="hidden" name="order_number" 
-                                value="{{ isset($order) ? $order->order_number : 'ORD-'.\Carbon\Carbon::now()->format('Ymd-his') }}">
+                        <form id="orderForm" method="POST" action="{{ route('orders.update', $order->id) }}">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="order_number" value="{{ $order->order_number }}">
                             <input type="hidden" name="branch_id" value="{{ $currentBranch->id ?? '' }}">
                             
                             <!-- Hidden fields for summary data -->
-                            <input type="hidden" name="subtotal" id="formSubtotal" value="0">
-                            <input type="hidden" name="tax_amount" id="formTaxAmount" value="0">
-                            <input type="hidden" name="discount_amount" id="formDiscountAmount" value="0">
-                            <input type="hidden" name="total_amount" id="formTotalAmount" value="0">
-                            <input type="hidden" name="customer_id" id="formCustomerId" value="0">
-                            <input type="hidden" name="status" id="formStatus" value="{{ isset($order) ? $order->status : 'draft' }}">
-                            <input type="hidden" name="storage_type" id="formStorageType" value="{{ isset($order) ? $order->storage_type : 'session' }}">
+                            <input type="hidden" name="subtotal" id="formSubtotal" value="{{ $order->subtotal }}">
+                            <input type="hidden" name="tax_amount" id="formTaxAmount" value="{{ $order->tax_amount }}">
+                            <input type="hidden" name="discount_amount" id="formDiscountAmount" value="{{ $order->discount_amount }}">
+                            <input type="hidden" name="total_amount" id="formTotalAmount" value="{{ $order->total_amount }}">
+                            <input type="hidden" name="customer_id" id="formCustomerId" value="{{ $order->customer_id ?? 0 }}">
+                            <input type="hidden" name="status" id="formStatus" value="{{ $order->status }}">
+                            <input type="hidden" name="storage_type" id="formStorageType" value="{{ $order->storage_type }}">
                             
                             <div class="pos-container">
                                 <!-- Product Selection Area -->
@@ -62,7 +56,9 @@
                                         </div>
                                         <div class="category-tabs" id="categoryTabs">
                                             <div class="category-tab search_active active" data-category-id="">All Products</div>
-                                            <!-- Categories will be loaded via AJAX -->
+                                            @foreach($categories as $category)
+                                                <div class="category-tab" data-category-id="{{ $category->id }}">{{ $category->name }}</div>
+                                            @endforeach
                                         </div>
                                         <div class="category-nav-arrow right">
                                             <i class="las la-angle-right"></i>
@@ -71,12 +67,33 @@
                                     
                                     <!-- Product Grid -->
                                     <div class="product-grid" id="productGrid">
-                                        <!-- Products will be loaded via AJAX -->
-                                        <div class="text-center py-5">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                        @foreach($products as $product)
+                                            @php
+                                                $hasVariants = $product->variants->count() > 1;
+                                                $price = $hasVariants ? '' : 'Rs '.number_format($product->variants[0]->selling_price, 2);
+                                                
+                                                // Handle image path
+                                                $imagePath = '/backend/assets/images/no_image.png';
+                                                if ($product->image_paths) {
+                                                    $parsedPaths = is_array($product->image_paths) ? $product->image_paths : json_decode($product->image_paths, true);
+                                                    if (!empty($parsedPaths)) {
+                                                        $imagePath = Str::startsWith($parsedPaths[0], 'http') ? $parsedPaths[0] : '/'.$parsedPaths[0];
+                                                    }
+                                                }
+                                            @endphp
+                                            <div class="product-card" data-product-id="{{ $product->id }}" 
+                                                data-category-id="{{ $product->category_id}}"
+                                                data-variants="{{ $hasVariants ? 'true' : 'false' }}">
+                                                <img src="{{ $imagePath }}" alt="{{ $product->name }}" 
+                                                    onerror="this.src='/backend/assets/images/no_image.png'">
+                                                <div class="product-name">{{ $product->name }}</div>
+                                                @if($hasVariants)
+                                                    <div class="text-muted small">{{ $product->variants->count() }} variants</div>
+                                                @else
+                                                    <div class="product-price">{{ $price }}</div>
+                                                @endif
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 
@@ -87,10 +104,10 @@
                                             <label>Customer</label>
                                             <div class="input-group">
                                                 <select name="customer_id" id="customerSelect" class="form-control select2-customer">
-                                                    <option value="Walk-in-Customer" selected>Walk-in Customer</option>
+                                                    <option value="Walk-in-Customer" {{ !$order->customer_id ? 'selected' : '' }}>Walk-in Customer</option>
                                                     @foreach($customers as $customer)
                                                         <option value="{{ $customer->id }}" 
-                                                            {{ isset($order) && $order->customer_id == $customer->id ? 'selected' : '' }}>
+                                                            {{ $order->customer_id == $customer->id ? 'selected' : '' }}>
                                                             {{ $customer->name }} ({{ $customer->phone }})
                                                         </option>
                                                     @endforeach
@@ -101,17 +118,17 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div id="customCustomerContainer" class="mt-2" style="display: none;">
+                                            <div id="customCustomerContainer" class="mt-2" style="display: {{ $order->walk_in_customer_info ? 'block' : 'none' }};">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <input type="text" name="custom_customer_name" id="customCustomerName" 
                                                             class="form-control" placeholder="Customer Name"
-                                                            value="{{ isset($order) && $order->walk_in_customer_info ? $order->walk_in_customer_info['name'] : '' }}">
+                                                            value="{{ $order->walk_in_customer_info['name'] ?? '' }}">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text" name="custom_customer_phone" id="customCustomerPhone" 
                                                             class="form-control" placeholder="Phone Number"
-                                                            value="{{ isset($order) && $order->walk_in_customer_info ? $order->walk_in_customer_info['phone'] : '' }}">
+                                                            value="{{ $order->walk_in_customer_info['phone'] ?? '' }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,38 +136,67 @@
                                     </div>
                                     
                                     <div class="cart-items" id="cartItems">
-                                        <div class="text-muted text-center py-5">Your cart is empty</div>
+                                        @if($order->items->count() > 0)
+                                            @foreach($order->items as $index => $item)
+                                                <div class="cart-item" data-index="{{ $index }}">
+                                                    <div>
+                                                        <div class="fw-bold">{{ $item->product->name }}</div>
+                                                        @if($item->variant)
+                                                            <div class="small text-muted">{{ $item->variant->name }}</div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="cart-item-controls">
+                                                        <button class="btn btn-sm btn-outline-secondary decrement">
+                                                            <i class="las la-minus"></i>
+                                                        </button>
+                                                        <input type="number" min="1" class="form-control form-control-sm quantity-input" 
+                                                            value="{{ $item->quantity }}" style="width:80px">
+                                                        <button class="btn btn-sm btn-outline-secondary increment">
+                                                            <i class="las la-plus"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger remove-item ms-2">
+                                                            <i class="las la-times"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <div>Rs {{ number_format($item->unit_price * $item->quantity, 2) }}</div>
+                                                        <div class="small text-muted">Rs {{ number_format($item->unit_price, 2) }} each</div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="text-muted text-center py-5">Your cart is empty</div>
+                                        @endif
                                     </div>
                                     
                                     <div class="cart-summary">
                                         <div class="summary-row">
                                             <span>Subtotal:</span>
-                                            <span id="cartSubtotal">Rs {{ isset($order) ? number_format($order->subtotal, 2) : '0.00' }}</span>
+                                            <span id="cartSubtotal">Rs {{ number_format($order->subtotal, 2) }}</span>
                                         </div>
                                         <div class="summary-row">
                                             <span>Tax:</span>
-                                            <span id="cartTax">Rs {{ isset($order) ? number_format($order->tax_amount, 2) : '0.00' }}</span>
+                                            <span id="cartTax">Rs {{ number_format($order->tax_amount, 2) }}</span>
                                         </div>
                                         <div class="summary-row">
                                             <span>Discount:</span>
                                             <div class="input-group input-group-sm">
                                                 <input type="number" step="0.01" min="0" id="cartDiscount" class="form-control" 
-                                                    value="{{ isset($order) ? number_format($order->discount_amount, 2) : '0' }}">
+                                                    value="{{ number_format($order->discount_amount, 2) }}">
                                                 <span class="input-group-text">Rs</span>
                                             </div>
                                         </div>
                                         <div class="summary-row fw-bold fs-5">
                                             <span>Total:</span>
-                                            <span id="cartTotal">Rs {{ isset($order) ? number_format($order->total_amount, 2) : '0.00' }}</span>
+                                            <span id="cartTotal">Rs {{ number_format($order->total_amount, 2) }}</span>
                                         </div>
                                         
                                         <div class="mb-3">
                                             <label>Notes</label>
-                                            <textarea name="notes" class="form-control" rows="2">{{ isset($order) ? $order->notes : '' }}</textarea>
+                                            <textarea name="notes" class="form-control" rows="2">{{ $order->notes }}</textarea>
                                         </div>
                                         
                                         <div class="order-actions row g-1 g-lg-3">
-
                                             <div class="px-3 mb-2" style="width: 50%">
                                                 <button type="button" class="btn btn-danger w-100" id="clearCartBtn">
                                                     <i class="las la-trash"></i> Clear
@@ -170,7 +216,7 @@
                                             </div>
 
                                             <div class="col-6 col-md-3 col-lg-12 col-xl-12">
-                                                @if(isset($order) && $order->status === 'confirmed')
+                                                @if($order->status === 'confirmed')
                                                     <button type="button" class="btn btn-success w-100 mb-2" id="completeOrderBtn">
                                                         <i class="las la-check-circle"></i> Complete Sale
                                                     </button>
@@ -184,7 +230,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="cartItemsData"></div> <!-- Hidden fields for cart items -->
+                            <div id="cartItemsData"></div>
                         </form>
                     </div>
                 </div>
@@ -264,16 +310,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            // Global variables to store products and categories
-            let allProducts = [];
-            let allCategories = [];
-            let currentBranch = null;
-            let allCustomers = [];
-
-            // Cart object to manage cart operations
+            // Initialize cart with existing order items
             const cart = {
                 items: [],
-                
+
                 // Add item to cart
                 addItem: function(productId, variantId, quantity = 1, price, costPrice, name, variantName) {
                     price = typeof price === 'string' ? parseFloat(price) : price;
@@ -299,13 +339,112 @@
                     
                     this.updateCart();
                 },
+
+                orderId: "{{ $order->id }}",
+                status: "{{ $order->status }}",
+                storageType: "{{ $order->storage_type }}",
                 
-                // Remove item from cart
-                removeItem: function(index) {
-                    this.items.splice(index, 1);
+                // Initialize with existing items
+                init: function() {
+                    @foreach($order->items as $item)
+                        this.items.push({
+                            productId: "{{ $item->product_id }}",
+                            variantId: "{{ $item->variant_id }}",
+                            quantity: {{ $item->quantity }},
+                            price: {{ $item->unit_price }},
+                            costPrice: {{ $item->cost_price }},
+                            name: "{{ $item->product->name }}",
+                            variantName: "{{ $item->variant ? $item->variant->name : '' }}"
+                        });
+                    @endforeach
                     this.updateCart();
                 },
                 
+                // Update hidden form fields
+                updateFormData: function() {
+                    $('#formCustomerId').val($('#customerSelect').val());
+                    
+                    let itemsHtml = '';
+                    this.items.forEach((item, index) => {
+                        itemsHtml += `
+                            <input type="hidden" name="items[${index}][product_id]" value="${item.productId}">
+                            <input type="hidden" name="items[${index}][variant_id]" value="${item.variantId}">
+                            <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
+                            <input type="hidden" name="items[${index}][unit_price]" value="${item.price}">
+                            <input type="hidden" name="items[${index}][cost_price]" value="${item.costPrice}">
+                        `;
+                    });
+                    $('#cartItemsData').html(itemsHtml);
+                },
+                
+                // Set order status
+                setStatus: function(status) {
+                    this.status = status;
+                    $('#formStatus').val(status);
+                    this.updateUI();
+                },
+                
+                // Set storage type
+                setStorageType: function(type) {
+                    this.storageType = type;
+                    $('#formStorageType').val(type);
+                },
+                
+                // Update UI based on status
+                updateUI: function() {
+                    $('#saveDraftBtn').prop('disabled', this.status === 'completed');
+                    $('#confirmOrderBtn').prop('disabled', this.status === 'completed');
+                    $('#completeOrderBtn').prop('disabled', this.status !== 'confirmed');
+                    
+                    if (this.status === 'confirmed') {
+                        $('.order-status-badge').removeClass('status-draft status-confirmed status-completed status-cancelled')
+                            .addClass('status-confirmed')
+                            .text('Confirmed');
+                    }
+                },
+                // Save order (update existing)
+                saveOrder: function() {
+                    const formData = this.getFormData();
+                    const url = "/orders/" + this.orderId;
+                    const method = "PUT";
+                    
+                    return $.ajax({
+                        url: url,
+                        type: method,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: (response) => {
+                            if (response.order) {
+                                this.status = response.order.status;
+                                this.storageType = response.order.storage_type;
+                                
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Order Updated',
+                                    text: `Order #${response.order.order_number} has been updated`,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                
+                                this.updateUI();
+                            }
+                        },
+                        error: (xhr) => {
+                            let errorMessage = 'An error occurred while updating the order';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: errorMessage,
+                            });
+                        }
+                    });
+                },
+
                 // Update item quantity
                 updateQuantity: function(index, quantity) {
                     if (quantity <= 0) {
@@ -315,7 +454,6 @@
                     }
                     this.updateCart();
                 },
-                
                 // Clear cart
                 clear: function() {
                     this.items = [];
@@ -337,7 +475,6 @@
                     
                     return { subtotal, tax, discount, total };
                 },
-                
                 // Update cart UI
                 updateCart: function() {
                     const cartItemsEl = $('#cartItems');
@@ -391,242 +528,56 @@
                     this.updateUI();
                 },
                 
-                // Update hidden form fields
-                updateFormData: function() {
-                    $('#formCustomerId').val($('#customerSelect').val());
+                // Complete order
+                completeOrder: function() {
+                    const $btn = $('#completeOrderBtn');
+                    $btn.prop('disabled', true);
+                    $btn.html('<i class="las la-spinner la-spin"></i> Processing...');
                     
-                    let itemsHtml = '';
-                    this.items.forEach((item, index) => {
-                        itemsHtml += `
-                            <input type="hidden" name="items[${index}][product_id]" value="${item.productId}">
-                            <input type="hidden" name="items[${index}][variant_id]" value="${item.variantId}">
-                            <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
-                            <input type="hidden" name="items[${index}][unit_price]" value="${item.price}">
-                            <input type="hidden" name="items[${index}][cost_price]" value="${item.costPrice}">
-                        `;
-                    });
-                    $('#cartItemsData').html(itemsHtml);
-                },
-                
-                // Set order status
-                setStatus: function(status) {
-                    this.status = status;
-                    $('#formStatus').val(status);
-                    this.updateUI();
-                },
-                
-                // Set storage type
-                setStorageType: function(type) {
-                    this.storageType = type;
-                    $('#formStorageType').val(type);
-                },
-                
-                // Update UI based on status
-                updateUI: function() {
-                    $('#saveDraftBtn').prop('disabled', this.status === 'completed');
-                    $('#confirmOrderBtn').prop('disabled', this.status === 'completed');
-                    $('#completeOrderBtn').prop('disabled', this.status !== 'confirmed');
-                    
-                    if (this.status === 'confirmed') {
-                        $('.order-status-badge').removeClass('status-draft status-confirmed status-completed status-cancelled')
-                            .addClass('status-confirmed')
-                            .text('Confirmed');
-                    }
-                },
-                
-                // Save order (create or update)
-                saveOrder: function() {
-                    const formData = this.getFormData();
-                    const url = this.orderId ? `/orders/${this.orderId}` : '/orders';
-                    const method = this.orderId ? 'PUT' : 'POST';
-                    
-                    return $.ajax({
-                        url: url,
-                        type: method,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
+                    $.ajax({
+                        url: `/orders/${this.orderId}/complete`,
+                        type: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
                         success: (response) => {
-                            if (response.order) {
-                                this.orderId = response.order.id;
-                                this.status = response.order.status;
-                                this.storageType = response.order.storage_type;
+                            if (response.success) {
+                                this.status = 'completed';
+                                this.updateUI();
                                 
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Order Saved',
-                                    text: `Order #${response.order.order_number} has been saved`,
+                                    title: 'Order Completed',
+                                    text: response.message,
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(() => {
-                                    cart.clear();
-                                    $btn.prop('disabled', false);
-                                    $btn.html('<i class="las la-check"></i> Confirm Order');
+                                    window.location.href = "{{ route('orders.index') }}";
                                 });
                             }
-                            this.updateUI();
                         },
                         error: (xhr) => {
-                            let errorMessage = 'An error occurred while saving the order';
+                            $btn.prop('disabled', false);
+                            $btn.html('<i class="las la-check-circle"></i> Complete Sale');
+                            
+                            let errorMessage = 'An error occurred while completing the order';
                             if (xhr.responseJSON && xhr.responseJSON.message) {
                                 errorMessage = xhr.responseJSON.message;
                             }
                             
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Save Failed',
+                                title: 'Completion Failed',
                                 text: errorMessage,
                             });
                         }
                     });
-                },
-                getFormData: function() {
-                    const form = $('#orderForm')[0];
-                    const formData = new FormData(form);
-                    
-                    this.items.forEach((item, index) => {
-                        formData.append(`items[${index}][product_id]`, item.productId);
-                        formData.append(`items[${index}][variant_id]`, item.variantId);
-                        formData.append(`items[${index}][quantity]`, item.quantity);
-                        formData.append(`items[${index}][unit_price]`, item.price);
-                        formData.append(`items[${index}][cost_price]`, item.costPrice);
-                    });
-                    
-                    formData.append('status', this.status);
-                    formData.append('storage_type', this.storageType);
-                    
-                    return formData;
                 }
             };
-
-            // Initialize the POS system
-            function initializePOS() {
-                loadAllData().then(() => {
-                    renderCategories();
-                    renderProducts();
-                    initializeEventHandlers();
-                });
-            }
-
-            // Load all initial data
-            function loadAllData() {
-                return $.get('/allProducts', function(response) {
-                    allProducts = response.products;
-                    allCategories = response.categories;
-                    currentBranch = response.currentBranch;
-                    allCustomers = response.customers;
-                    
-                    // Update customer dropdown
-                    updateCustomerDropdown();
-                    
-                    // Update branch info in header
-                    updateBranchInfo();
-                }).fail(function(error) {
-                    console.error("Error loading data:", error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Loading Failed',
-                        text: 'Failed to load products and categories'
-                    });
-                });
-            }
-
-            // Render categories in the tabs
-            function renderCategories() {
-                let html = '<div class="category-tab search_active active" data-category-id="">All Products</div>';
-                
-                allCategories.forEach(category => {
-                    html += `<div class="category-tab" data-category-id="${category.id}">${category.name}</div>`;
-                });
-                
-                $('#categoryTabs').html(html);
-            }
-
-            // Render products in the grid
-            function renderProducts(filterCategoryId = '', searchTerm = '') {
-                let filteredProducts = allProducts;
-                
-                // Filter by category if specified
-                if (filterCategoryId) {
-                    filteredProducts = allProducts.filter(product => product.category_id == filterCategoryId);
-                }
-                
-                // Filter by search term if specified
-                if (searchTerm) {
-                    const term = searchTerm.toLowerCase();
-                    filteredProducts = filteredProducts.filter(product => {
-                        // Check product name
-                        if (product.name.toLowerCase().includes(term)) return true;
-                        
-                        // Check variants
-                        return product.variants.some(variant => {
-                            // Check variant name or barcode
-                            return variant.name.toLowerCase().includes(term) || 
-                                (variant.barcode && variant.barcode.toLowerCase().includes(term));
-                        });
-                    });
-                }
-                
-                let html = '';
-                
-                if (filteredProducts.length === 0) {
-                    html = '<div class="text-muted text-center py-5">No products found</div>';
-                } else {
-                    filteredProducts.forEach(product => {
-                        const hasVariants = product.variants.length > 1;
-                        const price = hasVariants ? '' : `Rs ${product.variants[0].selling_price.toFixed(2)}`;
-                        
-                        // Handle image path
-                        let imagePath = '/backend/assets/images/no_image.png';
-                        try {
-                            if (product.image_paths) {
-                                const parsedPaths = typeof product.image_paths === 'string' 
-                                    ? JSON.parse(product.image_paths) 
-                                    : product.image_paths;
-                                if (Array.isArray(parsedPaths) && parsedPaths.length > 0) {
-                                    imagePath = parsedPaths[0].startsWith('http') ? parsedPaths[0] : '/' + parsedPaths[0];
-                                }
-                            }
-                        } catch (e) {
-                            console.error("Error parsing image paths:", e);
-                        }
-
-                        html += `
-                            <div class="product-card" data-product-id="${product.id}" 
-                                data-category-id="${product.category_id}"
-                                data-variants="${hasVariants ? 'true' : 'false'}">
-                                <img src="${imagePath}" alt="${product.name}" 
-                                    onerror="this.src='/backend/assets/images/no_image.png'">
-                                <div class="product-name">${product.name}</div>
-                                ${hasVariants ? 
-                                    `<div class="text-muted small">${product.variants.length} variants</div>` : 
-                                    `<div class="product-price">${price}</div>`}
-                            </div>
-                        `;
-                    });
-                }
-                
-                $('#productGrid').html(html);
-            }
-
-            // Update customer dropdown
-            function updateCustomerDropdown() {
-                let html = '<option value="Walk-in-Customer" selected>Walk-in Customer</option>';
-                
-                allCustomers.forEach(customer => {
-                    html += `<option value="${customer.id}">${customer.name} (${customer.phone})</option>`;
-                });
-                
-                $('#customerSelect').html(html);
-            }
-
-            // Update branch info in header
-            function updateBranchInfo() {
-                if (currentBranch) {
-                    $('.branch-info').text(`Branch: ${currentBranch.name}`);
-                }
-            }
-
+            
+            // Initialize the cart with existing items
+            cart.init();
+            
             // Initialize event handlers
             function initializeEventHandlers() {
                 // Category tab click
@@ -635,46 +586,40 @@
                     $(this).addClass('active');
                     
                     const categoryId = $(this).data('category-id');
-                    renderProducts(categoryId);
+                    filterProductsByCategory(categoryId);
                 });
                 
-
                 // Product card click handler
-                 $(document).on('click', '.product-card', function() {// Product card click handler on page relod show product variant model
-
+                $(document).on('click', '.product-card', function() {
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('variants');
                     
                     if (hasVariants) {
                         showVariantModel(productId);
                     } else {
-                        const productName = $(this).find('.product-name').text();
-                        const price = parseFloat($(this).find('.product-price').text().replace('Rs ', ''));
-                        
-                        $.get(`/products/${productId}`, function(product) {// Get product details via API to ensure we have cost price
-                            const variant = product.variants[0];
-                            cart.addItem(
-                                productId, 
-                                variant.id, 
-                                1, 
-                                variant.selling_price, 
-                                variant.purchase_price,
-                                product.name,
-                                variant.name
-                            );
-                        });
+                        const product = getProductById(productId);
+                        const variant = product.variants[0];
+                        cart.addItem(
+                            productId, 
+                            variant.id, 
+                            1, 
+                            variant.selling_price, 
+                            variant.purchase_price,
+                            product.name,
+                            variant.name
+                        );
                     }
                 });
                 
-                // Search button click
+                // Search functionality
                 $('#barcodeInput').on('keyup', function(e) {
                     const searchTerm = $(this).val().trim();
                     $('.category-tab').removeClass('active');
                     $('.search_active').addClass('active');
-                    renderProducts('', searchTerm);
+                    filterProductsBySearch(searchTerm);
                 });
                 
-                // Barcode scanner enter key
+                
                 // Variant selection in modal
                 $(document).on('click', '.variant-option', function() {
                     cart.addItem(
@@ -694,8 +639,10 @@
                     const index = $(this).closest('.cart-item').data('index');
                     cart.removeItem(index);
                 });
+
                 
                 $(document).on('click', '.increment', function() {
+                    alert('testing increment button');
                     const index = $(this).closest('.cart-item').data('index');
                     const currentQty = parseInt($(this).siblings('.quantity-input').val());
                     cart.updateQuantity(index, currentQty + 1);
@@ -823,7 +770,61 @@
                     $('#formCustomerId').val($(this).val());
                 });
             }
-
+            
+            // Helper function to filter products by category
+            function filterProductsByCategory(categoryId) {
+                $('.product-card').each(function() {
+                    const cardCategoryId = $(this).data('category-id');
+                    if (!categoryId || cardCategoryId == categoryId) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+            
+            // Helper function to filter products by search term
+            function filterProductsBySearch(searchTerm) {
+                const term = searchTerm.toLowerCase();
+                
+                $('.product-card').each(function() {
+                    const productName = $(this).find('.product-name').text().toLowerCase();
+                    const productPrice = $(this).find('.product-price').text().toLowerCase();
+                    
+                    if (productName.includes(term) || productPrice.includes(term)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+            
+            // Helper function to get product by ID
+            function getProductById(productId) {
+                @foreach($products as $product)
+                    if ("{{ $product->id }}" == productId) {
+                        return {
+                            id: "{{ $product->id }}",
+                            name: "{{ $product->name }}",
+                            variants: [
+                                @foreach($product->variants as $variant)
+                                {
+                                    id: "{{ $variant->id }}",
+                                    name: "{{ $variant->name }}",
+                                    selling_price: {{ $variant->selling_price }},
+                                    purchase_price: {{ $variant->purchase_price }},
+                                    sku: "{{ $variant->sku }}",
+                                    barcode: "{{ $variant->barcode }}"
+                                },
+                                @endforeach
+                            ]
+                        };
+                    }
+                @endforeach
+                return null;
+            }
+            
+            // Show variant modal
             function showVariantModel(productId) {
                 // Create and show loader before making the request
                 const loaderHtml = `
@@ -932,15 +933,15 @@
                     }, 1000);
                 });
             }
-            // Initialize the POS system
-            initializePOS();
+            
+            // Initialize event handlers
+            initializeEventHandlers();
         });
 
         jQuery(document).ready(function() {
             jQuery(".wrapper-menu").addClass("open");
             jQuery("body").addClass("sidebar-main");
         });
-
     </script>
     @endpush
 </x-app-layout>
