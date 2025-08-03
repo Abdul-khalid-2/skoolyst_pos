@@ -19,20 +19,73 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tenantId = auth()->user()->tenant_id;
+        try {
+            $tenantId = auth()->user()->tenant_id;
 
-        $orders = Order::with(['customer', 'user', 'items.product', 'items.variant'])
-            ->where('tenant_id', $tenantId)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            // Base query with eager loading
+            $query = Order::with([
+                'customer:id,name,email,phone',
+                'user:id,name',
+                'items.product:id,name',
+                'items.variant:id,name'
+            ])
+                ->where('tenant_id', $tenantId)
+                ->orderBy('created_at', 'desc');
 
-        return view('admin.order.index', [
-            'orders' => $orders,
-            'categories' => Category::where('tenant_id', $tenantId)->get(),
-            'currentBranch' => Branch::where('tenant_id', $tenantId)->first()
-        ]);
+            // For AJAX requests - return JSON
+            if ($request->ajax()) {
+                // Get only necessary fields for the initial load
+                $orders = $query->get([
+                    'id',
+                    'order_number',
+                    'status',
+                    'total_amount',
+                    'created_at',
+                    'customer_id',
+                    'user_id',
+                    'subtotal',
+                    'tax_amount',
+                    'discount_amount',
+                ]);
+
+                // Convert string amounts to numbers
+                $orders->transform(function ($order) {
+                    $order->total_amount = (float)$order->total_amount;
+                    $order->subtotal = (float)$order->subtotal;
+                    $order->tax_amount = (float)$order->tax_amount;
+                    $order->discount_amount = (float)$order->discount_amount;
+                    return $order;
+                });
+
+                return response()->json([
+                    'success' => true,
+                    'orders' => $orders,
+                    'categories' => Category::where('tenant_id', $tenantId)->get(['id', 'name']),
+                    'currentBranch' => Branch::where('tenant_id', $tenantId)->first(['id', 'name'])
+                ]);
+            }
+
+            // For regular requests - return view with paginated data
+            $orders = $query->paginate(20);
+
+            return view('admin.order.index', [
+                'orders' => $orders,
+                'categories' => Category::where('tenant_id', $tenantId)->get(),
+                'currentBranch' => Branch::where('tenant_id', $tenantId)->first()
+            ]);
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to load orders',
+                    'error' => config('app.debug') ? $e->getMessage() : null
+                ], 500);
+            }
+
+            return back()->with('error', 'Failed to load orders: ' . $e->getMessage());
+        }
     }
 
     public function create()
@@ -162,32 +215,6 @@ class OrderController extends Controller
             ], 500);
         }
     }
-
-    // public function edit(Order $order)
-    // {
-    //     $tenantId = auth()->user()->tenant_id;
-
-    //     if ($order->tenant_id !== $tenantId || $order->status === 'completed') {
-    //         abort(403);
-    //     }
-
-    //     return view('admin.order.create', [
-    //         'order' => $order->load(['items.product', 'items.variant', 'customer']),
-    //         'categories' => Category::where('tenant_id', $tenantId)
-    //             ->withCount('products')
-    //             ->get(),
-    //         'products' => Product::where('tenant_id', $tenantId)
-    //             ->with(['variants' => function ($query) {
-    //                 $query->orderBy('name');
-    //             }])
-    //             ->get(),
-    //         'customers' => Customer::where('tenant_id', $tenantId)
-    //             ->orderBy('name')
-    //             ->get(),
-    //         'currentBranch' => Branch::where('tenant_id', $tenantId)
-    //             ->firstOrFail()
-    //     ]);
-    // }
 
     public function edit(Order $order)
     {
