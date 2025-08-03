@@ -5,283 +5,11 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendor/remixicon/fonts/remixicon.css')}}">
-    
-    <!-- Reuse POS styles with some modifications -->
-    <style>
-        .pos-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: auto;
-        }
-        .product-area, .cart-container {
-            width: 100%;
-        }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            overflow-y: auto;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            max-height: 400px;
-        }        
-        .product-card {
-            background: white;
-            border-radius: 5px;
-            padding: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #e9ecef;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }        
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }        
-        .product-card img {
-            max-width: 100%;
-            width:100%;
-            height:150px
-        }
-        .cart-container {
-            background: white;
-            border-radius: 5px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-        }        
-        .cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            max-height: 300px;
-        }        
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
-            gap: 5px;
-        }        
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }        
-        .cart-item-controls input {
-            width: 50px;
-            text-align: center;
-            margin: 0 5px;
-        }
-        @media (min-width: 992px) {
-            .pos-container {
-                flex-direction: row;
-            }            
-            .product-area {
-                width: 70%;
-            }            
-            .cart-container {
-                width: 30%;
-                height: 100%;
-            }            
-            .product-grid {
-                max-height: calc(100vh - 280px);
-            }            
-            .cart-items {
-                max-height: calc(100vh - 550px);
-            }
-        }        
-        @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }            
-            .payment-methods, .quick-cash-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }            
-            .category-tabs {
-                overflow-x: auto;
-                white-space: nowrap;
-                display: block;
-                padding-bottom: 5px;
-            }            
-            .category-tab {
-                display: inline-block;
-            }
-        }        
-        @media (max-width: 576px) {
-            .product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            }            
-            .cart-item {
-                flex-direction: column;
-            }            
-            .cart-item-controls {
-                justify-content: flex-end;
-            }            
-            .product-card img {
-                height: 50px;
-            }            
-            .product-name {
-                font-size: 0.9rem;
-            }
-        }
-        .category-tabs {
-            display: flex;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            flex-wrap: nowrap;
-        }        
-        .category-tab {
-            padding: 8px 15px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-        }        
-        .category-tab.active {
-            border-bottom: 2px solid #0d6efd;
-            color: #0d6efd;
-        }        
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin: 10px 0;
-        }        
-        .payment-method-btn {
-            padding: 8px;
-            text-align: center;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }        
-        .payment-method-btn.active {
-            background: #0d6efd;
-            color: white;
-            border-color: #0d6efd;
-        }        
-        .quick-cash-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin: 10px 0;
-        }        
-        .quick-cash-btn {
-            padding: 8px;
-            text-align: center;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-        }  
-        ::-webkit-scrollbar {/* Scrollbar styling */
-            width: 8px;
-            height: 8px;
-        }        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }        
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-            .category-tabs-container { /* Updated Category Tabs Styles */
-                position: relative;
-                margin-bottom: 15px;
-            }            
-            .category-tabs {
-                display: flex;
-                overflow-x: auto;
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE/Edge */
-                padding-bottom: 5px;
-                margin-bottom: -5px; /* Compensate for padding */
-            }        
-            .category-tabs::-webkit-scrollbar {
-                display: none; /* Chrome/Safari */
-            }            
-            .category-tab {
-                flex: 0 0 auto;
-                padding: 8px 15px;
-                cursor: pointer;
-                border-bottom: 2px solid transparent;
-                white-space: nowrap;
-                position: relative;
-            }            
-            .category-tab.active {
-                border-bottom: 2px solid #0d6efd;
-                color: #0d6efd;
-            }
-            .category-nav-arrow { /* Navigation arrows for foldable devices */
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 30px;
-                background: rgba(255,255,255,0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                z-index: 10;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }            
-            .category-nav-arrow.left {
-                left: 0;
-                background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }            
-            .category-nav-arrow.right {
-                right: 0;
-                background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
-            }            
-            .category-tabs-container:hover .category-nav-arrow {
-                opacity: 1;
-            }                        
-            @media (max-width: 1200px) {/* Responsive adjustments */
-                .category-tab {
-                    padding: 8px 12px;
-                    font-size: 0.9rem;
-                }
-            }            
-            @media (max-width: 768px) {
-                .category-tab {
-                    padding: 8px 10px;
-                    font-size: 0.85rem;
-                }                
-                .category-nav-arrow {
-                    opacity: 1; /* Always show on mobile */
-                    width: 25px;
-                }
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-        }
-        #dueBalance {
-            color: #dc3545; /* Red color for due balance */
-            font-weight: bold;
-        }
-        #changeDue {
-            color: #28a745; /* Green color for change due */
-            font-weight: bold;
-        }
-    </style>
+
+
+    {{-- custome style --}}
+    <link rel="stylesheet" href="{{ asset('backend/assets/admin/custome-style/creater_order.css')}}">
+
     @endpush
 
     <div class="container-fluid">
@@ -327,8 +55,8 @@
                                     <!-- Barcode Scanner -->
                                     <div class="barcode-scanner mb-3">
                                         <div class="input-group">
-                                            <input type="text" id="barcodeInput" class="form-control" placeholder="Scan barcode or search product..." autofocus>
-                                            <button class="btn btn-outline-secondary" type="button" id="searchProductBtn"><i class="las la-search"></i></button>
+                                            <input type="text" id="barcodeInput" class="form-control" 
+                                                placeholder="Scan barcode or search product..." autofocus>
                                         </div>
                                     </div>
                                     
@@ -337,11 +65,9 @@
                                         <div class="category-nav-arrow left">
                                             <i class="las la-angle-left"></i>
                                         </div>
-                                        <div class="category-tabs">
+                                        <div class="category-tabs" id="categoryTabs">
                                             <div class="category-tab search_active active" data-category-id="">All Products</div>
-                                            @foreach($categories as $category)
-                                                <div class="category-tab" data-category-id="{{ $category->id }}">{{ $category->name }}</div>
-                                            @endforeach
+                                            <!-- Categories will be loaded via AJAX -->
                                         </div>
                                         <div class="category-nav-arrow right">
                                             <i class="las la-angle-right"></i>
@@ -350,22 +76,12 @@
                                     
                                     <!-- Product Grid -->
                                     <div class="product-grid" id="productGrid">
-                                        @foreach($products as $product)
-                                            <div class="product-card" data-product-id="{{ $product->id }}" 
-                                                data-variants="{{ $product->variants->count() > 1 ? 'true' : 'false' }}">
-                                                @if($product->image_paths)
-                                                    <img src="{{ json_decode('backend/'.$product->image_paths)[0] ?? asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
-                                                @else
-                                                    <img src="{{ asset('backend/assets/images/no_image.png') }}" alt="{{ $product->name }}">
-                                                @endif
-                                                <div class="product-name">{{ $product->name }}</div>
-                                                @if($product->variants->count() > 1)
-                                                    <div class="text-muted small">{{ $product->variants->count() }} variants</div>
-                                                @else
-                                                    <div class="product-price">Rs {{ $product->variants->first()->selling_price ?? '0.00' }}</div>
-                                                @endif
+                                        <!-- Products will be loaded via AJAX -->
+                                        <div class="text-center py-5">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
                                             </div>
-                                        @endforeach
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -583,23 +299,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            // Initialize cart with existing order items if editing
+            // Global variables to store products and categories
+            let allProducts = [];
+            let allCategories = [];
+            let currentBranch = null;
+            let allCustomers = [];
+
+            // Cart object to manage cart operations
             const cart = {
-                    items: {!! json_encode(isset($order) ? $order->items->map(function($item) {
-                    return [
-                        'productId' => $item->product_id,
-                        'variantId' => $item->variant_id,
-                        'quantity' => $item->quantity,
-                        'price' => $item->unit_price,
-                        'costPrice' => $item->cost_price,
-                        'name' => $item->product->name,
-                        'variantName' => $item->variant ? $item->variant->name : null
-                    ];
-                })->toArray() : []) !!},
-                orderId: {!! json_encode(isset($order) ? $order->id : null) !!},
-                status: {!! json_encode(isset($order) ? $order->status : 'draft') !!},
-                storageType: {!! json_encode(isset($order) ? $order->storage_type : 'session') !!},
-                    
+                items: [],
                 
                 // Add item to cart
                 addItem: function(productId, variantId, quantity = 1, price, costPrice, name, variantName) {
@@ -646,6 +354,7 @@
                 // Clear cart
                 clear: function() {
                     this.items = [];
+                    $('#cartDiscount').val('0');
                     this.updateCart();
                 },
                 
@@ -806,54 +515,6 @@
                         }
                     });
                 },
-                
-                // Complete order (convert to sale)
-                completeOrder: function() {
-                    if (!this.orderId) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Please save the order first before completing'
-                        });
-                        return Promise.reject();
-                    }
-                    
-                    return $.ajax({
-                        url: `/orders/${this.orderId}/complete`,
-                        type: 'POST',
-                        success: (response) => {
-                            if (response.success) {
-                                this.status = 'completed';
-                                this.updateUI();
-                                
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Order Completed',
-                                    text: `Sale completed for order #${response.order.order_number}`,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                
-                                // Optionally redirect to invoice or clear the cart
-                                window.location.href = `/sales/${response.sale.id}`;
-                            }
-                        },
-                        error: (xhr) => {
-                            let errorMessage = 'An error occurred while completing the order';
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                errorMessage = xhr.responseJSON.message;
-                            }
-                            
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Completion Failed',
-                                text: errorMessage,
-                            });
-                        }
-                    });
-                },
-                
-                // Get form data for submission
                 getFormData: function() {
                     const form = $('#orderForm')[0];
                     const formData = new FormData(form);
@@ -872,10 +533,149 @@
                     return formData;
                 }
             };
-        // Initialize order creation interface
-            function initOrderCreation() {
+
+            // Initialize the POS system
+            function initializePOS() {
+                loadAllData().then(() => {
+                    renderCategories();
+                    renderProducts();
+                    initializeEventHandlers();
+                });
+            }
+
+            // Load all initial data
+            function loadAllData() {
+                return $.get('/allProducts', function(response) {
+                    allProducts = response.products;
+                    allCategories = response.categories;
+                    currentBranch = response.currentBranch;
+                    allCustomers = response.customers;
+                    
+                    // Update customer dropdown
+                    updateCustomerDropdown();
+                    
+                    // Update branch info in header
+                    updateBranchInfo();
+                }).fail(function(error) {
+                    console.error("Error loading data:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Loading Failed',
+                        text: 'Failed to load products and categories'
+                    });
+                });
+            }
+
+            // Render categories in the tabs
+            function renderCategories() {
+                let html = '<div class="category-tab search_active active" data-category-id="">All Products</div>';
+                
+                allCategories.forEach(category => {
+                    html += `<div class="category-tab" data-category-id="${category.id}">${category.name}</div>`;
+                });
+                
+                $('#categoryTabs').html(html);
+            }
+
+            // Render products in the grid
+            function renderProducts(filterCategoryId = '', searchTerm = '') {
+                let filteredProducts = allProducts;
+                
+                // Filter by category if specified
+                if (filterCategoryId) {
+                    filteredProducts = allProducts.filter(product => product.category_id == filterCategoryId);
+                }
+                
+                // Filter by search term if specified
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredProducts = filteredProducts.filter(product => {
+                        // Check product name
+                        if (product.name.toLowerCase().includes(term)) return true;
+                        
+                        // Check variants
+                        return product.variants.some(variant => {
+                            // Check variant name or barcode
+                            return variant.name.toLowerCase().includes(term) || 
+                                (variant.barcode && variant.barcode.toLowerCase().includes(term));
+                        });
+                    });
+                }
+                
+                let html = '';
+                
+                if (filteredProducts.length === 0) {
+                    html = '<div class="text-muted text-center py-5">No products found</div>';
+                } else {
+                    filteredProducts.forEach(product => {
+                        const hasVariants = product.variants.length > 1;
+                        const price = hasVariants ? '' : `Rs ${product.variants[0].selling_price.toFixed(2)}`;
+                        
+                        // Handle image path
+                        let imagePath = '/backend/assets/images/no_image.png';
+                        try {
+                            if (product.image_paths) {
+                                const parsedPaths = typeof product.image_paths === 'string' 
+                                    ? JSON.parse(product.image_paths) 
+                                    : product.image_paths;
+                                if (Array.isArray(parsedPaths) && parsedPaths.length > 0) {
+                                    imagePath = parsedPaths[0].startsWith('http') ? parsedPaths[0] : '/' + parsedPaths[0];
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing image paths:", e);
+                        }
+
+                        html += `
+                            <div class="product-card" data-product-id="${product.id}" 
+                                data-category-id="${product.category_id}"
+                                data-variants="${hasVariants ? 'true' : 'false'}">
+                                <img src="${imagePath}" alt="${product.name}" 
+                                    onerror="this.src='/backend/assets/images/no_image.png'">
+                                <div class="product-name">${product.name}</div>
+                                ${hasVariants ? 
+                                    `<div class="text-muted small">${product.variants.length} variants</div>` : 
+                                    `<div class="product-price">${price}</div>`}
+                            </div>
+                        `;
+                    });
+                }
+                
+                $('#productGrid').html(html);
+            }
+
+            // Update customer dropdown
+            function updateCustomerDropdown() {
+                let html = '<option value="Walk-in-Customer" selected>Walk-in Customer</option>';
+                
+                allCustomers.forEach(customer => {
+                    html += `<option value="${customer.id}">${customer.name} (${customer.phone})</option>`;
+                });
+                
+                $('#customerSelect').html(html);
+            }
+
+            // Update branch info in header
+            function updateBranchInfo() {
+                if (currentBranch) {
+                    $('.branch-info').text(`Branch: ${currentBranch.name}`);
+                }
+            }
+
+            // Initialize event handlers
+            function initializeEventHandlers() {
+                // Category tab click
+                $(document).on('click', '.category-tab', function() {
+                    $('.category-tab').removeClass('active');
+                    $(this).addClass('active');
+                    
+                    const categoryId = $(this).data('category-id');
+                    renderProducts(categoryId);
+                });
+                
+
                 // Product card click handler
-                 $('.product-card').on('click', function() {// Product card click handler on page relod show product variant model
+                 $(document).on('click', '.product-card', function() {// Product card click handler on page relod show product variant model
 
                     const productId = $(this).data('product-id');
                     const hasVariants = $(this).data('variants');
@@ -901,6 +701,15 @@
                     }
                 });
                 
+                // Search button click
+                $('#barcodeInput').on('keyup', function(e) {
+                    const searchTerm = $(this).val().trim();
+                    $('.category-tab').removeClass('active');
+                    $('.search_active').addClass('active');
+                    renderProducts('', searchTerm);
+                });
+                
+                // Barcode scanner enter key
                 // Variant selection in modal
                 $(document).on('click', '.variant-option', function() {
                     cart.addItem(
@@ -1050,154 +859,44 @@
                 });
                 
                 // Barcode scanner
-                $('#barcodeInput').on('keypress', function(e) {
-                    if (e.which === 13) { // Enter key
-                        const barcode = $(this).val().trim();
-                        if (barcode) {
-                            $.get(`/products/barcode/${barcode}`, function(productVariant) {
-                                if (productVariant) {
-                                    cart.addItem(
-                                        productVariant.product_id,
-                                        productVariant.id,
-                                        1,
-                                        productVariant.selling_price,
-                                        productVariant.purchase_price,
-                                        productVariant.product.name,
-                                        productVariant.name
-                                    );
-                                    $('#barcodeInput').val('');
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Product Not Found',
-                                        text: 'No product found with this barcode'
-                                    });
-                                }
-                            }).fail(function() {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Error looking up product'
-                                });
-                            });
-                        }
-                    }
-                });
-                
-                // Search product button
-                $('#searchProductBtn').on('click', function() {
-                    const searchTerm = $('#barcodeInput').val().trim();
-                    $('.category-tab').removeClass('active');
-                    $('.search_active').addClass('active');
-                    
-                    if (searchTerm) {
-                        $.get(`/products/search/${searchTerm}`, function(products) {
-                            let html = '';
+                // $('#barcodeInput').on('keypress', function(e) {
+                //     if (e.which === 13) { // Enter key
+                //         const barcode = $(this).val().trim();
+                //         if (barcode) {
+                //             // Search through all variants for matching barcode
+                //             let found = false;
                             
-                            if (products.length === 0) {
-                                html = '<div class="text-muted text-center py-5">No products found</div>';
-                            } else {
-                                products.forEach(product => {
-                                    const hasVariants = product.variants.length > 1;
-                                    const price = hasVariants ? '' : `Rs ${product.variants[0].selling_price.toFixed(2)}`;
-                                    
-                                    html += `
-                                        <div class="product-card" data-product-id="${product.id}" 
-                                            data-variants="${hasVariants ? 'true' : 'false'}">
-                                            <img src="${product.image_paths ? JSON.parse(product.image_paths)[0] : 'backend/assets/images/no_image.png'}" 
-                                                alt="${product.name}">
-                                            <div class="product-name">${product.name}</div>
-                                            ${hasVariants ? 
-                                                `<div class="text-muted small">${product.variants.length} variants</div>` : 
-                                                `<div class="product-price">${price}</div>`}
-                                        </div>
-                                    `;
-                                });
-                            }                            
-                            $('#productGrid').html(html);
-                            $('#barcodeInput').val('');
-                        });
-                    }
-                });
-                
-                // Category tabs
-                $('.category-tab').on('click', function() {
-                    $('.category-tab').removeClass('active');
-                    $(this).addClass('active');
-                    const categoryId = $(this).data('category-id');
-                    
-                    if (categoryId) {
-                        $.get(`/categories/${categoryId}/products`, function(products) {
-                            updateProductGrid(products);
-                        });
-                    } else {
-                        $.get('/pos_products', function(products) {
-                            updateProductGrid(products);
-                        });
-                    }
-                });
-                
-                // New customer modal
-                $('#saveCustomerBtn').on('click', function() {
-                    const customerData = {
-                        name: $('#newCustomerName').val(),
-                        phone: $('#newCustomerPhone').val(),
-                        email: $('#newCustomerEmail').val(),
-                        address: $('#newCustomerAddress').val()
-                    };
-                    
-                    $.ajax({
-                        url: '/customers',
-                        type: 'POST',
-                        data: customerData,
-                        success: function(response) {
-                            $('#customerModal').modal('hide');
+                //             allProducts.forEach(product => {
+                //                 product.variants.forEach(variant => {
+                //                     if (variant.barcode && variant.barcode.toLowerCase() === barcode.toLowerCase()) {
+                //                         cart.addItem(
+                //                             product.id,
+                //                             variant.id,
+                //                             1,
+                //                             variant.selling_price,
+                //                             variant.purchase_price,
+                //                             product.name,
+                //                             variant.name
+                //                         );
+                //                         found = true;
+                //                         $('#barcodeInput').val('');
+                //                     }
+                //                 });
+                //             });
                             
-                            // Add new customer to select
-                            const newOption = new Option(
-                                `${response.name} (${response.phone})`, 
-                                response.id, 
-                                true, 
-                                true
-                            );
-                            $('#customerSelect').append(newOption).trigger('change');
-                            
-                            // Clear form
-                            $('#newCustomerName').val('');
-                            $('#newCustomerPhone').val('');
-                            $('#newCustomerEmail').val('');
-                            $('#newCustomerAddress').val('');
-                            
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Customer Added',
-                                text: 'New customer has been added successfully',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        },
-                        error: function(xhr) {
-                            let errorMessage = 'An error occurred while saving the customer';
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                errorMessage = xhr.responseJSON.message;
-                            }
-                            
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Save Failed',
-                                text: errorMessage,
-                            });
-                        }
-                    });
-                });
-                
-                // Initialize cart UI if editing existing order
-                if (cart.items.length > 0) {
-                    cart.updateCart();
-                }
+                //             if (!found) {
+                //                 Swal.fire({
+                //                     icon: 'error',
+                //                     title: 'Product Not Found',
+                //                     text: 'No product found with this barcode'
+                //                 });
+                //             }
+                //         }
+                //     }
+                // });
             }
-            
-            // Show variant selection modal
+
+
             function showVariantModel(productId) {
                 $.get(`/products/${productId}/variants_data`, function(variants) {
                     let modalBody = '';
@@ -1256,60 +955,10 @@
                     });
                 });
             }
-            
-            // Update product grid
-            function updateProductGrid(products) {
-                let html = '';
-                
-                if (products.length === 0) {
-                    html = '<div class="text-muted text-center py-5">No products found in this category</div>';
-                } else {
-                    products.forEach(product => {
-                        const variants = product.variants || [];
-                        const hasAnyVariants = variants.length > 0;
-                        const hasMultipleVariants = variants.length > 1;
-                        
-                        // Handle image path
-                        let imagePath = 'backend/assets/images/no_image.png';
-                        try {
-                            if (product.image_paths) {
-                                const parsedPaths = typeof product.image_paths === 'string' 
-                                    ? JSON.parse(product.image_paths) 
-                                    : product.image_paths;
-                                if (Array.isArray(parsedPaths)) {
-                                    imagePath = parsedPaths[0] || imagePath;
-                                }
-                            }
-                        } catch (e) {
-                            console.error("Error parsing image paths:", e);
-                        }
-
-                        // Price display logic
-                        let priceDisplay = 'Rs 0.00';
-                        if (hasAnyVariants && !hasMultipleVariants) {
-                            const price = variants[0].selling_price;
-                            priceDisplay = `Rs ${parseFloat(price).toFixed(2)}`;
-                        }
-
-                        html += `
-                            <div class="product-card" data-product-id="${product.id}" 
-                                data-variants="${hasMultipleVariants ? 'true' : 'false'}">
-                                <img src="${imagePath.startsWith('http') ? imagePath : '/' + imagePath}" 
-                                    alt="${product.name}" onerror="this.src='backend/assets/images/no_image.png'">
-                                <div class="product-name">${product.name}</div>
-                                ${hasMultipleVariants ? 
-                                    `<div class="text-muted small">${variants.length} variants</div>` : 
-                                    `<div class="product-price">${priceDisplay}</div>`}
-                            </div>
-                        `;
-                    });
-                }
-                $('#productGrid').html(html);
-            }
-            
-            // Initialize the order creation interface
-            initOrderCreation();
+            // Initialize the POS system
+            initializePOS();
         });
+
     </script>
     @endpush
 </x-app-layout>

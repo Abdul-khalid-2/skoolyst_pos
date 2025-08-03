@@ -56,6 +56,28 @@ class OrderController extends Controller
         ]);
     }
 
+    public function allProducts()
+    {
+        $tenantId = auth()->user()->tenant_id;
+
+        return response()->json([
+            'categories' => Category::where('tenant_id', $tenantId)
+                ->withCount('products')
+                ->get(),
+            'products' => Product::where('tenant_id', $tenantId)
+                ->with(['variants' => function ($query) {
+                    $query->orderBy('name');
+                }])
+                ->get(),
+            'customers' => Customer::where('tenant_id', $tenantId)
+                ->orderBy('name')
+                ->get(),
+            'currentBranch' => Branch::where('tenant_id', $tenantId)
+                ->firstOrFail()
+        ]);
+    }
+
+
     public function store(Request $request)
     {
         $request->validate([

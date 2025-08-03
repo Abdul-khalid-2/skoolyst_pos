@@ -1040,7 +1040,7 @@
                         const hasMultipleVariants = variants.length > 1;
                         
                         // Handle image path
-                        let imagePath = 'backend/assets/images/no_image.png';
+                        let imagePath = asset('backend/assets/images/no_image.png');
                         try {
                             if (product.image_paths) {
                                 const parsedPaths = typeof product.image_paths === 'string' 
