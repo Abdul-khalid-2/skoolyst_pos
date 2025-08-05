@@ -40,3 +40,32 @@ return new class extends Migration
         Schema::dropIfExists('order_items');
     }
 };
+
+
+// CREATE TABLE `order_items` (
+//   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+//   `tenant_id` bigint unsigned NOT NULL,
+//   `order_id` bigint unsigned NOT NULL,
+//   `product_id` bigint unsigned NOT NULL,
+//   `variant_id` bigint unsigned DEFAULT NULL,
+//   `quantity` decimal(10,2) NOT NULL,
+//   `unit_price` decimal(12,2) NOT NULL,
+//   `cost_price` decimal(12,2) NOT NULL,
+//   `tax_rate` decimal(5,2) NOT NULL DEFAULT '0.00',
+//   `tax_amount` decimal(12,2) NOT NULL DEFAULT '0.00',
+//   `discount_rate` decimal(5,2) NOT NULL DEFAULT '0.00',
+//   `discount_amount` decimal(12,2) NOT NULL DEFAULT '0.00',
+//   `total_price` decimal(12,2) NOT NULL,
+//   `notes` text COLLATE utf8mb4_unicode_ci,
+//   `created_at` timestamp NULL DEFAULT NULL,
+//   `updated_at` timestamp NULL DEFAULT NULL,
+//   PRIMARY KEY (`id`),
+//   KEY `order_items_tenant_id_foreign` (`tenant_id`),
+//   KEY `order_items_order_id_foreign` (`order_id`),
+//   KEY `order_items_product_id_foreign` (`product_id`),
+//   KEY `order_items_variant_id_foreign` (`variant_id`),
+//   CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+//   CONSTRAINT `order_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+//   CONSTRAINT `order_items_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `tenants` (`id`) ON DELETE CASCADE,
+//   CONSTRAINT `order_items_variant_id_foreign` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`)
+// ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
