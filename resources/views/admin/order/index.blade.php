@@ -717,7 +717,7 @@
 
             // Complete order function
             function completeOrder(orderId) {
-                showLoader('Completing order...');
+                
                 
                 Swal.fire({
                     title: 'Complete Order',
@@ -729,6 +729,7 @@
                     confirmButtonText: 'Yes, complete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        showLoader('Completing order...');
                         $.ajax({
                             url: "/orders/" + orderId + "/complete",
                             type: "POST",
