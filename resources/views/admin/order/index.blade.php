@@ -216,10 +216,6 @@
             
             // Initialize the page
             initOrders();
-            
-            // Show advanced loader
-            
-            
             // Initialize orders
             function initOrders() {
                 showLoader('Loading orders...');
@@ -247,12 +243,12 @@
                     },
                     error: function(xhr) {
                         console.error(xhr);
-                        hideLoader();
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
                             text: xhr.responseJSON?.message || 'Failed to load orders. Please try again.'
                         });
+                        hideLoader();
                     }
                 });
             }

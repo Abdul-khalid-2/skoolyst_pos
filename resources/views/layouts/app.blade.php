@@ -249,31 +249,9 @@
         </div>
     </div>
     <!-- Wrapper End-->
-    {{-- <footer class="iq-footer">
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><a href="../backend/privacy-policy.html">Privacy Policy</a>
-                                </li>
-                                <li class="list-inline-item"><a href="../backend/terms-of-service.html">Terms of Use</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6 text-right">
-                            <span class="mr-1">
-                                <script>document.write(new Date().getFullYear())</script>©
-                            </span> <a href="#" class="">MD-Autos</a>.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer> --}}
+
    
-<script>
+{{-- <script>
     function showLoader(text = 'Loading...') {
             // Remove any existing loader first
             $('.advanced-loader').remove();
@@ -308,6 +286,92 @@
                 $(this).remove();
             });
         }
+</script> --}}
+
+<script>
+    // Global variable to store progress interval
+    let progressInterval;
+    
+    function showLoader(text = 'Loading...', showProgress = true) {
+        // Remove any existing loader first
+        $('.advanced-loader').remove();
+        
+        const loaderHtml = `
+            <div class="advanced-loader">
+                <div class="loader-backdrop"></div>
+                <div class="loader-content">
+                    <div class="spinner-container">
+                        <div class="spinner">
+                            <div class="spinner-circle spinner-circle-outer"></div>
+                            <div class="spinner-circle spinner-circle-inner"></div>
+                            <div class="spinner-circle spinner-circle-single-1"></div>
+                            <div class="spinner-circle spinner-circle-single-2"></div>
+                        </div>
+                    </div>
+                    <div class="loader-text">${text}</div>
+                    <div class="progress-container" style="${showProgress ? '' : 'display: none;'}">
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        $('body').append(loaderHtml);
+        $('.advanced-loader').fadeIn(200);
+        
+        // Start progress bar animation if enabled
+        if (showProgress) {
+            const progressBar = $('.progress-bar');
+            let progress = 0;
+            progressBar.css('width', '0%');
+            
+            // Clear any existing interval
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            progressInterval = setInterval(() => {
+                progress += 5;
+                progressBar.css('width', `${Math.min(progress, 90)}%`);
+            }, 200);
+        }
+    }
+    
+    // Hide loader with optional completion progress
+    function hideLoader(completeProgress = true) {
+        if (completeProgress) {
+            // Complete the progress bar
+            $('.progress-bar').css('width', '100%');
+        }
+        
+        // Clear the progress interval
+        if (progressInterval) {
+            clearInterval(progressInterval);
+        }
+        
+        // Add slight delay for smooth transition
+        setTimeout(() => {
+            $('.advanced-loader').fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 200);
+    }
+
+
+    // // Show loader with default text and progress bar
+    // showLoader(); 
+
+    // // Show loader with custom text and progress bar
+    // showLoader("Processing your request...");
+
+    // // Show loader without progress bar
+    // showLoader("Please wait...", false);
+
+    // // Hide loader (will complete progress bar)
+    // hideLoader();
+
+    // // Hide loader immediately without completing progress
+    // hideLoader(false);
 </script>
     @stack('js')
 

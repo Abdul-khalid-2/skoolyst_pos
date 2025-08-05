@@ -889,7 +889,7 @@
                     
                     const form = this;
                     const formData = new FormData(form);
-                    
+                    showLoader("new sale creating..");
                     // Disable the submit button to prevent multiple submissions
                     $('#completeSaleBtn').prop('disabled', true).html('<i class="las la-spinner la-spin"></i> Processing...');
                     
@@ -939,6 +939,7 @@
                                     $(this).remove();
                                 });
                             }
+                            hideLoader();
                         },
                         error: function(xhr) {
                             $('#completeSaleBtn').prop('disabled', false).html('<i class="las la-check-circle"></i> Complete Sale');
@@ -967,46 +968,9 @@
                 });
             }
             function showVariantModel(productId) {
-                // Create and show loader before making the request
-                const loaderHtml = `
-                    <div class="advanced-loader">
-                        <div class="loader-backdrop"></div>
-                        <div class="loader-content">
-                            <div class="spinner-container">
-                                <div class="spinner">
-                                    <div class="spinner-circle spinner-circle-outer"></div>
-                                    <div class="spinner-circle spinner-circle-inner"></div>
-                                    <div class="spinner-circle spinner-circle-single-1"></div>
-                                    <div class="spinner-circle spinner-circle-single-2"></div>
-                                </div>
-                            </div>
-                            <div class="loader-text">Loading variants...</div>
-                            <div class="progress-container">
-                                <div class="progress-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                $('body').append(loaderHtml);
-                
-                // Start progress bar animation
-                const progressBar = $('.progress-bar');
-                let progress = 0;
-                const progressInterval = setInterval(() => {
-                    progress += 5;
-                    progressBar.css('width', `${Math.min(progress, 90)}%`);
-                }, 200);
+                showLoader("Loading variants..");
                 
                 $.get(`/products/${productId}/variants_data`, function(variants) {
-                    clearInterval(progressInterval);
-                    progressBar.css('width', '100%');
-                    
-                    // Add slight delay for smooth transition
-                    setTimeout(() => {
-                        $('.advanced-loader').fadeOut(300, function() {
-                            $(this).remove();
-                        });
                         
                         let modalBody = '';
                         variants.forEach(variant => {
@@ -1052,7 +1016,7 @@
                             $('#variantSearchInput').focus();
                         });
                         
-                    }, 300);
+                    hideLoader();
                     
                 }).fail(function(error) {
                     clearInterval(progressInterval);
