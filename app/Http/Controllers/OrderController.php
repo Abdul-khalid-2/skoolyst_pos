@@ -34,8 +34,46 @@ class OrderController extends Controller
                 ->where('tenant_id', $tenantId)
                 ->orderBy('created_at', 'desc');
 
-            // For AJAX requests - return JSON
+
+
+            // For regular requests - return view with paginated data
+            $orders = $query->paginate(20);
+
+            return view('admin.order.index', [
+                'orders' => $orders,
+                'categories' => Category::where('tenant_id', $tenantId)->get(),
+                'currentBranch' => Branch::where('tenant_id', $tenantId)->first()
+            ]);
+        } catch (\Exception $e) {
             if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to load orders',
+                    'error' => config('app.debug') ? $e->getMessage() : null
+                ], 500);
+            }
+
+            return back()->with('error', 'Failed to load orders: ' . $e->getMessage());
+        }
+    }
+
+    public function jsonIndex(Request $request)
+    {
+        try {
+            $tenantId = auth()->user()->tenant_id;
+
+            // Base query with eager loading
+            $query = Order::with([
+                'customer:id,name,email,phone',
+                'user:id,name',
+                'items.product:id,name',
+                'items.variant:id,name'
+            ])
+                ->where('tenant_id', $tenantId)
+                ->orderBy('created_at', 'desc');
+
+            // For AJAX requests - return JSON
+            if ($request->ajax() || $request->has('ajax')) {
                 // Get only necessary fields for the initial load
                 $orders = $query->get([
                     'id',
@@ -66,15 +104,6 @@ class OrderController extends Controller
                     'currentBranch' => Branch::where('tenant_id', $tenantId)->first(['id', 'name'])
                 ]);
             }
-
-            // For regular requests - return view with paginated data
-            $orders = $query->paginate(20);
-
-            return view('admin.order.index', [
-                'orders' => $orders,
-                'categories' => Category::where('tenant_id', $tenantId)->get(),
-                'currentBranch' => Branch::where('tenant_id', $tenantId)->first()
-            ]);
         } catch (\Exception $e) {
             if ($request->ajax()) {
                 return response()->json([

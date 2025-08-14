@@ -220,7 +220,7 @@
             function initOrders() {
                 showLoader('Loading orders...');
                 $.ajax({
-                    url: "{{ route('orders.index') }}",
+                    url: "{{ route('json.orders.index') }}",
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
@@ -300,8 +300,8 @@
                                     </div>
 
                                     <div class="btn-group mt-3 w-100">
-                                        ${order.status === 'draft' ? `
-                                            <a href="{{ url('admin/orders/${order.id}/edit') }}" class="btn btn-sm btn-primary">
+                                        ${['draft', 'confirmed'].includes(order.status) ? `
+                                            <a href="{{ url('/orders/${order.id}/edit') }}" class="btn btn-sm btn-primary">
                                                 <i class="las la-edit"></i> Edit
                                             </a>
                                         ` : ''}
@@ -728,10 +728,9 @@
                         showLoader('Completing order...');
                         $.ajax({
                             url: "/orders/" + orderId + "/complete",
-                            type: "POST",
+                            type: 'POST',
                             data: {
-                                _token: "{{ csrf_token() }}",
-                                _method: "PUT"
+                                _token: "{{ csrf_token() }}"
                             },
                             success: function(response) {
                                 if (response.success) {

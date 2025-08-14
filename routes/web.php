@@ -229,6 +229,7 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
 
     // Order Management Routes
     Route::prefix('orders')->group(function () {
+        Route::get('/get', [OrderController::class, 'jsonIndex'])->name('json.orders.index');
         Route::get('/', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/create', [OrderController::class, 'create'])->name('orders.create');
         Route::post('/', [OrderController::class, 'store'])->name('orders.store');
