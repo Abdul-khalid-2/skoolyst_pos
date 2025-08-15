@@ -188,16 +188,114 @@
                 transform: scale(1.2);
             }
         }
+
+        /* loader style end  */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading-center-custom {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        /* Custom spinner styles */
+        .spinner-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .spinner-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .spinner-circle-outer {
+            width: 100%;
+            height: 100%;
+            border-top-color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .spinner-circle-inner {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            border-top-color: #e74c3c;
+            border-bottom-color: #e74c3c;
+            animation-direction: reverse;
+        }
+
+        .spinner-circle-single-1 {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            border-top-color: #f1c40f;
+            animation-duration: 2s;
+        }
+
+        .spinner-circle-single-2 {
+            width: 25%;
+            height: 25%;
+            top: 37.5%;
+            left: 37.5%;
+            border-top-color: #2ecc71;
+            animation-duration: 2.5s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            text-align: center;
+            margin-top: 15px;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
     </style>
     @stack('css')
 </head>
 
 <body class="  ">
     <!-- loader Start -->
-    <div id="loading">
-        <div id="loading-center">
+<div id="loading">
+    <div id="loading-center-custom">
+        <div class="spinner-container">
+            <div class="spinner">
+                <div class="spinner-circle spinner-circle-outer"></div>
+                <div class="spinner-circle spinner-circle-inner"></div>
+                <div class="spinner-circle spinner-circle-single-1"></div>
+                <div class="spinner-circle spinner-circle-single-2"></div>
+            </div>
         </div>
+        <div class="loader-text">Loading...</div>
     </div>
+</div>
     <!-- loader END -->
     <!-- Wrapper Start -->
     <div class="wrapper">
