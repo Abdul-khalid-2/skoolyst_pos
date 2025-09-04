@@ -42,7 +42,7 @@
         </div>
     </section>
 
-    <!-- Categories Section - NEW DESIGN -->
+    <!-- Categories Section -->
     <section id="categories" class="py-16 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -53,47 +53,64 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Category 1 -->
-                <div class="category-card shadow-md">
-                    <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
-                         alt="Engine Components" class="category-image">
-                    <div class="category-overlay">
-                        <h3 class="text-xl font-bold">Engine Components</h3>
-                        <div class="category-count">42 products</div>
-                        <p class="text-sm mt-2 opacity-90">All critical engine parts for peak performance</p>
-                        <a href="{{ route('product_details') }}" class="category-button">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                @if(empty($categories))
+                    @foreach($categories as $category)
+                        <div class="category-card shadow-md">
+                            <img src="{{ $category->image_url }}" 
+                                alt="{{ $category->name }}" class="category-image">
+                            <div class="category-overlay">
+                                <h3 class="text-xl font-bold">{{ $category->name }}</h3>
+                                <div class="category-count">{{ $category->products_count }} products</div>
+                                <p class="text-sm mt-2 opacity-90">Premium quality {{ strtolower($category->name) }} components</p>
+                                <a href="{{ route('products', ['category' => $category->id]) }}" class="category-button">
+                                    Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Category 1 -->
+                    <div class="category-card shadow-md">
+                        <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
+                            alt="Engine Components" class="category-image">
+                        <div class="category-overlay">
+                            <h3 class="text-xl font-bold">Engine Components</h3>
+                            <div class="category-count">42 products</div>
+                            <p class="text-sm mt-2 opacity-90">All critical engine parts for peak performance</p>
+                            <a href="{{ route('product.detail') }}" class="category-button">
+                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Category 2 -->
-                <div class="category-card shadow-md">
-                    <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
-                         alt="Brake System" class="category-image">
-                    <div class="category-overlay">
-                        <h3 class="text-xl font-bold">Brake System</h3>
-                        <div class="category-count">28 products</div>
-                        <p class="text-sm mt-2 opacity-90">High-quality brake components for safety</p>
-                        <a href="{{ route('product_details') }}" class="category-button">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                    <!-- Category 2 -->
+                    <div class="category-card shadow-md">
+                        <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
+                            alt="Brake System" class="category-image">
+                        <div class="category-overlay">
+                            <h3 class="text-xl font-bold">Brake System</h3>
+                            <div class="category-count">28 products</div>
+                            <p class="text-sm mt-2 opacity-90">High-quality brake components for safety</p>
+                            <a href="{{ route('product.detail') }}" class="category-button">
+                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Category 3 -->
-                <div class="category-card shadow-md">
-                    <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
-                         alt="Suspension Parts" class="category-image">
-                    <div class="category-overlay">
-                        <h3 class="text-xl font-bold">Suspension Parts</h3>
-                        <div class="category-count">35 products</div>
-                        <p class="text-sm mt-2 opacity-90">Premium components for smoother rides</p>
-                        <a href="{{ route('product_details') }}" class="category-button">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                    <!-- Category 3 -->
+                    <div class="category-card shadow-md">
+                        <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
+                            alt="Suspension Parts" class="category-image">
+                        <div class="category-overlay">
+                            <h3 class="text-xl font-bold">Suspension Parts</h3>
+                            <div class="category-count">35 products</div>
+                            <p class="text-sm mt-2 opacity-90">Premium components for smoother rides</p>
+                            <a href="{{ route('product.detail') }}" class="category-button">
+                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </section>
@@ -102,104 +119,153 @@
     <section id="products" class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-3 dark:text-white">Our <span class="text-gradient">Products</span></h2>
+                <h2 class="text-3xl font-bold mb-3 dark:text-white">Featured <span class="text-gradient">Products</span></h2>
                 <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                     Premium quality parts for all major heavy vehicle brands
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Product 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                    <div class="relative product-image-container">
-                        <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}"
-                            alt="Engine Parts" class="w-full h-48 object-cover">
-                        <div class="product-overlay">
-                            <button class="action-btn heart-btn" title="Add to wishlist">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="action-btn view-btn" title="View details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn cart-btn" title="Add to cart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                        <div class="discount-badge">10% OFF</div>
-                        <div class="availability-badge available">In Stock</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2 dark:text-white">Engine Components</h3>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$149.99</span>
-                            <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                @if(!empty($featuredProducts))
 
-                <!-- Product 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                    <div class="relative product-image-container">
-                        <img src="{{ asset('backend/assets/images/brake_system.jpg') }}"
-                            alt="Brake System" class="w-full h-48 object-cover">
-                        <div class="product-overlay">
-                            <button class="action-btn heart-btn" title="Add to wishlist">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="action-btn view-btn" title="View details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn cart-btn" title="Add to cart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+                    @foreach($featuredProducts as $product)
+                        @php
+                            $variant = $product->default_variant;
+                            $hasDiscount = $variant && $variant->has_discount;
+                            $discountPercent = $variant ? $variant->discount_percentage : 0;
+                        @endphp
+                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                            <div class="relative product-image-container">
+                                <img src="{{ $product->main_image }}"
+                                    alt="{{ $product->name }}" class="w-full h-48 object-cover">
+                                <div class="product-overlay">
+                                    <button class="action-btn heart-btn" title="Add to wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="action-btn view-btn" title="View details" onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn cart-btn" title="Add to cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                                @if($hasDiscount)
+                                <div class="discount-badge">{{ $discountPercent }}% OFF</div>
+                                @endif
+                                <div class="availability-badge {{ $product->is_in_stock ? 'available' : 'not-available' }}">
+                                    {{ $product->is_in_stock ? 'In Stock' : 'Out of Stock' }}
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 dark:text-white">{{ $product->name }}</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    @if($variant)
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                                        Rs {{ number_format($variant->selling_price, 2) }}
+                                    </span>
+                                    @endif
+                                    <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm"
+                                        onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="availability-badge available">In Stock</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2 dark:text-white">Brake System</h3>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$79.99</span>
-                            <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                View Details
-                            </button>
+                    @endforeach
+
+                @else
+                    <!-- Product 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                        <div class="relative product-image-container">
+                            <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}"
+                                alt="Engine Parts" class="w-full h-48 object-cover">
+                            <div class="product-overlay">
+                                <button class="action-btn heart-btn" title="Add to wishlist">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn view-btn" title="View details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn cart-btn" title="Add to cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                            <div class="discount-badge">10% OFF</div>
+                            <div class="availability-badge available">In Stock</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Engine Components</h3>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$149.99</span>
+                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                    View Details
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                    <div class="relative product-image-container">
-                        <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}"
-                            alt="Suspension Parts" class="w-full h-48 object-cover">
-                        <div class="product-overlay">
-                            <button class="action-btn heart-btn" title="Add to wishlist">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="action-btn view-btn" title="View details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn cart-btn" title="Add to cart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                        <div class="relative product-image-container">
+                            <img src="{{ asset('backend/assets/images/brake_system.jpg') }}"
+                                alt="Brake System" class="w-full h-48 object-cover">
+                            <div class="product-overlay">
+                                <button class="action-btn heart-btn" title="Add to wishlist">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn view-btn" title="View details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn cart-btn" title="Add to cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                            <div class="availability-badge available">In Stock</div>
                         </div>
-                        <div class="discount-badge">20% OFF</div>
-                        <div class="availability-badge available">In Stock</div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2 dark:text-white">Suspension Parts</h3>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$219.99</span>
-                            <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                View Details
-                            </button>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Brake System</h3>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$79.99</span>
+                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                    View Details
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                        <div class="relative product-image-container">
+                            <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}"
+                                alt="Suspension Parts" class="w-full h-48 object-cover">
+                            <div class="product-overlay">
+                                <button class="action-btn heart-btn" title="Add to wishlist">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="action-btn view-btn" title="View details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn cart-btn" title="Add to cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                            <div class="discount-badge">20% OFF</div>
+                            <div class="availability-badge available">In Stock</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Suspension Parts</h3>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$219.99</span>
+                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
             <div class="text-center mt-12">
-                <a href="{{ route('our_products') }}" class="inline-flex items-center px-8 py-3 border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white rounded-md font-medium transition-slow dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:hover:text-white">
+                <a href="{{ route('products') }}" class="inline-flex items-center px-8 py-3 border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white rounded-md font-medium transition-slow dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:hover:text-white">
                     View All Products <i class="fas fa-chevron-right ml-2"></i>
                 </a>
             </div>
@@ -207,7 +273,7 @@
     </section>
     
     <!-- About Section -->
-    <section id="about" class="py-16 bg-white">
+    <!-- <section id="about" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
@@ -248,9 +314,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <!-- Testimonials -->
+    <!-- Testimonials Section -->
     <section class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -261,53 +327,80 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-quote-left text-2xl opacity-50"></i>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">
-                        "I've been purchasing parts from MD Autos for years. Their quality and service are unmatched in the industry."
-                    </p>
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <h4 class="font-bold dark:text-white">Ali Khan</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Transport Company Owner</p>
+                @if(empty($testimonials))
+                    @foreach($testimonials as $testimonial)
+                        <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
+                            <div class="text-yellow-400 mb-4">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="fas fa-star{{ $i <= $testimonial->rating ? '' : '-half-alt' }}"></i>
+                                @endfor
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6 italic">
+                                "{{ $testimonial->testimonial }}"
+                            </p>
+                            <div class="flex items-center">
+                                <img src="{{ $testimonial->avatar_url }}" 
+                                    alt="{{ $testimonial->customer_name }}" class="w-12 h-12 rounded-full object-cover">
+                                <div class="ml-4">
+                                    <h4 class="font-bold dark:text-white">{{ $testimonial->customer_name }}</h4>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $testimonial->customer_position }}</p>
+                                    @if($testimonial->company)
+                                    <p class="text-gray-500 dark:text-gray-400 text-xs">{{ $testimonial->company }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
+                        <div class="text-yellow-400 mb-4">
+                            <i class="fas fa-quote-left text-2xl opacity-50"></i>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            "I've been purchasing parts from MD Autos for years. Their quality and service are unmatched in the industry."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="ml-4">
+                                <h4 class="font-bold dark:text-white">Ali Khan</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Transport Company Owner</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Testimonial 2 -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-quote-left text-2xl opacity-50"></i>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">
-                        "Their parts last longer than competitors' and the prices are reasonable. Delivery is always on time."
-                    </p>
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <h4 class="font-bold dark:text-white">Ahmed Raza</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Fleet Maintenance Manager</p>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
+                        <div class="text-yellow-400 mb-4">
+                            <i class="fas fa-quote-left text-2xl opacity-50"></i>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            "Their parts last longer than competitors' and the prices are reasonable. Delivery is always on time."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="ml-4">
+                                <h4 class="font-bold dark:text-white">Ahmed Raza</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Fleet Maintenance Manager</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Testimonial 3 -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-quote-left text-2xl opacity-50"></i>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">
-                        "Whenever I need parts for my trucks, MD Autos is my first choice. Their technical support is excellent."
-                    </p>
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <h4 class="font-bold dark:text-white">Usman Malik</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Logistics Operator</p>
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-slow">
+                        <div class="text-yellow-400 mb-4">
+                            <i class="fas fa-quote-left text-2xl opacity-50"></i>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            "Whenever I need parts for my trucks, MD Autos is my first choice. Their technical support is excellent."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="ml-4">
+                                <h4 class="font-bold dark:text-white">Usman Malik</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Logistics Operator</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+                
             </div>
         </div>
     </section>
