@@ -206,9 +206,7 @@ Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(fu
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Website Routes 
-    Route::view('/product_details', 'product_details')->name('product_details');
-    Route::view('/our_products', 'our_products')->name('our_products');
+
 
     // Import/Export Routes
     Route::prefix('import')->group(function () {
@@ -251,10 +249,14 @@ Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(function () {
-
-
     Route::resource('businesses', BusinessController::class);
     Route::resource('branches', BranchController::class);
 });
+
+// Website Routes 
+Route::view('/product_details', 'product_details')->name('product_details');
+Route::view('/our_products', 'our_products')->name('our_products');
+
+
 
 require __DIR__ . '/auth.php';
