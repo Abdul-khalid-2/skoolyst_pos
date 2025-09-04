@@ -1,5 +1,37 @@
 <x-website-layout>
+@push('css')
 
+<style>
+    
+    /* Star rating */
+    .rating {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        text-align: left;
+    }
+    
+    .rating > span {
+        display: inline-block;
+        position: relative;
+        width: 1.1em;
+        color: #ddd;
+    }
+    
+    .rating > span:hover:before,
+    .rating > span:hover ~ span:before {
+        content: "\2605";
+        position: absolute;
+        color: #f8d64e;
+    }
+    
+    .rating > span.active:before,
+    .rating > span.active ~ span:before {
+        content: "\2605";
+        position: absolute;
+        color: #f8d64e;
+    }
+</style>
+@endpush
     <!-- Page Header -->
     <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-primary-700 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -273,4 +305,7 @@
             </div>
         </div>
     </section>
+
+    @push('js')
+    @endpush
 </x-website-layout>

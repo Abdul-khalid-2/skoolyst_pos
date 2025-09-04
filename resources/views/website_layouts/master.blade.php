@@ -350,6 +350,7 @@
             box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
         }
     </style>
+        @stack('css')
 </head>
 
 <body class="font-sans bg-gray-50 text-gray-800 transition-colors duration-300">
@@ -495,5 +496,7 @@
             });
         });
     </script>
+
+    @stack('js')
 </body>
 </html>
