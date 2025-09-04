@@ -255,7 +255,7 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(functio
 });
 
 // Website Routes 
-Route::resource('/', HomeController::class);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('all-products',[HomeController::class, 'products'])->name('products');
 Route::get('contact',[HomeController::class, 'contacts'])->name('contact');
 

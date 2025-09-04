@@ -57,22 +57,3 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 hero-bg text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">MD AUTOS</h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                    Your trusted supplier of genuine heavy vehicle parts and components
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="{{ route('our_products') }}" class="px-8 py-3 bg-secondary-600 hover:bg-secondary-700 rounded-md text-white font-medium transition-slow">
-                        Our Products
-                    </a>
-                    <a href="#contact" class="px-8 py-3 border-2 border-white hover:bg-white hover:text-gray-900 rounded-md text-white font-medium transition-slow">
-                        Contact Us
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
