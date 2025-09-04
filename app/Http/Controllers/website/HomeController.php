@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function home()
+    public function index()
     {
         $categories = Category::withCount('products')
             ->whereNull('parent_id')
@@ -18,14 +21,14 @@ class HomeController extends Controller
         $featuredProducts = Product::with(['category', 'variants'])
             ->where('status', 'active')
             ->whereHas('variants')
-            ->take(8)
+            ->take(6)
             ->get();
             
         $testimonials = Testimonial::where('is_active', true)
             ->take(3)
             ->get();
 
-        return view('website.home', compact('categories', 'featuredProducts', 'testimonials'));
+        return view('welcome', compact('categories', 'featuredProducts', 'testimonials'));
     }
     
     public function products(Request $request)
@@ -48,7 +51,7 @@ class HomeController extends Controller
         $products = $query->paginate(12);
         $categories = Category::whereNull('parent_id')->get();
         
-        return view('website.products', compact('products', 'categories'));
+        return view('our_products', compact('products', 'categories'));
     }
     
     public function productDetail($id, $slug = null)

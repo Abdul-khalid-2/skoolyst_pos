@@ -35,6 +35,7 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
+use App\Http\Controllers\Website\HomeController;
 use App\Models\Supplier;
 
 Route::get('/', function () {
@@ -254,7 +255,11 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(functio
 });
 
 // Website Routes 
-Route::view('/product_details', 'product_details')->name('product_details');
+Route::resource('/', HomeController::class);
+Route::get('all-products',[HomeController::class, 'products'])->name('products');
+Route::get('contact',[HomeController::class, 'contacts'])->name('contact');
+
+Route::view('/product_details', 'product_details')->name('product.detail');
 Route::view('/our_products', 'our_products')->name('our_products');
 
 

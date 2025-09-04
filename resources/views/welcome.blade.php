@@ -53,11 +53,12 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @if(empty($categories))
-                    @foreach($categories as $category)
+                
+
+                    @forelse($categories as $category)
                         <div class="category-card shadow-md">
-                            <img src="{{ $category->image_url }}" 
-                                alt="{{ $category->name }}" class="category-image">
+                            <img src="{{ $category->image ? asset($category->image) : asset('backend/assets/images/no_image.png') }}"
+                            alt="{{ $category->name ?? 'no_img' }}" class="category-image">
                             <div class="category-overlay">
                                 <h3 class="text-xl font-bold">{{ $category->name }}</h3>
                                 <div class="category-count">{{ $category->products_count }} products</div>
@@ -67,50 +68,52 @@
                                 </a>
                             </div>
                         </div>
-                    @endforeach
-                @else
-                    <!-- Category 1 -->
-                    <div class="category-card shadow-md">
-                        <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
-                            alt="Engine Components" class="category-image">
-                        <div class="category-overlay">
-                            <h3 class="text-xl font-bold">Engine Components</h3>
-                            <div class="category-count">42 products</div>
-                            <p class="text-sm mt-2 opacity-90">All critical engine parts for peak performance</p>
-                            <a href="{{ route('product.detail') }}" class="category-button">
-                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                            </a>
-                        </div>
-                    </div>
+                    @empty
 
-                    <!-- Category 2 -->
-                    <div class="category-card shadow-md">
-                        <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
-                            alt="Brake System" class="category-image">
-                        <div class="category-overlay">
-                            <h3 class="text-xl font-bold">Brake System</h3>
-                            <div class="category-count">28 products</div>
-                            <p class="text-sm mt-2 opacity-90">High-quality brake components for safety</p>
-                            <a href="{{ route('product.detail') }}" class="category-button">
-                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                            </a>
+                        <!-- Category 1 -->
+                        <div class="category-card shadow-md">
+                            <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}" 
+                                alt="Engine Components" class="category-image">
+                            <div class="category-overlay">
+                                <h3 class="text-xl font-bold">Engine Components</h3>
+                                <div class="category-count">42 products</div>
+                                <p class="text-sm mt-2 opacity-90">All critical engine parts for peak performance</p>
+                                <a href="{{ route('product.detail') }}" class="category-button">
+                                    Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Category 3 -->
-                    <div class="category-card shadow-md">
-                        <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
-                            alt="Suspension Parts" class="category-image">
-                        <div class="category-overlay">
-                            <h3 class="text-xl font-bold">Suspension Parts</h3>
-                            <div class="category-count">35 products</div>
-                            <p class="text-sm mt-2 opacity-90">Premium components for smoother rides</p>
-                            <a href="{{ route('product.detail') }}" class="category-button">
-                                Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                            </a>
+                        <!-- Category 2 -->
+                        <div class="category-card shadow-md">
+                            <img src="{{ asset('backend/assets/images/brake_system.jpg') }}" 
+                                alt="Brake System" class="category-image">
+                            <div class="category-overlay">
+                                <h3 class="text-xl font-bold">Brake System</h3>
+                                <div class="category-count">28 products</div>
+                                <p class="text-sm mt-2 opacity-90">High-quality brake components for safety</p>
+                                <a href="{{ route('product.detail') }}" class="category-button">
+                                    Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                @endif
+
+                        <!-- Category 3 -->
+                        <div class="category-card shadow-md">
+                            <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}" 
+                                alt="Suspension Parts" class="category-image">
+                            <div class="category-overlay">
+                                <h3 class="text-xl font-bold">Suspension Parts</h3>
+                                <div class="category-count">35 products</div>
+                                <p class="text-sm mt-2 opacity-90">Premium components for smoother rides</p>
+                                <a href="{{ route('product.detail') }}" class="category-button">
+                                    Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    @endforelse
+
             </div>
         </div>
     </section>
@@ -126,9 +129,7 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                @if(!empty($featuredProducts))
-
-                    @foreach($featuredProducts as $product)
+                    @forelse($featuredProducts as $product)
                         @php
                             $variant = $product->default_variant;
                             $hasDiscount = $variant && $variant->has_discount;
@@ -136,133 +137,132 @@
                         @endphp
                         <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
                             <div class="relative product-image-container">
-                                <img src="{{ $product->main_image }}"
-                                    alt="{{ $product->name }}" class="w-full h-48 object-cover">
+                                <img src="{{ asset($product->main_image ?? '/backend/assets/images/no_image.png') }}"
+                                        alt="{{ $product->name ??'no_image.png' }}" class="w-full h-48 object-cover">
                                 <div class="product-overlay">
                                     <button class="action-btn heart-btn" title="Add to wishlist">
                                         <i class="fas fa-heart"></i>
                                     </button>
-                                    <button class="action-btn view-btn" title="View details" onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
+                                        <button class="action-btn view-btn" title="View details" onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button class="action-btn cart-btn" title="Add to cart">
                                         <i class="fas fa-shopping-cart"></i>
                                     </button>
                                 </div>
-                                @if($hasDiscount)
-                                <div class="discount-badge">{{ $discountPercent }}% OFF</div>
-                                @endif
-                                <div class="availability-badge {{ $product->is_in_stock ? 'available' : 'not-available' }}">
-                                    {{ $product->is_in_stock ? 'In Stock' : 'Out of Stock' }}
-                                </div>
+                                    @if($hasDiscount)
+                                    <div class="discount-badge">{{ $discountPercent }}% OFF</div>
+                                    @endif
+                                    <div class="availability-badge {{ $product->is_in_stock ? 'available' : 'not-available' }}">
+                                        {{ $product->is_in_stock ? 'In Stock' : 'Out of Stock' }}
+                                    </div>
                             </div>
                             <div class="p-6">
                                 <h3 class="text-xl font-bold mb-2 dark:text-white">{{ $product->name }}</h3>
                                 <div class="flex justify-between items-center mt-4">
-                                    @if($variant)
-                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                                        Rs {{ number_format($variant->selling_price, 2) }}
-                                    </span>
-                                    @endif
-                                    <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm"
-                                        onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
+                                        @if($variant)
+                                            <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                                                Rs {{ number_format($variant->selling_price, 2) }}
+                                            </span>
+                                        @endif
+                                        <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm"
+                                            onclick="window.location.href='{{ route('product.detail', ['id' => $product->id, 'slug' => Str::slug($product->name)]) }}'">
                                         View Details
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <!-- Product 1 -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                            <div class="relative product-image-container">
+                                <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}"
+                                    alt="Engine Parts" class="w-full h-48 object-cover">
+                                <div class="product-overlay">
+                                    <button class="action-btn heart-btn" title="Add to wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="action-btn view-btn" title="View details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn cart-btn" title="Add to cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                                <div class="discount-badge">10% OFF</div>
+                                <div class="availability-badge available">In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 dark:text-white">Engine Components</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$149.99</span>
+                                    <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-                @else
-                    <!-- Product 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                        <div class="relative product-image-container">
-                            <img src="{{ asset('backend/assets/images/Engine_Components.jpg') }}"
-                                alt="Engine Parts" class="w-full h-48 object-cover">
-                            <div class="product-overlay">
-                                <button class="action-btn heart-btn" title="Add to wishlist">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <button class="action-btn view-btn" title="View details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn cart-btn" title="Add to cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
+                        <!-- Product 2 -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                            <div class="relative product-image-container">
+                                <img src="{{ asset('backend/assets/images/brake_system.jpg') }}"
+                                    alt="Brake System" class="w-full h-48 object-cover">
+                                <div class="product-overlay">
+                                    <button class="action-btn heart-btn" title="Add to wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="action-btn view-btn" title="View details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn cart-btn" title="Add to cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                                <div class="availability-badge available">In Stock</div>
                             </div>
-                            <div class="discount-badge">10% OFF</div>
-                            <div class="availability-badge available">In Stock</div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 dark:text-white">Engine Components</h3>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$149.99</span>
-                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                    View Details
-                                </button>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 dark:text-white">Brake System</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$79.99</span>
+                                    <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        
+                        <!-- Product 3 -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
+                            <div class="relative product-image-container">
+                                <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}"
+                                    alt="Suspension Parts" class="w-full h-48 object-cover">
+                                <div class="product-overlay">
+                                    <button class="action-btn heart-btn" title="Add to wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="action-btn view-btn" title="View details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn cart-btn" title="Add to cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                                <div class="discount-badge">20% OFF</div>
+                                <div class="availability-badge available">In Stock</div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 dark:text-white">Suspension Parts</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$219.99</span>
+                                    <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforelse
 
-                    <!-- Product 2 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                        <div class="relative product-image-container">
-                            <img src="{{ asset('backend/assets/images/brake_system.jpg') }}"
-                                alt="Brake System" class="w-full h-48 object-cover">
-                            <div class="product-overlay">
-                                <button class="action-btn heart-btn" title="Add to wishlist">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <button class="action-btn view-btn" title="View details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn cart-btn" title="Add to cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <div class="availability-badge available">In Stock</div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 dark:text-white">Brake System</h3>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$79.99</span>
-                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 3 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
-                        <div class="relative product-image-container">
-                            <img src="{{ asset('backend/assets/images/Suspension_Parts.jpg') }}"
-                                alt="Suspension Parts" class="w-full h-48 object-cover">
-                            <div class="product-overlay">
-                                <button class="action-btn heart-btn" title="Add to wishlist">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <button class="action-btn view-btn" title="View details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn cart-btn" title="Add to cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <div class="discount-badge">20% OFF</div>
-                            <div class="availability-badge available">In Stock</div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 dark:text-white">Suspension Parts</h3>
-                            <div class="flex justify-between items-center mt-4">
-                                <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">$219.99</span>
-                                <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm">
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
             <div class="text-center mt-12">
                 <a href="{{ route('products') }}" class="inline-flex items-center px-8 py-3 border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white rounded-md font-medium transition-slow dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:hover:text-white">

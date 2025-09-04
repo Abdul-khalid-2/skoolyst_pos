@@ -500,7 +500,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -535,7 +535,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -573,7 +573,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -608,7 +608,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -649,7 +649,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -684,7 +684,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -719,7 +719,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -754,7 +754,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
@@ -792,7 +792,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
                                     </button> --}}
                                     
-                                    <a href="{{ route('product_details') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
+                                    <a href="{{ route('product.detail') }}" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-slow">
                                         <i class="far fa-eye"></i>
                                     </a>
                                 </div>
