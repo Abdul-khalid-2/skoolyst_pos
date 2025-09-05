@@ -42,6 +42,7 @@
             padding: 0.75rem;
             cursor: pointer;
             transition: all 0.2s ease;
+            margin-bottom: 10px;
         }
         
         .variant-option:hover {
@@ -80,7 +81,7 @@
             background-color: white;
             border-radius: 0.5rem;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -97,6 +98,116 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        /* Selected variants list */
+        .selected-variants {
+            margin: 20px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            background-color: #f9fafb;
+        }
+        
+        .selected-variant-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .selected-variant-item:last-child {
+            border-bottom: none;
+        }
+        
+        .variant-info {
+            flex: 1;
+        }
+        
+        .variant-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .variant-details {
+            display: flex;
+            justify-content: space-between;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .variant-quantity {
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            margin: 0 0.5rem;
+        }
+        
+        .variant-price {
+            font-weight: 600;
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .remove-variant {
+            color: #ef4444;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        .variants-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            text-align: right;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .empty-variants {
+            text-align: center;
+            padding: 1rem;
+            color: #6b7280;
+        }
+        
+        .variant-attributes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .variant-attribute {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            background-color: #f9fafb;
+        }
+        
+        .attribute-name {
+            font-weight: 600;
+            margin-right: 0.5rem;
         }
     </style>
     @endpush
@@ -120,89 +231,26 @@
                 </div>
             </div>
             
+            <!-- Selected Variants List (initially hidden) -->
+            <div id="selected-variants-container" class="mt-8" style="display: none;">
+                <h3 class="text-xl font-bold mb-4">Selected Variants</h3>
+                <div class="selected-variants" id="selected-variants-list">
+                    <div class="empty-variants">
+                        <i class="fas fa-inbox text-2xl mb-2"></i>
+                        <p>No variants selected yet</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <div class="text-xl font-bold" id="variants-total">Total: Rs. 0</div>
+                    <button onclick="addAllToCart()" class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-md transition-slow">
+                        <i class="fas fa-shopping-cart mr-2"></i> Add All to Cart
+                    </button>
+                </div>
+            </div>
+            
             <!-- Product Tabs -->
             <div class="mt-16" id="tabs-container" style="display: none;">
-                <div class="border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-8">
-                        <button onclick="openTab('description')" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-primary-500 text-primary-600">
-                            Description
-                        </button>
-                        <button onclick="openTab('specifications')" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                            Specifications
-                        </button>
-                        <button onclick="openTab('reviews')" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                            Reviews (<span id="review-count">0</span>)
-                        </button>
-                        <button onclick="openTab('shipping')" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                            Shipping & Returns
-                        </button>
-                    </nav>
-                </div>
-                
-                <div class="py-8">
-                    <!-- Description Tab -->
-                    <div id="description" class="tab-content active">
-                        <div id="description-content"></div>
-                    </div>
-                    
-                    <!-- Specifications Tab -->
-                    <div id="specifications" class="tab-content">
-                        <h3 class="text-xl font-bold mb-4">Technical Specifications</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200" id="specs-table">
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <!-- Specifications will be populated by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Reviews Tab -->
-                    <div id="reviews" class="tab-content">
-                        <div id="reviews-content"></div>
-                    </div>
-                    
-                    <!-- Shipping Tab -->
-                    <div id="shipping" class="tab-content">
-                        <h3 class="text-xl font-bold mb-4">Shipping & Returns</h3>
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="font-medium mb-3">Shipping Information</h4>
-                                <ul class="space-y-3 text-gray-600">
-                                    <li class="flex items-start">
-                                        <i class="fas fa-truck text-primary-600 mt-1 mr-3"></i>
-                                        <span>Free standard shipping on all orders over $100</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-clock text-primary-600 mt-1 mr-3"></i>
-                                        <span>Processing time: 1-2 business days</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-map-marker-alt text-primary-600 mt-1 mr-3"></i>
-                                        <span>Delivery time: 2-5 business days depending on location</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="font-medium mb-3">Return Policy</h4>
-                                <ul class="space-y-3 text-gray-600">
-                                    <li class="flex items-start">
-                                        <i class="fas fa-undo text-primary-600 mt-1 mr-3"></i>
-                                        <span>30-day money back guarantee</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-tag text-primary-600 mt-1 mr-3"></i>
-                                        <span>Items must be unused and in original packaging</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-exchange-alt text-primary-600 mt-1 mr-3"></i>
-                                        <span>Free returns for defective items</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- ... (keep your existing tab structure) ... -->
             </div>
             
             <!-- Related Products -->
@@ -220,7 +268,7 @@
         <div class="modal-content">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Select Variant</h3>
+                    <h3 class="text-xl font-bold">Select Variants</h3>
                     <button onclick="closeModal('variants-modal')" class="text-gray-500 hover:text-gray-700">
                         <i class="fas fa-times"></i>
                     </button>
@@ -234,8 +282,8 @@
                     <button onclick="closeModal('variants-modal')" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                         Cancel
                     </button>
-                    <button id="select-variant-btn" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
-                        Select Variant
+                    <button id="add-variant-btn" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
+                        Add to List
                     </button>
                 </div>
             </div>
@@ -248,8 +296,8 @@
         let productData = null;
         let variantsData = [];
         let selectedVariant = null;
+        let selectedVariants = []; // Array to store multiple selected variants with quantities
         let currentProductId = {{ $productId ?? 'null' }};
-
 
         // DOM Ready
         $(document).ready(function() {
@@ -285,10 +333,12 @@
                         
                         // Show tabs and related products sections
                         $('#tabs-container').show();
-                        $('#related-products-container').show();
                         
-                        // Load related products
-                        loadRelatedProducts(productData.category_id, productId);
+                        // Load related products if category exists
+                        if (productData.category_id) {
+                            $('#related-products-container').show();
+                            loadRelatedProducts(productData.category_id, productId);
+                        }
                     } else {
                         showError('Failed to load product details');
                     }
@@ -317,7 +367,7 @@
             // Prepare image gallery
             const images = productData.image_paths && productData.image_paths.length > 0 
                 ? JSON.parse(productData.image_paths) 
-                : ['/backend/assets/images/no_image.png'];
+                : ['{{ asset("backend/assets/images/no_image.png")}}'];
             
             const imageGallery = images.map((img, index) => `
                 <img src="${img}" alt="${productData.name}" class="border rounded-md h-20 object-cover" 
@@ -342,13 +392,13 @@
                 
                 // Add variant selection button
                 priceHtml += `
-                    <button onclick="openVariantModal()" class="ml-4 px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm hover:bg-gray-200">
-                        View Variants <i class="fas fa-chevron-down ml-1"></i>
+                    <button onclick="openVariantModal()" class="ml-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
+                        <i class="fas fa-list mr-2"></i> Select Variants
                     </button>
                 `;
             } else {
                 priceHtml = `
-                    <span class="text-3xl font-bold text-gray-900">Rs. ${productData.price?.min.toLocaleString() || '0'}</span>
+                    <span class="text-3xl font-bold text-gray-900">Rs. ${(productData.price?.min || 0).toLocaleString()}</span>
                     ${productData.discount > 0 ? `
                         <span class="ml-2 text-lg text-gray-500 line-through">Rs. ${(productData.price?.min / (1 - productData.discount/100)).toLocaleString()}</span>
                         <span class="ml-2 bg-red-100 text-red-800 text-sm font-medium px-2 py-0.5 rounded">${productData.discount}% OFF</span>
@@ -390,17 +440,6 @@
                     </div>
                     
                     <!-- Product badges -->
-                    <div class="flex flex-wrap gap-3 mt-6">
-                        <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                            <i class="fas fa-check-circle mr-1"></i> ${productData.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}
-                        </span>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                            <i class="fas fa-truck mr-1"></i> Free Shipping
-                        </span>
-                        <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
-                            <i class="fas fa-shield-alt mr-1"></i> 1 Year Warranty
-                        </span>
-                    </div>
                 </div>
                 
                 <!-- Product Info -->
@@ -432,23 +471,6 @@
                     
                     ${compatibilityHtml}
                     
-                    <div class="flex items-center mb-6">
-                        <div class="mr-4">
-                            <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                            <div class="flex border rounded-md">
-                                <button class="px-3 py-1 bg-gray-100 text-gray-600 hover:bg-gray-200" onclick="updateQuantity(-1)">-</button>
-                                <input type="number" id="quantity" value="1" min="1" class="w-12 text-center border-0 focus:ring-0">
-                                <button class="px-3 py-1 bg-gray-100 text-gray-600 hover:bg-gray-200" onclick="updateQuantity(1)">+</button>
-                            </div>
-                        </div>
-                        
-                        <div class="flex-1">
-                            <button onclick="addToCart()" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-md transition-slow">
-                                <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                    
                     <div class="border-t pt-4">
                         <div class="flex items-center text-gray-600">
                             <i class="fas fa-truck text-xl mr-3 text-primary-600"></i>
@@ -460,7 +482,19 @@
                     </div>
                 </div>
             `);
-            
+             
+                    // <!-- Product badges -->
+                    // <div class="flex flex-wrap gap-3 mt-6">
+                    //     <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                    //         <i class="fas fa-check-circle mr-1"></i> ${productData.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                    //     </span>
+                    //     <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                    //         <i class="fas fa-truck mr-1"></i> Free Shipping
+                    //     </span>
+                    //     <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
+                    //         <i class="fas fa-shield-alt mr-1"></i> 1 Year Warranty
+                    //     </span>
+                    // </div>
             // Populate description tab
             $('#description-content').html(productData.description || '<p class="text-gray-600">No description available.</p>');
             
@@ -522,18 +556,229 @@
             `);
         }
 
+        // Open variant modal
+        function openVariantModal() {
+            if (variantsData.length === 0) return;
+            
+            const variantsHtml = variantsData.map(variant => `
+                <div class="variant-option ${variant.current_stock <= 0 ? 'out-of-stock' : ''}" 
+                     data-variant-id="${variant.id}">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-medium">${variant.name}</h4>
+                        <span class="font-bold">Rs. ${variant.selling_price.toLocaleString()}</span>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <p>SKU: ${variant.sku}</p>
+                        <p>Stock: ${variant.current_stock} available</p>
+                    </div>
+                    <div class="mt-3 flex items-center">
+                        <label class="mr-3">Quantity:</label>
+                        <div class="flex border rounded-md">
+                            <button type="button" class="px-3 py-1 bg-gray-100 text-gray-600 hover:bg-gray-200" onclick="updateVariantQuantity(${variant.id}, -1)">-</button>
+                            <input type="number" id="variant-quantity-${variant.id}" value="1" min="1" max="${variant.current_stock}" class="w-12 text-center border-0 focus:ring-0">
+                            <button type="button" class="px-3 py-1 bg-gray-100 text-gray-600 hover:bg-gray-200" onclick="updateVariantQuantity(${variant.id}, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            $('#variants-content').html(variantsHtml);
+            
+            // Set up click handler for variant options
+            $('.variant-option:not(.out-of-stock)').on('click', function() {
+                $(this).toggleClass('selected');
+            });
+            
+            // Update add variant button handler
+            $('#add-variant-btn').off('click').on('click', addSelectedVariants);
+            
+            openModal('variants-modal');
+        }
+
+        // Update variant quantity in modal
+        function updateVariantQuantity(variantId, change) {
+            const input = $(`#variant-quantity-${variantId}`);
+            let quantity = parseInt(input.val());
+            const max = parseInt(input.attr('max'));
+            
+            quantity += change;
+            if (quantity < 1) quantity = 1;
+            if (quantity > max) quantity = max;
+            
+            input.val(quantity);
+        }
+
+        // Add selected variants to the list
+        function addSelectedVariants() {
+            const selectedOptions = $('.variant-option.selected');
+            
+            selectedOptions.each(function() {
+                const variantId = $(this).data('variant-id');
+                const variant = variantsData.find(v => v.id === variantId);
+                
+                if (variant) {
+                    const quantity = parseInt($(`#variant-quantity-${variantId}`).val());
+                    
+                    // Check if this variant is already in the list
+                    const existingIndex = selectedVariants.findIndex(v => v.id === variantId);
+                    
+                    if (existingIndex >= 0) {
+                        // Update quantity if already exists
+                        selectedVariants[existingIndex].quantity += quantity;
+                    } else {
+                        // Add new variant to list
+                        selectedVariants.push({
+                            id: variant.id,
+                            name: variant.name,
+                            sku: variant.sku,
+                            price: variant.selling_price,
+                            quantity: quantity,
+                            stock: variant.current_stock
+                        });
+                    }
+                }
+            });
+            
+            // Update the selected variants list UI
+            updateSelectedVariantsList();
+            
+            // Close the modal
+            closeModal('variants-modal');
+            
+            // Show the selected variants container
+            $('#selected-variants-container').show();
+        }
+
+        // Update the selected variants list UI
+        function updateSelectedVariantsList() {
+            const list = $('#selected-variants-list');
+            
+            if (selectedVariants.length === 0) {
+                list.html(`
+                    <div class="empty-variants">
+                        <i class="fas fa-inbox text-2xl mb-2"></i>
+                        <p>No variants selected yet</p>
+                    </div>
+                `);
+                $('#variants-total').text('Total: Rs. 0');
+                return;
+            }
+            
+            let html = '';
+            let total = 0;
+            
+            selectedVariants.forEach((variant, index) => {
+                const variantTotal = variant.price * variant.quantity;
+                total += variantTotal;
+                
+                html += `
+                    <div class="selected-variant-item">
+                        <div class="variant-info">
+                            <div class="variant-name">${variant.name}</div>
+                            <div class="variant-details">
+                                <span>SKU: ${variant.sku}</span>
+                                <span>Rs. ${variant.price.toLocaleString()} each</span>
+                            </div>
+                        </div>
+                        <div class="variant-quantity">
+                            <button class="quantity-btn" onclick="updateSelectedVariantQuantity(${index}, -1)">-</button>
+                            <input type="number" class="quantity-input" value="${variant.quantity}" min="1" max="${variant.stock}" 
+                                onchange="updateSelectedVariantQuantityInput(${index}, this.value)">
+                            <button class="quantity-btn" onclick="updateSelectedVariantQuantity(${index}, 1)">+</button>
+                        </div>
+                        <div class="variant-price">
+                            Rs. ${variantTotal.toLocaleString()}
+                        </div>
+                        <div class="remove-variant" onclick="removeVariant(${index})">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            list.html(html);
+            $('#variants-total').text(`Total: Rs. ${total.toLocaleString()}`);
+        }
+
+        // Update quantity for a selected variant
+        function updateSelectedVariantQuantity(index, change) {
+            const variant = selectedVariants[index];
+            let quantity = variant.quantity + change;
+            
+            if (quantity < 1) quantity = 1;
+            if (quantity > variant.stock) quantity = variant.stock;
+            
+            variant.quantity = quantity;
+            updateSelectedVariantsList();
+        }
+
+        // Update quantity from input field
+        function updateSelectedVariantQuantityInput(index, value) {
+            const quantity = parseInt(value);
+            const variant = selectedVariants[index];
+            
+            if (isNaN(quantity) || quantity < 1) {
+                variant.quantity = 1;
+            } else if (quantity > variant.stock) {
+                variant.quantity = variant.stock;
+            } else {
+                variant.quantity = quantity;
+            }
+            
+            updateSelectedVariantsList();
+        }
+
+        // Remove variant from selected list
+        function removeVariant(index) {
+            selectedVariants.splice(index, 1);
+            updateSelectedVariantsList();
+            
+            // Hide container if no variants left
+            if (selectedVariants.length === 0) {
+                $('#selected-variants-container').hide();
+            }
+        }
+
+        // Add all selected variants to cart
+        function addAllToCart() {
+            if (selectedVariants.length === 0) {
+                showMessage('Please select at least one variant', 'error');
+                return;
+            }
+            
+            const itemsToAdd = selectedVariants.map(variant => ({
+                id: variant.id,
+                product_id: productData.id,
+                name: productData.name,
+                variant: variant.name,
+                price: variant.price,
+                quantity: variant.quantity,
+                image: productData.image_paths ? JSON.parse(productData.image_paths)[0] : '{{ asset("backend/assets/images/no_image.png")}}'
+            }));
+            
+            // Here you would typically add to cart via AJAX
+            console.log('Adding to cart:', itemsToAdd);
+            
+            // Show success message
+            showMessage('Variants added to cart successfully!', 'success');
+            
+            // Clear selected variants
+            selectedVariants = [];
+            updateSelectedVariantsList();
+            $('#selected-variants-container').hide();
+        }
+
         // Load related products
         function loadRelatedProducts(categoryId, excludeProductId) {
             $.ajax({
                 url: '{{ route("api.productsvariant.related", ":categoryId") }}'.replace(':categoryId', categoryId) + `?exclude=${excludeProductId}`,
-
                 method: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     if (response.success && response.data.length > 0) {
                         const relatedProductsHtml = response.data.map(product => `
                             <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow transform hover:-translate-y-1">
-                                <img src="${product.image || '/backend/assets/images/no_image.png'}" 
+                                <img src="${product.image || '{{ asset("backend/assets/images/no_image.png")}}'}" 
                                      alt="${product.name}" class="w-full h-48 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-bold mb-2">${product.name}</h3>
@@ -567,98 +812,16 @@
             });
         }
 
-        // Open variant modal
-        function openVariantModal() {
-            if (variantsData.length === 0) return;
-            
-            const variantsHtml = variantsData.map(variant => `
-                <div class="variant-option ${variant.current_stock <= 0 ? 'out-of-stock' : ''} ${selectedVariant && selectedVariant.id === variant.id ? 'selected' : ''}" 
-                     data-variant-id="${variant.id}" onclick="selectVariant(${variant.id})">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-medium">${variant.name}</h4>
-                        <span class="font-bold">Rs. ${variant.selling_price.toLocaleString()}</span>
-                    </div>
-                    <div class="mt-2 text-sm text-gray-600">
-                        <p>SKU: ${variant.sku}</p>
-                        <p>Stock: ${variant.current_stock} available</p>
-                    </div>
-                </div>
-            `).join('');
-            
-            $('#variants-content').html(variantsHtml);
-            
-            // If no variant is selected yet, select the first available one
-            if (!selectedVariant) {
-                const availableVariant = variantsData.find(v => v.current_stock > 0);
-                if (availableVariant) {
-                    selectVariant(availableVariant.id);
-                }
-            }
-            
-            openModal('variants-modal');
-        }
-
-        // Select variant
-        function selectVariant(variantId) {
-            const variant = variantsData.find(v => v.id === variantId);
-            if (!variant || variant.current_stock <= 0) return;
-            
-            selectedVariant = variant;
-            
-            // Update UI to show selected variant
-            $('.variant-option').removeClass('selected');
-            $(`.variant-option[data-variant-id="${variantId}"]`).addClass('selected');
-        }
-
-        // Add to cart
-        function addToCart() {
-            const quantity = parseInt($('#quantity').val());
-            
-            if (variantsData.length > 0 && !selectedVariant) {
-                openVariantModal();
-                return;
-            }
-            
-            const productToAdd = selectedVariant ? {
-                id: selectedVariant.id,
-                name: productData.name,
-                variant: selectedVariant.name,
-                price: selectedVariant.selling_price,
-                quantity: quantity,
-                image: productData.image_paths ? JSON.parse(productData.image_paths)[0] : '/backend/assets/images/no_image.png'
-            } : {
-                id: productData.id,
-                name: productData.name,
-                price: productData.price?.min || 0,
-                quantity: quantity,
-                image: productData.image_paths ? JSON.parse(productData.image_paths)[0] : '/backend/assets/images/no_image.png'
-            };
-            
-            // Here you would typically add to cart via AJAX
-            console.log('Adding to cart:', productToAdd);
-            
-            // Show success message
-            showMessage('Product added to cart successfully!', 'success');
-        }
-
         // Utility functions
         function changeImage(src) {
             $('#main-image').attr('src', src);
-        }
-
-        function updateQuantity(change) {
-            const quantityInput = $('#quantity');
-            let quantity = parseInt(quantityInput.val());
-            quantity += change;
-            if (quantity < 1) quantity = 1;
-            quantityInput.val(quantity);
         }
 
         function openTab(tabId) {
             $('.tab-content').removeClass('active');
             $('.tab-button').removeClass('border-primary-500 text-primary-600').addClass('border-transparent text-gray-500');
             $(`#${tabId}`).addClass('active');
-            $(event.currentTarget).removeClass('border-transparent text-gray-500').addClass('border-primary-500 text-primary-600');
+            $(`button[onclick="openTab('${tabId}')"]`).removeClass('border-transparent text-gray-500').addClass('border-primary-500 text-primary-600');
         }
 
         function openModal(modalId) {
@@ -690,9 +853,9 @@
         function showMessage(message, type = 'info') {
             // Create toast notification
             const toast = $(`
-                <div class="fixed top-4 right-4 z-50 px-4 py-2 rounded-md shadow-md text-white ${type === 'success' ? 'bg-green-500' : 'bg-blue-500'}">
+                <div class="fixed top-4 right-4 z-50 px-4 py-2 rounded-md shadow-md text-white ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'}">
                     <div class="flex items-center">
-                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-2"></i>
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-2"></i>
                         <span>${message}</span>
                     </div>
                 </div>

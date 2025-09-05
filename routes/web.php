@@ -260,8 +260,7 @@ Route::middleware(['auth', 'verified', 'role:admin|super-admin'])->group(functio
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('all-products',[HomeController::class, 'products'])->name('products');
 Route::get('contact',[HomeController::class, 'contacts'])->name('contact');
-
-// Route::view('/product_details', 'product_details')->name('product.detail');
+Route::view('/product_details', 'product_details')->name('all.product.page');
 
 
 // Products routes

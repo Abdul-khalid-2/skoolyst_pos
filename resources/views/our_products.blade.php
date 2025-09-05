@@ -669,7 +669,7 @@
             return `
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
                     <div class="relative product-image-container">
-                        <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name || 'no img'}" class="w-full h-48 object-cover">
                         <div class="product-overlay">
                             <button class="action-btn heart-btn" title="Add to wishlist" data-product-id="${product.id}">
                                 <i class="fas fa-heart"></i>
@@ -730,7 +730,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card col-span-1 sm:col-span-2 lg:col-span-3">
                     <div class="flex flex-col md:flex-row">
                         <div class="md:w-1/3 relative product-image-container">
-                            <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name}" class="w-full h-48 md:h-full object-cover">
+                            <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name || 'no img'}" class="w-full h-48 md:h-full object-cover">
                             <div class="product-overlay">
                                 <button class="action-btn heart-btn" title="Add to wishlist" data-product-id="${product.id}">
                                     <i class="fas fa-heart"></i>

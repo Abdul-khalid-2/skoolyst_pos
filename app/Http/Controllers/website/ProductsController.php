@@ -63,7 +63,7 @@ class ProductsController extends Controller
                         'rating' => $product->reviews->avg('rating') ?? 0,
                         'review_count' => $product->reviews->count(),
                         'featured' => $product->featured,
-                        'url' => route('product.detail', $product->slug),
+                        'url' => route('all.product.page', $product->slug),
                         'created_at' => $product->created_at,
                         'variants_count' => $product->variants->count(),
                         'has_variants' => $product->variants->count() > 1
