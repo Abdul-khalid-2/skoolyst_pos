@@ -36,6 +36,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\Website\HomeController;
+use App\Http\Controllers\Website\ProductsController;
 use App\Models\Supplier;
 
 Route::get('/', function () {
@@ -260,8 +261,11 @@ Route::get('all-products',[HomeController::class, 'products'])->name('products')
 Route::get('contact',[HomeController::class, 'contacts'])->name('contact');
 
 Route::view('/product_details', 'product_details')->name('product.detail');
-Route::view('/our_products', 'our_products')->name('our_products');
 
+
+// Products routes
+Route::get('/products', [ProductsController::class, 'index'])->name('our_products');
+Route::get('/api/products/all', [ProductsController::class, 'getAllProducts'])->name('api.products.all');
 
 
 require __DIR__ . '/auth.php';
