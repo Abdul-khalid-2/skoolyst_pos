@@ -37,6 +37,7 @@ use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\ProductsController;
+use App\Http\Controllers\Website\ProductVariantDetailController;
 use App\Models\Supplier;
 
 Route::get('/', function () {
@@ -260,12 +261,22 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('all-products',[HomeController::class, 'products'])->name('products');
 Route::get('contact',[HomeController::class, 'contacts'])->name('contact');
 
-Route::view('/product_details', 'product_details')->name('product.detail');
+// Route::view('/product_details', 'product_details')->name('product.detail');
 
 
 // Products routes
 Route::get('/products', [ProductsController::class, 'index'])->name('our_products');
 Route::get('/api/products/all', [ProductsController::class, 'getAllProducts'])->name('api.products.all');
 
+// Product detail pages
+Route::get('/products_detail/{id}/{slug?}', [ProductVariantDetailController::class, 'show'])->name('product.detail');
+Route::get('/products_detail/slug/{slug}', [ProductVariantDetailController::class, 'showBySlug'])->name('productsvariant.detail.show');
 
+// API routes for products
+Route::get('/api/productsvariant/{id}', [ProductVariantDetailController::class, 'getProductDetail'])->name('api.productsvariant.detail');
+Route::prefix('api')->group(function () {
+    Route::get('/productsvariant', [ProductVariantDetailController::class, 'getAllProducts'])->name('api.productsvariant.all');
+    Route::get('/productsvariant/related/{categoryId}',[ProductVariantDetailController::class, 'getRelatedProducts'])->name('api.productsvariant.related');
+
+});
 require __DIR__ . '/auth.php';
