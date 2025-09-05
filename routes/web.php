@@ -264,7 +264,7 @@ Route::view('/product_details', 'product_details')->name('all.product.page');
 
 
 // Products routes
-Route::get('/products', [ProductsController::class, 'index'])->name('our_products');
+Route::get('/our_products', [ProductVariantDetailController::class, 'index'])->name('our_products');
 Route::get('/api/products/all', [ProductsController::class, 'getAllProducts'])->name('api.products.all');
 
 // Product detail pages
