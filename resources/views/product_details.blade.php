@@ -266,20 +266,33 @@
     <!-- Variants Modal -->
     <div class="modal" id="variants-modal">
         <div class="modal-content">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
+            <div class="modal-header">
+                <div class="flex justify-between items-center">
                     <h3 class="text-xl font-bold">Select Variants</h3>
-                    <button onclick="closeModal('variants-modal')" class="text-gray-500 hover:text-gray-700">
+                    <button onclick="closeModal('variants-modal')" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                
+
+                <!-- Search input -->
+                <div class="variant-search mt-4">
+                    <input type="text" id="variant-search-input" placeholder="Search variants..." class="variant-search-input">
+                </div>
+            </div>
+
+            <div class="modal-body">
                 <div id="variants-content" class="mb-6">
                     <!-- Variants will be populated by JavaScript -->
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-spinner fa-spin text-2xl mb-3"></i>
+                        <p>Loading variants...</p>
+                    </div>
                 </div>
-                
+            </div>
+
+            <div class="modal-footer">
                 <div class="flex justify-end space-x-3">
-                    <button onclick="closeModal('variants-modal')" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    <button onclick="closeModal('variants-modal')" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                         Cancel
                     </button>
                     <button id="add-variant-btn" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
@@ -556,20 +569,34 @@
             `);
         }
 
-        // Open variant modal
-        function openVariantModal() {
-            if (variantsData.length === 0) return;
-            
-            const variantsHtml = variantsData.map(variant => `
+        function renderVariantsList(filterText = '') {
+            const search = filterText.trim().toLowerCase();
+
+            const filtered = variantsData.filter(variant =>
+                variant.name.toLowerCase().includes(search) ||
+                variant.sku.toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                $('#variants-content').html(`
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-search text-2xl mb-3"></i>
+                        <p>No variants found</p>
+                    </div>
+                `);
+                return;
+            }
+
+            const variantsHtml = filtered.map(variant => `
                 <div class="variant-option ${variant.current_stock <= 0 ? 'out-of-stock' : ''}" 
-                     data-variant-id="${variant.id}">
+                    data-variant-id="${variant.id}">
                     <div class="flex justify-between items-center">
                         <h4 class="font-medium">${variant.name}</h4>
                         <span class="font-bold">Rs. ${variant.selling_price.toLocaleString()}</span>
                     </div>
                     <div class="mt-2 text-sm text-gray-600">
-                        <p>SKU: ${variant.sku}</p>
-                        <p>Stock: ${variant.current_stock} available</p>
+                        <p><strong>SKU:</strong> ${variant.sku}</p>
+                        <p><strong>Stock:</strong> ${variant.current_stock} available</p>
                     </div>
                     <div class="mt-3 flex items-center">
                         <label class="mr-3">Quantity:</label>
@@ -583,13 +610,29 @@
             `).join('');
             
             $('#variants-content').html(variantsHtml);
-            
-            // Set up click handler for variant options
-            $('.variant-option:not(.out-of-stock)').on('click', function() {
-                $(this).toggleClass('selected');
+
+            // Rebind click handler after rendering
+            $('.variant-option:not(.out-of-stock)').on('click', function(e) {
+                // avoid clicking inside the quantity input from toggling selection
+                if (!$(e.target).is('input, button, .px-3')) {
+                    $(this).toggleClass('selected');
+                }
             });
-            
-            // Update add variant button handler
+        }
+
+
+        // Open variant modal
+        function openVariantModal() {
+            if (variantsData.length === 0) return;
+
+            renderVariantsList();
+
+            // Attach search input handler
+            $('#variant-search-input').off('input').on('input', function() {
+                renderVariantsList($(this).val());
+            });
+
+            // Add button handler
             $('#add-variant-btn').off('click').on('click', addSelectedVariants);
             
             openModal('variants-modal');

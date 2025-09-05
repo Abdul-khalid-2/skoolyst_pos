@@ -349,6 +349,239 @@
         .dark .shadow-md {
             box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
         }
+
+        /* Modal styles with dark theme support */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            color: #111827; /* Default text color */
+            margin-bottom: 4rem;
+        }
+
+        .dark .modal-content {
+            background-color: #1f2937; /* gray-800 */
+            color: #e5e7eb; /* gray-200 */
+        }
+
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dark .modal-header {
+            border-bottom: 1px solid #374151;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            position: sticky;
+            bottom: 0;
+            background: white;
+        }
+        
+        .dark .modal-footer {
+            border-top: 1px solid #374151;
+            background: #1f2937;
+        }
+        
+        .variant-search {
+            margin-bottom: 1rem;
+        }
+        
+        .variant-search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
+        
+        .dark .variant-search-input {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        
+        .variant-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+        
+        .dark .variant-option {
+            border-color: #374151;
+        }
+        
+        .variant-option:hover {
+            border-color: #0ea5e9;
+        }
+        
+        .variant-option.selected {
+            border-color: #0ea5e9;
+            background-color: #f0f9ff;
+        }
+        
+        .dark .variant-option.selected {
+            background-color: #1e3a8a;
+        }
+        
+        .variant-option.out-of-stock {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Fix for quantity input field in dark mode */
+        .variant-option input[type="number"] {
+            background-color: white;
+            color: #1f2937;
+        }
+        
+        .dark .variant-option input[type="number"] {
+            background-color: #374151;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+        /* Fix for quantity input field in dark mode */
+        .variant-option button[type="button"] {
+            background-color: white;
+            color: #1f2937;
+        }
+        
+        .dark .variant-option button[type="button"] {
+            background-color: #374151;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+
+        /* ---------- Selected Variants container ---------- */
+        #selected-variants-list {
+        background: #ffffff;
+        border: 1px solid #e5e7eb; /* gray-200 */
+        border-radius: 0.5rem;
+        padding: 1rem;
+        }
+
+        .dark #selected-variants-list {
+        background: #111827; /* gray-900 */
+        border-color: #374151; /* gray-700 */
+        color: #e5e7eb;       /* gray-200 */
+        }
+
+        /* Each selected item row */
+        .selected-variant-item {
+        display: grid;
+        grid-template-columns: 1fr auto auto auto;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+        background: #ffffff;
+        }
+
+        .dark .selected-variant-item {
+        border-color: #374151;
+        background: #1f2937; /* gray-800 */
+        }
+
+        /* Variant text bits */
+        .variant-name { font-weight: 600; }
+        .variant-details { font-size: 0.875rem; opacity: 0.9; }
+        .variant-price { font-weight: 600; }
+
+        /* ---------- Quantity controls ---------- */
+        .variant-quantity {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        }
+
+        .quantity-btn {
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #d1d5db; /* gray-300 */
+        background: #f9fafb;       /* gray-50 */
+        color: #111827;            /* gray-900 */
+        border-radius: 0.375rem;
+        font-weight: 600;
+        line-height: 2rem;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        }
+
+        .quantity-btn:hover { background: #f3f4f6; }
+
+        .dark .quantity-btn {
+        border-color: #4b5563;     /* gray-600 */
+        background: #374151;       /* gray-700 */
+        color: #e5e7eb;            /* gray-200 */
+        }
+        .dark .quantity-btn:hover { background: #4b5563; }
+
+        /* Number input */
+        .quantity-input {
+        width: 64px;
+        text-align: center;
+        padding: 0.375rem 0.5rem;
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        color: #111827;
+        border-radius: 0.375rem;
+        -moz-appearance: textfield; /* hide spinners in Firefox (we have +/- buttons) */
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;  /* hide spinners in WebKit (we have +/- buttons) */
+        margin: 0;
+        }
+
+        .dark .quantity-input {
+        background: #374151;   /* gray-700 */
+        border-color: #4b5563; /* gray-600 */
+        color: #e5e7eb;        /* gray-200 */
+        }
+
+        /* Remove icon color */
+        .remove-variant { cursor: pointer; }
+        .remove-variant i { color: #6b7280; }         /* gray-500 */
+        .dark .remove-variant i { color: #9ca3af; }   /* gray-400 */
+        .remove-variant:hover i { color: #ef4444; }   /* red-500 */
+
     </style>
         @stack('css')
 </head>
