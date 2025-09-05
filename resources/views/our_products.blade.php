@@ -45,6 +45,11 @@
             gap: 12px;
         }
 
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+
         .product-image-container:hover .product-overlay {
             opacity: 1;
         }
@@ -105,6 +110,30 @@
         .not-available {
             background: #6b7280;
             color: white;
+        }
+        
+        .pagination-link {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            margin: 0 0.25rem;
+            border-radius: 0.375rem;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+        
+        .pagination-link:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .pagination-link.active {
+            background-color: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+        }
+        
+        .pagination-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     </style>
     @endpush
@@ -294,19 +323,9 @@
 
                     <!-- Pagination -->
                     <div id="pagination" class="mt-12 flex justify-center hidden">
-                        <nav class="inline-flex rounded-md shadow-sm">
-                            <a href="#" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-primary-600 font-medium dark:bg-gray-800 dark:border-gray-600">1</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">2</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">3</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">4</a>
-                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">5</a>
-                            <a href="#" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                                <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </nav>
+                        <div class="flex items-center space-x-2" id="pagination-container">
+                            <!-- Pagination will be populated by JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,10 +339,19 @@
         let filteredProducts = [];
         let currentPage = 1;
         const productsPerPage = 12;
-        let currentView = 'grid'; // 'grid' or 'list'
+        let currentView = localStorage.getItem('productView') || 'grid'; // Get saved view or default to grid
 
         // DOM Ready
         $(document).ready(function() {
+            // Set initial view state
+            if (currentView === 'grid') {
+                $('#grid-view').addClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
+                $('#list-view').removeClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
+            } else {
+                $('#list-view').addClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
+                $('#grid-view').removeClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
+            }
+            
             // Load all products data
             loadProductsData();
 
@@ -334,20 +362,20 @@
         // Load all products data via AJAX
         function loadProductsData() {
             $.ajax({
-                url: '{{ route("api.products.all") }}', // You'll need to create this route
+                url: '{{ route("api.products.all") }}',
                 method: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
                         allProducts = response.data.products;
                         filteredProducts = [...allProducts];
-
+                        
                         // Populate filters
                         populateFilters(response.data.filters);
-
+                        
                         // Render initial products
                         renderProducts();
-
+                        
                         // Update product count
                         updateProductCount();
                     } else {
@@ -373,7 +401,7 @@
             `;
             });
             $('#category-filters').html(categoriesHtml);
-
+            
             // Populate brands
             let brandsHtml = '';
             filters.brands.forEach(brand => {
@@ -385,7 +413,7 @@
             `;
             });
             $('#brand-filters').html(brandsHtml);
-
+            
             // Set price range
             const minPrice = filters.price_range.min;
             const maxPrice = filters.price_range.max;
@@ -401,45 +429,47 @@
             $('#search-input').on('input', debounce(function() {
                 applyFilters();
             }, 300));
-
+            
             // Category filters
             $(document).on('change', '.filter-category', applyFilters);
-
+            
             // Brand filters
             $(document).on('change', '.filter-brand', applyFilters);
-
+            
             // Price range
             $('#price-min, #price-max').on('input', function() {
                 $('#price-min-display').text(`Rs. ${$('#price-min').val().toLocaleString()}`);
                 $('#price-max-display').text(`Rs. ${$('#price-max').val().toLocaleString()}`);
                 applyFilters();
             });
-
+            
             // Availability
             $('input[name="availability"]').on('change', applyFilters);
-
+            
             // Rating filters
             $('#rating-filters input').on('change', applyFilters);
-
+            
             // Apply filters button
             $('#apply-filters').on('click', applyFilters);
-
+            
             // Reset filters button
             $('#reset-filters').on('click', resetFilters);
-
+            
             // Sort options
             $('#sort-options').on('change', applyFilters);
-
+            
             // View options
             $('#grid-view').on('click', function() {
                 currentView = 'grid';
+                localStorage.setItem('productView', 'grid');
                 $(this).addClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
                 $('#list-view').removeClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
                 renderProducts();
             });
-
+            
             $('#list-view').on('click', function() {
                 currentView = 'list';
+                localStorage.setItem('productView', 'list');
                 $(this).addClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
                 $('#grid-view').removeClass('bg-primary-100 text-primary-600 dark:bg-primary-800 dark:text-primary-200');
                 renderProducts();
@@ -450,58 +480,58 @@
         function applyFilters() {
             // Get search term
             const searchTerm = $('#search-input').val().toLowerCase();
-
+            
             // Get selected categories
             const selectedCategories = [];
             $('.filter-category:checked').each(function() {
                 selectedCategories.push($(this).val());
             });
-
+            
             // Get selected brands
             const selectedBrands = [];
             $('.filter-brand:checked').each(function() {
                 selectedBrands.push($(this).val());
             });
-
+            
             // Get price range
             const minPrice = parseInt($('#price-min').val());
             const maxPrice = parseInt($('#price-max').val());
-
+            
             // Get availability
             const availability = $('input[name="availability"]:checked').val();
-
+            
             // Get selected ratings
             const selectedRatings = [];
             $('#rating-filters input:checked').each(function() {
                 selectedRatings.push(parseInt($(this).val()));
             });
-
+            
             // Get sort option
             const sortOption = $('#sort-options').val();
-
+            
             // Filter products
             filteredProducts = allProducts.filter(product => {
                 // Search filter
-                if (searchTerm && !product.name.toLowerCase().includes(searchTerm) &&
+                if (searchTerm && !product.name.toLowerCase().includes(searchTerm) && 
                     !product.description.toLowerCase().includes(searchTerm)) {
                     return false;
                 }
-
+                
                 // Category filter
                 if (selectedCategories.length > 0 && !selectedCategories.includes(product.category_id.toString())) {
                     return false;
                 }
-
+                
                 // Brand filter
                 if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand_id.toString())) {
                     return false;
                 }
-
-                // Price filter
-                if (product.price < minPrice || product.price > maxPrice) {
+                
+                // Price filter - check against the minimum price of the product
+                if (product.price.min < minPrice || product.price.min > maxPrice) {
                     return false;
                 }
-
+                
                 // Availability filter
                 if (availability === 'instock' && !product.in_stock) {
                     return false;
@@ -509,7 +539,7 @@
                 if (availability === 'outofstock' && product.in_stock) {
                     return false;
                 }
-
+                
                 // Rating filter
                 if (selectedRatings.length > 0) {
                     let ratingMatch = false;
@@ -521,19 +551,19 @@
                     }
                     if (!ratingMatch) return false;
                 }
-
+                
                 return true;
             });
-
+            
             // Sort products
             sortProducts(sortOption);
-
+            
             // Reset to first page
             currentPage = 1;
-
+            
             // Render products
             renderProducts();
-
+            
             // Update product count
             updateProductCount();
         }
@@ -590,9 +620,9 @@
             const startIndex = (currentPage - 1) * productsPerPage;
             const endIndex = startIndex + productsPerPage;
             const productsToShow = filteredProducts.slice(startIndex, endIndex);
-
+            
             let productsHtml = '';
-
+            
             if (productsToShow.length === 0) {
                 productsHtml = `
                 <div class="col-span-3 text-center py-12 text-gray-500 dark:text-gray-400">
@@ -610,7 +640,7 @@
                     }
                 });
             }
-
+            
             $('#products-container').html(productsHtml);
             updatePagination();
         }
@@ -627,9 +657,9 @@
                 `;
             } else {
                 priceHtml = `
-            ${product.discount > 0 ? `
-                    <span class="text-lg font-bold text-primary-600 dark:text-primary-400">Rs. ${(product.price.min * (1 - product.discount/100)).toLocaleString()}</span>
-                    <span class="text-sm text-gray-500 line-through ml-2">Rs. ${product.price.min.toLocaleString()}</span>
+                    ${product.discount > 0 ? `
+                        <span class="text-lg font-bold text-primary-600 dark:text-primary-400">Rs. ${(product.price.min * (1 - product.discount/100)).toLocaleString()}</span>
+                        <span class="text-sm text-gray-500 line-through ml-2">Rs. ${product.price.min.toLocaleString()}</span>
                     ` : `
                         <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">Rs. ${product.price.min.toLocaleString()}</span>
                     `}
@@ -639,7 +669,7 @@
             return `
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
                     <div class="relative product-image-container">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name}" class="w-full h-48 object-cover">
                         <div class="product-overlay">
                             <button class="action-btn heart-btn" title="Add to wishlist" data-product-id="${product.id}">
                                 <i class="fas fa-heart"></i>
@@ -699,8 +729,8 @@
             return `
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card col-span-1 sm:col-span-2 lg:col-span-3">
                     <div class="flex flex-col md:flex-row">
-                        <div class="md:w-1/3 relative">
-                            <img src="${product.image}" alt="${product.name}" class="w-full h-48 md:h-full object-cover">
+                        <div class="md:w-1/3 relative product-image-container">
+                            <img src="${product.image || 'backend/assets/images/no_image.png'}" alt="${product.name}" class="w-full h-48 md:h-full object-cover">
                             <div class="product-overlay">
                                 <button class="action-btn heart-btn" title="Add to wishlist" data-product-id="${product.id}">
                                     <i class="fas fa-heart"></i>
@@ -763,16 +793,60 @@
         // Update pagination
         function updatePagination() {
             const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-
+            
             if (totalPages <= 1) {
                 $('#pagination').addClass('hidden');
                 return;
             }
-
+            
             $('#pagination').removeClass('hidden');
-
-            // Simplified pagination for this example
-            // In a real implementation, you would generate proper pagination links
+            
+            let paginationHtml = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHtml += `<a href="#" class="pagination-link" data-page="${currentPage - 1}"><i class="fas fa-chevron-left"></i></a>`;
+            } else {
+                paginationHtml += `<span class="pagination-link disabled"><i class="fas fa-chevron-left"></i></span>`;
+            }
+            
+            // Page numbers
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                if (i === currentPage) {
+                    paginationHtml += `<span class="pagination-link active">${i}</span>`;
+                } else {
+                    paginationHtml += `<a href="#" class="pagination-link" data-page="${i}">${i}</a>`;
+                }
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHtml += `<a href="#" class="pagination-link" data-page="${currentPage + 1}"><i class="fas fa-chevron-right"></i></a>`;
+            } else {
+                paginationHtml += `<span class="pagination-link disabled"><i class="fas fa-chevron-right"></i></span>`;
+            }
+            
+            $('#pagination-container').html(paginationHtml);
+            
+            // Add click event to pagination links
+            $('#pagination-container a').on('click', function(e) {
+                e.preventDefault();
+                currentPage = parseInt($(this).data('page'));
+                renderProducts();
+                updateProductCount();
+                // Scroll to top of products
+                $('html, body').animate({
+                    scrollTop: $("#products-container").offset().top - 100
+                }, 300);
+            });
         }
 
         // Debounce function for search
