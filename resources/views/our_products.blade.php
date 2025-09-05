@@ -334,6 +334,9 @@
 
     @push('js')
     <script>
+        const productDetailRoute = @json(route('product.detail', ['id' => ':id', 'slug' => ':slug']));
+    </script>
+    <script>
         // Global variables to store all products and filtered products
         let allProducts = [];
         let filteredProducts = [];
@@ -665,7 +668,9 @@
                     `}
                 `;
             }
-
+            const productDetailRouteURL = productDetailRoute
+                .replace(':id', product.id)
+                .replace(':slug', product.slug);
             return `
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-slow product-card">
                     <div class="relative product-image-container">
@@ -674,9 +679,9 @@
                             <button class="action-btn heart-btn" title="Add to wishlist" data-product-id="${product.id}">
                                 <i class="fas fa-heart"></i>
                             </button>
-                            <button class="action-btn view-btn" title="View details" onclick="window.location.href='${product.url}'">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                                <button class="action-btn view-btn" title="View details" onclick="window.location.href='${productDetailRouteURL}'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
                             <button class="action-btn cart-btn" title="Add to cart" data-product-id="${product.id}">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
@@ -696,7 +701,7 @@
                             <div>
                                 ${priceHtml}
                             </div>
-                            <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm" onclick="window.location.href='${product.url}'">
+                            <button class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-slow text-sm" onclick="window.location.href='${productDetailRouteURL}'">
                                 View Details
                             </button>
                         </div>

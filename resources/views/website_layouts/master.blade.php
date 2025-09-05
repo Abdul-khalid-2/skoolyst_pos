@@ -483,7 +483,7 @@
             button.addEventListener('click', function(e) {
                 e.stopPropagation();
                 // Add view functionality here
-                alert('View details clicked!');
+                // alert('View details clicked!');
             });
         });
         
